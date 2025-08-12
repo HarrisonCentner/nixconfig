@@ -20,13 +20,16 @@
       # Binary Cache for haskell.nix
       nix.settings.trusted-public-keys = [
         "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
-        "ryantrinkle.com-1:JJiAKaRv9mWgpVAz8dwewnZe0AzzEAzPkagE9SP5NWI="
-        "reflex-frp.org-1:4F+Vg8pNi+n9EWTyUd9T2DGMo2HgPKgwZdUJiknHTdc="
+        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+        "haskell-miso-cachix.cachix.org-1:m8hN1cvFMJtYib4tj+06xkKt5ABMSGfe8W7s40x1kQ0="
       ];
-      nix.settings.substituters = [
+      nix.settings.trusted-substituters = [
         "https://cache.iog.io"
         "https://nixcache.reflex-frp.org"
+        "https://haskell-miso-cachix.cachix.org"
+
       ];
+      nix.settings.substituters = [ ];
 
       # The platform the configuration will be used on.
       nixpkgs.hostPlatform = "x86_64-darwin";

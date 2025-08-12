@@ -47,7 +47,13 @@
     nix-output-monitor # nom for nix
     dhall # configuration language
     nurl # generate nix fetcher calls from repo URLS
+    cachix # nix binary cache hosting CLI tool
+    git # version control
+    haskellPackages.cabal-install # Haskell build tool
+    ghc # the Glorious Glasgow Haskell Compiler
+    nodejs-slim # nodejs
   ];
+
   programs = {
     home-manager.enable = true;
     zsh = {
