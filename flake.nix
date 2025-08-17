@@ -6,13 +6,14 @@
     nixpkgs-old.url = "github:NixOS/nixpkgs/nixos-24.05";
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+    disko.url = "github:nix-community/disko";
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { nixpkgs, nix-darwin, home-manager, ... }:
+  outputs = { nixpkgs, nix-darwin, home-manager, disko, ... }:
     let
     configuration = { ... }: {
       nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -37,8 +38,13 @@
       in
       nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
+        specialArgs = {
+          username = "${username}";
+          homeDirectory = "${homeDirectory}";
+        };
         modules = [
           configuration
+          disko.nixosModules.disko
           ./machines/zylphia.nix
           home-manager.nixosModules.home-manager
           {

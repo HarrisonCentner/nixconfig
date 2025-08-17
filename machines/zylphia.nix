@@ -1,23 +1,17 @@
-{ pkgs, ... }:
-
-# can specify values of fields in Settings in this file
+{ config, pkgs, username, homeDirectory, ... }:
 {
-  system = {
-    stateVersion = 5;
 
-  # keyboard = {
-  #   enableKeyMapping = true;  # enable key mapping so that we can use `option` as `control`
-  #   remapCapsLockToControl = false;  # remap caps lock to control, useful for emac users
-  #   remapCapsLockToEscape  = true;   # remap caps lock to escape, useful for vim users
-  #   swapLeftCommandAndLeftAlt = false;
-  # };
+  users.users.${username} = {
+    isNormalUser = true;
+    home = homeDirectory;
+    description = "Primary user";
+    extraGroups = [ "wheel" "networkmanager" ];
+    group = "wheel";
   };
 
-  # Add ability to used TouchID for sudo authentication
-  security.pam.services.sudo_local.touchIdAuth = true;
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
 
-  # Create /etc/zshrc that loads the nix-darwin environment.
-  # is required since we want to use darwin's default shell - zsh
   programs.zsh.enable = true;
   environment.shells = with pkgs; [
     zsh
@@ -30,4 +24,69 @@
   fonts.packages = with pkgs; [
     nerd-fonts.droid-sans-mono
   ];
+
+  disko.devices = {
+    disk = {
+      main = {
+        type = "disk";
+        device = "/dev/vdb";
+        content = {
+          type = "gpt";
+          partitions = {
+            ESP = {
+              size = "512M";
+              type = "EF00";
+              content = {
+                type = "filesystem";
+                format = "vfat";
+                mountpoint = "/boot";
+                mountOptions = [ "umask=0077" ];
+              };
+            };
+            luks = {
+              size = "100%";
+              content = {
+                type = "luks";
+                name = "crypted";
+                settings = {
+                  allowDiscards = true;
+                };
+                content = {
+                  type = "btrfs";
+                  extraArgs = [ "-f" ];
+                  subvolumes = {
+                    "/root" = {
+                      mountpoint = "/";
+                      mountOptions = [
+                        "compress=zstd"
+                        "noatime"
+                      ];
+                    };
+                    "/home" = {
+                      mountpoint = "/home";
+                      mountOptions = [
+                        "compress=zstd"
+                        "noatime"
+                      ];
+                    };
+                    "/nix" = {
+                      mountpoint = "/nix";
+                      mountOptions = [
+                        "compress=zstd"
+                        "noatime"
+                      ];
+                    };
+                    "/swap" = {
+                      mountpoint = "/.swapvol";
+                      swap.swapfile.size = "32GB";
+                    };
+                  };
+                };
+              };
+            };
+          };
+        };
+      };
+    };
+  };
 }
