@@ -1,23 +1,12 @@
-# could add additional overrides here
-{ config, pkgs, ... }: 
+{ pkgs, username, homeDirectory,  ... }: 
 {
   home = {
-    username = "harrisoncentner";
-    # homeDirectory = "/home/harrisoncentner";
-
-    # Set Git commit hash for darwin-version.
-    # home.configurationRevision = self.rev or self.dirtyRev or null;
-
-    # Used for backwards compatibility, please read the changelog before changing.
-    # $ darwin-rebuild changelog
+    username = username;
     sessionPath = [
-      "/home/harrisoncentner/nixconfig"
+      "${homeDirectory}/nixconfig"
     ];
     sessionVariables = {
       EDITOR = "vim";
-      #shellAliases = {
-      # rebuild-vm = "sudo nixos-rebuild switch --flake #hcentner-utm"; rebuild-desktop = "sudo nixos-rebuild switch --flake #hcentner-desktop";
-      # };
     };
 
     stateVersion = "24.11";
@@ -130,8 +119,6 @@
           side-by-side = false;
           line-numbers = true;
           features = "zebra-dark";
-          # this isn't in the RTP for some reason so we clone it from
-          # https://github.com/dandavison/delta/blob/main/themes.gitconfig
           zebra-dark = {
             minus-style = "syntax \"#330f0f\"";
             minus-emph-style = "syntax \"#4f1917\"";
@@ -139,9 +126,9 @@
             plus-emph-style = "syntax \"#174525\"";
             map-styles = ''
               bold purple => syntax "#330f29",
-                   bold blue => syntax "#271344",
-                   bold cyan => syntax "#0d3531",
-                   bold yellow => syntax "#222f14"
+              bold blue => syntax "#271344",
+              bold cyan => syntax "#0d3531",
+              bold yellow => syntax "#222f14"
                      '';
             zero-style = "syntax";
             whitespace-error-style = "#aaaaaa";
@@ -159,7 +146,7 @@
           init.defaultBranch = "master";
           rerere.enabled = true;
       };
-      ignores = [ "target" "result" "/.vscode" ".direnv" ".envrc" ".nixcpy" ];
+      ignores = [ "target" "result" ".direnv" ".envrc" ];
     };
   };
 }

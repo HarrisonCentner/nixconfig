@@ -12,12 +12,11 @@
     };
   };
 
-  outputs = inputs@{ nix-darwin, nixpkgs, home-manager, ... }:
+  outputs = { nixpkgs, nix-darwin, home-manager, ... }:
     let
-    configuration = { pkgs, ... }: {
-      # Necessary for using flakes on this system.
+    configuration = { ... }: {
       nix.settings.experimental-features = [ "nix-command" "flakes" ];
-      # Binary Cache for haskell.nix
+
       nix.settings.trusted-public-keys = [
         "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
@@ -29,32 +28,53 @@
         "https://haskell-miso-cachix.cachix.org"
 
       ];
-      nix.settings.substituters = [ ];
-
-      # The platform the configuration will be used on.
-      nixpkgs.hostPlatform = "x86_64-darwin";
  };
- in
- {
-# Build darwin flake using:
-# $ darwin-rebuild build --flake .#Harrisons-MacBook-Pro-7
-    darwinConfigurations."Harrisons-MacBook-Pro-7" = nix-darwin.lib.darwinSystem {
-      modules = [ 
-        configuration 
-        ./modules/system.nix
-        
-        home-manager.darwinModules.home-manager {
-          home-manager = {
-            # include the home-manager module
-            users.harrisoncentner = import ./templates/home-manager/home.nix;
-            useGlobalPkgs = true;
-            useUserPackages = true;
-          };
-          users.users.harrisoncentner.home = "/Users/harrisoncentner";
-          nix.settings.trusted-users = ["harrisoncentner"];
-        }
-      ];
+    in {
+      nixosConfigurations.zylphia = 
+      let
+        username = "hcentner";
+        homeDirectory = "/home/${username}";
+      in
+      nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          configuration
+          ./machines/zylphia.nix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager = {
+              users."${username}" = import ./home-manager/home.nix;
+              extraSpecialArgs = { inherit username homeDirectory; };
+              useGlobalPkgs = true;
+              useUserPackages = true;
+            };
+            users.users."${username}".home = "${homeDirectory}";
+            nix.settings.trusted-users = [ "${username}" ];
+          }
+        ];
+      };
 
+      darwinConfigurations.xlthlx = 
+      let
+        username = "hcentner";
+        homeDirectory = "/Users/${username}";
+      in
+      nix-darwin.lib.darwinSystem {
+        system = "x86_64-darwin"; 
+        modules = [
+          configuration
+          ./machines/xlthlx.nix
+          home-manager.darwinModules.home-manager {
+            home-manager = {
+              users.${username} = import ./home-manager/home.nix;
+              extraSpecialArgs = { inherit username homeDirectory; };
+              useGlobalPkgs = true;
+              useUserPackages = true;
+            };
+            users.users.${username}.home = "${homeDirectory}";
+            nix.settings.trusted-users = [ "${username}" ];
+          }
+        ];
+      };
     };
-  };
 }
