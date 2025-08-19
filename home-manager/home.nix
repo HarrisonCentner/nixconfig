@@ -12,6 +12,7 @@
     stateVersion = "24.11";
   };
   home.packages = with pkgs; [
+    vim # vi iMproved
     duf # disk usage/free utility
     fd # find alternative
     gh # github clie tool
@@ -108,7 +109,7 @@
     };
     git = {
       lfs.enable = true;
-      userName = "hcentner";
+      userName = "HarrisonCentner";
       userEmail = "harrison.centner@gmail.com";
       delta = {
         enable = true;

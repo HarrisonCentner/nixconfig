@@ -1,6 +1,8 @@
 { config, pkgs, username, homeDirectory, ... }:
 {
 
+  services.openssh.enable = true;
+
   users.users.${username} = {
     isNormalUser = true;
     home = homeDirectory;
