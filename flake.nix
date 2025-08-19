@@ -54,6 +54,7 @@
               useGlobalPkgs = true;
               useUserPackages = true;
             };
+            services.openssh.enable = true;
             users.users."${username}".home = "${homeDirectory}";
             nix.settings.trusted-users = [ "${username}" ];
           }
