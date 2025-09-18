@@ -3,7 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nixpkgs-old.url = "github:NixOS/nixpkgs/nixos-24.05";
+    nixpkgs-old.url = "github:NixOS/nixpkgs/nixos-25.05";
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     disko.url = "github:nix-community/disko";
@@ -45,7 +45,7 @@
         modules = [
           configuration
           disko.nixosModules.disko
-          ./machines/zylphia.nix
+          ./machines/zylphia/default.nix
           home-manager.nixosModules.home-manager
           {
             home-manager = {

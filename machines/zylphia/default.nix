@@ -27,8 +27,8 @@
   ];
 
   imports = [
-    zylphia/disko.nix
-    zylphia/services.nix
+    ./disko.nix
+    ./services.nix
   ];
 
 }

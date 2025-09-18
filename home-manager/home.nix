@@ -11,6 +11,20 @@
 
     stateVersion = "24.11";
   };
+  home.file.".vimrc".text = builtins.readFile ./vimrc.txt;
+  home.file.".vim/coc-settings.json".text = ''
+    {
+      "suggest.autoTrigger": "always",
+      "diagnostic.virtualText": true,
+      "languageserver": {
+        "haskell": {
+          "command": "haskell-language-server-wrapper",
+          "args": ["--lsp"],
+          "filetypes": ["haskell", "lhaskell"]
+        }
+      }
+    }
+  '';
   home.packages = with pkgs; [
     vim # vi iMproved
     duf # disk usage/free utility
@@ -41,7 +55,8 @@
     git # version control
     haskellPackages.cabal-install # Haskell build tool
     ghc # the Glorious Glasgow Haskell Compiler
-    nodejs-slim # nodejs
+    nodejs # nodejs
+    haskell-language-server # the glorious Haskell language server
   ];
 
   programs = {
