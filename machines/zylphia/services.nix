@@ -7,12 +7,11 @@
 }:
 {
   imports = [
-   ./../../homelab/default.nix
+   ./../../lab/default.nix
   ];
 
   services.openssh.enable = true;
 
   homelab.services.immich.enable = true;
-  
-
+  services.blocky.enable = true;
 }
