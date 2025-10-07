@@ -15,8 +15,7 @@ in
     };
     mediaDir = lib.mkOption {
       type = lib.types.path;
-      default = "/var/lib/immich";
-    };
+      default = "/var/lib/immich"; };
     url = lib.mkOption {
       type = lib.types.str;
       default = "photos.${homelab.baseDomain}";
@@ -28,7 +27,7 @@ in
       "render"
     ];
     services.immich = {
-      enable = true;
+      enable = cfg.enable;
       port = 2283;
       host = "0.0.0.0";
       mediaLocation = "${cfg.mediaDir}";
