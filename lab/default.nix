@@ -15,10 +15,14 @@
       80
       443 
       2283 # immich
+      53 # blocky
     ];
+    networking.firewall.allowedUDPPorts = [ 53 ];
   };
 
   imports = [
     ./services/immich/default.nix
+    ./services/blocky/default.nix
+    ./services/mail/default.nix
   ];
 }

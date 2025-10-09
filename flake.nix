@@ -11,6 +11,10 @@
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixos-mailserver = {
+     url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
+     flake = false;
+    };
   };
 
   outputs = { nixpkgs, nix-darwin, home-manager, disko, ... }:

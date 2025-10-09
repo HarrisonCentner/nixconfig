@@ -8,9 +8,14 @@ in
     enable = lib.mkEnableOption "DNS proxy and ad-blocker for the local network.";
   };
   config = lib.mkIf cfg.enable {
-      enable = cfg.enable;
+    services.blocky = {
+      enable = true;
       settings = {
       ports.dns = 53; # Port for incoming DNS Queries.
+      ports.http = 4000; 
+      ports.https = 443;
+      log.level = "warn";
+      log.privacy = true;
       upstreams.groups.default = [
         "https://one.one.one.one/dns-query" # Using Cloudflare's DNS over HTTPS server for resolving queries.
       ];
@@ -21,20 +26,20 @@ in
       };
       #Enable blocking of certain domains.
       blocking = {
-        blackLists = {
-          #Adblocking
+        denylists = {
           ads = ["https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"];
-          #Another filter for blocking adult sites
-          adult = ["https://blocklistproject.github.io/Lists/porn.txt"];
-          #You can add additional categories
+          fakenews = ["https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-only/hosts"];
+          gambling = ["https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling-only/hosts"];
+          porn = ["https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/porn-only/hosts"];
+          social = ["https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/social-only/hosts"];
         };
         #Configure what block categories are used
         clientGroupsBlock = {
-          default = [ "ads" ];
-          kids-ipad = ["ads" "adult"];
+          default = [ "ads" "porn" ];
+          iphone = [ "ads" "porn" "social" ];
         };
       };
     };
+   };
   };
-
 }

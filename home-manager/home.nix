@@ -26,10 +26,10 @@
     }
   '';
   home.packages = with pkgs; [
-    vim # vi iMproved
+    vim # vi improved
     duf # disk usage/free utility
     fd # find alternative
-    gh # github clie tool
+    gh # github CLI tool
     jq # JSON processor
     nixpkgs-fmt # nix formatter
     cabal2nix # generate nix derivations from cabal files
@@ -57,6 +57,8 @@
     ghc # the Glorious Glasgow Haskell Compiler
     nodejs # nodejs
     haskell-language-server # the glorious Haskell language server
+    blocky # DNS proxy CLI
+    dig # domain name server
   ];
 
   programs = {

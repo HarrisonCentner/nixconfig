@@ -27,7 +27,7 @@ in
       "render"
     ];
     services.immich = {
-      enable = cfg.enable;
+      enable = true;
       port = 2283;
       host = "0.0.0.0";
       mediaLocation = "${cfg.mediaDir}";

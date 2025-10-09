@@ -1,7 +1,5 @@
 { config, pkgs, username, homeDirectory, ... }:
 {
-
-
   users.users.${username} = {
     isNormalUser = true;
     home = homeDirectory;
@@ -9,6 +7,7 @@
     extraGroups = [ "wheel" "networkmanager" ];
     group = "wheel";
   };
+  networking.nameservers = [ "192.168.1.114" ];
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
