@@ -1,21 +1,22 @@
-{ config, pkgs, nixos-mailserver, ... }: 
-let domain-name = "hcentner.com"
+{ pkgs, nixos-mailserver, ... }: 
+let domain-name = "hcentner.com";
 in
-{
+nixos-mailserver.nixosModule {
   mailserver = {
     enable = true;
     stateVersion = 3;
     fqdn = "mail.${domain-name}";
     domains = [ "${domain-name}" ];
 
-    # A list of all login accounts. To create the password hashes, use
-    # nix-shell -p mkpasswd --run 'mkpasswd -sm bcrypt'
     loginAccounts = {
       "user1@${domain-name}" = {
         hashedPasswordFile = "/a/file/containing/a/hashed/password";
         aliases = ["postmaster@${domain-name}"];
       };
-      "user2@${domain-name}" = { ... };
+      "user2@${domain-name}" = { 
+        hashedPasswordFile = "/a/file/containing/a/hashed/password";
+        aliases = ["postmaster@${domain-name}"];
+      };
     };
 
     # Use Let's Encrypt certificates. Note that this needs to set up a stripped

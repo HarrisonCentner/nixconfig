@@ -23,6 +23,5 @@
   imports = [
     ./services/immich/default.nix
     ./services/blocky/default.nix
-    ./services/mail/default.nix
   ];
 }

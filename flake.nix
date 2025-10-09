@@ -17,7 +17,7 @@
     };
   };
 
-  outputs = { nixpkgs, nix-darwin, home-manager, disko, ... }:
+  outputs = { nixpkgs, nix-darwin, home-manager, disko, nixos-mailserver, ... }:
     let
     configuration = { ... }: {
       nix.settings.experimental-features = [ "nix-command" "flakes" ];
