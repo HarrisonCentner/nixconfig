@@ -3,21 +3,17 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nixpkgs-old.url = "github:NixOS/nixpkgs/nixos-25.05";
-    nix-darwin.url = "github:LnL7/nix-darwin";
+    nixpkgs-old.url = "github:NixOS/nixpkgs/nixos-25.05"; nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     disko.url = "github:nix-community/disko";
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixos-mailserver = {
-     url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
-     flake = false;
-    };
+    simple-nixos-mailserver.url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
   };
 
-  outputs = { nixpkgs, nix-darwin, home-manager, disko, nixos-mailserver, ... }:
+  outputs = { nixpkgs, nix-darwin, home-manager, disko, simple-nixos-mailserver, ... }:
     let
     configuration = { ... }: {
       nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -29,9 +25,7 @@
       ];
       nix.settings.trusted-substituters = [
         "https://cache.iog.io"
-        "https://nixcache.reflex-frp.org"
         "https://haskell-miso-cachix.cachix.org"
-
       ];
  };
     in {
@@ -39,12 +33,13 @@
       let
         username = "hcentner";
         homeDirectory = "/home/${username}";
+        domain-name = "hcentner.com";
+
       in
       nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = {
-          username = "${username}";
-          homeDirectory = "${homeDirectory}";
+          inherit username homeDirectory simple-nixos-mailserver;
         };
         modules = [
           configuration

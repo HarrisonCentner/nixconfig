@@ -1,19 +1,15 @@
-{ pkgs, nixos-mailserver, ... }: 
 let domain-name = "hcentner.com";
 in
-nixos-mailserver.nixosModule {
+{
   mailserver = {
     enable = true;
     stateVersion = 3;
+    localDnsResolver = false;
     fqdn = "mail.${domain-name}";
     domains = [ "${domain-name}" ];
 
     loginAccounts = {
-      "user1@${domain-name}" = {
-        hashedPasswordFile = "/a/file/containing/a/hashed/password";
-        aliases = ["postmaster@${domain-name}"];
-      };
-      "user2@${domain-name}" = { 
+      "hcentner@${domain-name}" = {
         hashedPasswordFile = "/a/file/containing/a/hashed/password";
         aliases = ["postmaster@${domain-name}"];
       };

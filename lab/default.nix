@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  simple-nixos-mailserver,
   ...
 }:
 {
@@ -23,5 +24,6 @@
   imports = [
     ./services/immich/default.nix
     ./services/blocky/default.nix
+    simple-nixos-mailserver.nixosModule (import ./services/mail/default.nix)
   ];
 }
