@@ -24,6 +24,9 @@
   imports = [
     ./services/immich/default.nix
     ./services/blocky/default.nix
-    simple-nixos-mailserver.nixosModule (import ./services/mail/default.nix)
+    # In the future maybe try Maddy.
+    # For now it's not worth it for me to run my own mailserver
+    # I'm signing up for indefinite maintenance
+    # simple-nixos-mailserver.nixosModule (import ./services/mail/default.nix)
   ];
 }
