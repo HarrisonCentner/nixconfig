@@ -54,11 +54,15 @@
     cachix # nix binary cache hosting CLI tool
     git # version control
     haskellPackages.cabal-install # Haskell build tool
-    ghc # the Glorious Glasgow Haskell Compiler
+    haskell.compiler.ghc9102 # the Glorious Glasgow Haskell Compiler
     nodejs # nodejs
     haskell-language-server # the glorious Haskell language server
+    # networking
     blocky # DNS proxy CLI
     dig # domain name server
+    nftables # edit domain filtering rules
+    tcpdump # network sniffer
+    iptables # configure Linux IP filtering rules
   ];
 
   programs = {

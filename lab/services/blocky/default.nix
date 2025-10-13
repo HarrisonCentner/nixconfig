@@ -14,7 +14,7 @@ in
       ports.dns = 53; # Port for incoming DNS Queries.
       ports.http = 4000; 
       ports.https = 443;
-      log.level = "warn";
+      log.level = "warning";
       log.privacy = true;
       upstreams.groups.default = [
         "https://one.one.one.one/dns-query" # Using Cloudflare's DNS over HTTPS server for resolving queries.
@@ -38,6 +38,15 @@ in
           default = [ "ads" "porn" ];
           iphone = [ "ads" "porn" "social" ];
         };
+      };
+      caching = {
+        minTime = "5m";
+        maxTime = "30m";
+        prefetching = true;
+        exclude = [
+          "/.*\.lan$/"
+          "/.*\.local$/"
+        ];
       };
     };
    };

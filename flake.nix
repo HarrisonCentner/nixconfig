@@ -3,7 +3,8 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nixpkgs-old.url = "github:NixOS/nixpkgs/nixos-25.05"; nix-darwin.url = "github:LnL7/nix-darwin";
+    nixpkgs-old.url = "github:NixOS/nixpkgs/nixos-25.05"; 
+    nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     disko.url = "github:nix-community/disko";
     home-manager = {
@@ -11,9 +12,19 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     simple-nixos-mailserver.url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
+    hcentner-blog.url = "github:HarrisonCentner/blog";
+    hcentner-blog.flake = false;
   };
 
-  outputs = { nixpkgs, nix-darwin, home-manager, disko, simple-nixos-mailserver, ... }:
+  outputs = { 
+      nixpkgs, 
+      nix-darwin, 
+      home-manager, 
+      disko, 
+      simple-nixos-mailserver, 
+      hcentner-blog, 
+      ... 
+  }:
     let
     configuration = { ... }: {
       nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -34,12 +45,11 @@
         username = "hcentner";
         homeDirectory = "/home/${username}";
         domain-name = "hcentner.com";
-
       in
       nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = {
-          inherit username homeDirectory simple-nixos-mailserver;
+          inherit username homeDirectory hcentner-blog; # simple-nixos-mailserver;
         };
         modules = [
           configuration
@@ -47,15 +57,9 @@
           ./machines/zylphia/default.nix
           home-manager.nixosModules.home-manager
           {
-            home-manager = {
-              users."${username}" = import ./home-manager/home.nix;
-              extraSpecialArgs = { inherit username homeDirectory; };
-              useGlobalPkgs = true;
-              useUserPackages = true;
-            };
-            users.users."${username}".home = "${homeDirectory}";
-            nix.settings.trusted-users = [ "${username}" ];
+            home-manager = import ./home-manager/common.nix { inherit username homeDirectory; };
           }
+          (import ./machines/common.nix { inherit username homeDirectory; })
         ];
       };
 
@@ -69,16 +73,11 @@
         modules = [
           configuration
           ./machines/xlthlx.nix
-          home-manager.darwinModules.home-manager {
-            home-manager = {
-              users.${username} = import ./home-manager/home.nix;
-              extraSpecialArgs = { inherit username homeDirectory; };
-              useGlobalPkgs = true;
-              useUserPackages = true;
-            };
-            users.users.${username}.home = "${homeDirectory}";
-            nix.settings.trusted-users = [ "${username}" ];
+          home-manager.darwinModules.home-manager 
+          {
+            home-manager = import ./home-manager/common.nix { inherit username homeDirectory; };
           }
+          (import ./machines/common.nix { inherit username homeDirectory; })
         ];
       };
     };

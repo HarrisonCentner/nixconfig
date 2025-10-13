@@ -11,7 +11,7 @@
   };
 
   config = lib.mkIf config.homelab.services.enable {
-    networking.firewall.enable = false;
+    networking.firewall.enable = true;
     networking.firewall.allowedTCPPorts = [
       80
       443 
