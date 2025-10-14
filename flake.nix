@@ -13,7 +13,6 @@
     };
     simple-nixos-mailserver.url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
     hcentner-blog.url = "github:HarrisonCentner/blog";
-    hcentner-blog.flake = false;
   };
 
   outputs = { 
@@ -31,11 +30,12 @@
         username = "hcentner";
         homeDirectory = "/home/${username}";
         domain-name = "hcentner.com";
+        system = "x86_64-linux";
       in
       nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
+        system = system;
         specialArgs = {
-          inherit username homeDirectory hcentner-blog; # simple-nixos-mailserver;
+          inherit system username homeDirectory hcentner-blog; # simple-nixos-mailserver;
         };
         modules = [
           disko.nixosModules.disko

@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, system, lib, hcentner-blog, ... }:
 let
   cfg = config.homelab.services.blog;
 in
@@ -13,16 +13,12 @@ in
       description = "Personal blog.";
       serviceConfig = {
         Type = "simple";
-        User = "blog";
-        Group = "blog";
-        Envionment = [ pkgs.cabal-install ]; 
-        ExecStart = ''${pkgs.cabal-install}/bin/cabal run -- server''; 
+        Envionment = [ ]; 
+        ExecStart = ''${hcentner-blog.packages.${system}.default}/bin/site server''; 
+        
         Restart = "always"; 
-        CacheDirectory = "/var/lib/hcentner-blog"; 
-
         ReadWritePaths = ["/var/lib/hcentner-blog"]; 
-        InaccessiblePaths = ["/home/hcentner"];
-        ProtectSystem = "full";
+        ProtectSystem = "strict";
         ProtectHome = true;
         RestrictAddressFamilies = [ "AF_INET" "AF_INET6" ];
         SystemCallFilter = "~@clock @cpu-emulation @debug @module @mount @raw-io @reboot @swap";
