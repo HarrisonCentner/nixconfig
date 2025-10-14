@@ -25,21 +25,7 @@
       hcentner-blog, 
       ... 
   }:
-    let
-    configuration = { ... }: {
-      nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
-      nix.settings.trusted-public-keys = [
-        "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
-        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-        "haskell-miso-cachix.cachix.org-1:m8hN1cvFMJtYib4tj+06xkKt5ABMSGfe8W7s40x1kQ0="
-      ];
-      nix.settings.trusted-substituters = [
-        "https://cache.iog.io"
-        "https://haskell-miso-cachix.cachix.org"
-      ];
- };
-    in {
+    {
       nixosConfigurations.zylphia = 
       let
         username = "hcentner";
@@ -52,13 +38,10 @@
           inherit username homeDirectory hcentner-blog; # simple-nixos-mailserver;
         };
         modules = [
-          configuration
           disko.nixosModules.disko
           ./machines/zylphia/default.nix
           home-manager.nixosModules.home-manager
-          {
-            home-manager = import ./home-manager/common.nix { inherit username homeDirectory; };
-          }
+          { home-manager = import ./home-manager/common.nix { inherit username homeDirectory; }; }
           (import ./machines/common.nix { inherit username homeDirectory; })
         ];
       };
@@ -71,12 +54,9 @@
       nix-darwin.lib.darwinSystem {
         system = "x86_64-darwin"; 
         modules = [
-          configuration
           ./machines/xlthlx.nix
           home-manager.darwinModules.home-manager 
-          {
-            home-manager = import ./home-manager/common.nix { inherit username homeDirectory; };
-          }
+          { home-manager = import ./home-manager/common.nix { inherit username homeDirectory; }; }
           (import ./machines/common.nix { inherit username homeDirectory; })
         ];
       };
