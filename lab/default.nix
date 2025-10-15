@@ -17,6 +17,7 @@
       443 
       2283 # immich
       53 # blocky
+      21140 # blog
     ];
     networking.firewall.allowedUDPPorts = [ 53 ];
   };
