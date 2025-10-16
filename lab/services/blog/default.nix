@@ -24,6 +24,9 @@ in
           cp -r ${hcentner-blog}/* /var/lib/hcentner-blog/
         done
       '';
+      postStop = ''
+        rm -r /var/lib/hcentner-blog/*
+      '';
      serviceConfig = {
         Type = "simple";
         
