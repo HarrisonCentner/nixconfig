@@ -69,6 +69,9 @@ Plug 'itchyny/calendar.vim'
 " Programming plugins
 Plug 'PyGamer0/vim-apl'
 Plug 'lervag/vimtex'
+Plug 'preservim/vim-markdown'
+Plug 'nicwest/vim-camelsnek'
+
 " Plug 'SirVer/ultisnips'
 Plug 'kaarmu/typst.vim'
 Plug 'MrPicklePinosaur/typst-conceal.vim', {'for': 'typst'}   " vim plug
