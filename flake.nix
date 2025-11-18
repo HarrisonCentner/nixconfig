@@ -48,7 +48,7 @@
 
       darwinConfigurations.xlthlx = 
       let
-        username = "hcentner";
+        username = "harrisoncentner";
         homeDirectory = "/Users/${username}";
       in
       nix-darwin.lib.darwinSystem {

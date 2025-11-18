@@ -4,4 +4,5 @@
     extraSpecialArgs = { inherit username homeDirectory; };
     useGlobalPkgs = true;
     useUserPackages = true;
+    backupFileExtension = "backup";
 }

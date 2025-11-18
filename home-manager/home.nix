@@ -60,8 +60,9 @@
     # networking
     blocky # DNS proxy CLI
     dig # domain name server
-    nftables # edit domain filtering rules
     tcpdump # network sniffer
+  ] ++ lib.optionals stdenv.isLinux [
+    nftables # edit domain filtering rules
     iptables # configure Linux IP filtering rules
   ];
 
