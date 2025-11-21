@@ -22,6 +22,13 @@
           "args": ["--lsp"],
           "filetypes": ["haskell", "lhaskell"]
         }
+        "clojure": {
+          "command": "clojure-lsp",
+          "args": [],
+          "filetypes": ["clojure", "clojurescript", "edn"],
+          "rootPatterns": ["project.clj", "deps.edn", "build.boot", "shadow-cljs.edn"],
+          "initializationOptions": {}
+        }
       }
     }
   '';
@@ -57,6 +64,9 @@
     haskell.compiler.ghc9102 # the Glorious Glasgow Haskell Compiler
     nodejs # nodejs
     haskell-language-server # the glorious Haskell language server
+    clojure # clojure
+    clojure-lsp # clojure-lsp
+    leiningen # clojure project automation
     # networking
     blocky # DNS proxy CLI
     dig # domain name server
