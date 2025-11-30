@@ -1,5 +1,5 @@
 {
-  description = "My hybrid nixos / nix-darwin system flake";
+  description = "My hybrid nixos / nix-darwin system via dendritic nix and flake parts";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -31,15 +31,23 @@
     };
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
-      inputs.nixpkgs.follows = "nixpkgs";
       flake = true;
+      inputs.nixpkgs.follows = "nixpkgs";
     };
+    # TODO: use quasigod/unify once it supports nix darwin
     hcentner-blog.url = "github:HarrisonCentner/blog";
   };
 
   outputs = inputs: 
-    inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
-
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } {
+      imports = [ 
+        inputs.import-tree [
+          ./modules 
+          ./hosts
+        ]
+      ];
+      _module.args.rootPath = ./.;
+    };
 
 #   {
 #     nixosConfigurations.zylphia = 
