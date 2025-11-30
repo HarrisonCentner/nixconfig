@@ -2,7 +2,7 @@
   flake.modules = {
     home.vim.coc-settings.lsp = [];
 
-    homeManager.base =
+    homeManager.languages.typst =
       { pkgs, ... }:
       {
         home.packages = with pkgs; [

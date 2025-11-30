@@ -9,7 +9,7 @@
     ''
     ];
 
-    homeManager.base =
+    homeManager.languages.nix =
       { pkgs, ... }:
       {
         home.packages = with pkgs; [ 
