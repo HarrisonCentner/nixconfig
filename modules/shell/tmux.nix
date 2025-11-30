@@ -1,6 +1,6 @@
 { config, ... }:
 {
-  flake.modules.homeManager.base.programs.tmux = {
+  flake.modules.homeManager.shell = {
     settings = {
       tmux = {
         enable = true;

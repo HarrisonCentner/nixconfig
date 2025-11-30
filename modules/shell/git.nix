@@ -1,6 +1,6 @@
 { config, ... }:
 {
-  flake.modules.homeManager.base.programs.git = {
+  flake.modules.homeManager.shell = {
     settings = {
 
       git = {
