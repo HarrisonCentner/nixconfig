@@ -15,7 +15,22 @@ in {
             then "/Users/${userName}" 
             else "/home/${userName}"
         );
-      home.stateVersion = lib.mkDefault "25.05";
+      stateVersion = lib.mkDefault "24.11";
+      sessionPath = [
+        "${homeDirectory}/nixcocnfig"
+      ];
+      sessionVariables = {
+        EDITOR = "vim";
+      };
+      file."vimrc".text = builtins.readFile ../shell/vimrc.txt;
+      file.".vim/coc-settings.json".text = ''
+        {
+          "suggest.autoTrigger": "always",
+          "diagnostic.virtualText": true,
+          "languageserver": {
+          }
+        }
+      ''
     };
     programs.home-manager.enable = true;
   };

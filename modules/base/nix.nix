@@ -1,6 +1,9 @@
 let common = {
   { pkgs, ... }:
   {
+    useGlobalPkgs = true;
+    useUserPkgs = true;
+    backupFileExtension = backup;
     nix = {
       # From https://jackson.dev/post/nix-reasonable-defaults/
       extraOptions = ''
