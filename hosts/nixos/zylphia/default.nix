@@ -9,6 +9,7 @@
       [
         # Modules
         base
+        zylphia.disko
 
         # Users
         root
