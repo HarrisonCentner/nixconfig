@@ -1,27 +1,25 @@
 let 
-  cfg = config.homelab.services.immich;
-  homelab = config.homelab;
   defaultPort = 2283;
 in
 {
   flake.modules.nixos.services.immich =
-    { pkgs, ... }:
-    {
-      config = {
-        users.users.immich.extraGroups = [
-          "video"
-            "render"
-        ];
-        services.immich = {
-          enable = true;
-          port = defaultPort;
-          host = "0.0.0.0";
-          mediaLocation = "/var/lib/immich";
-          openFirewall = true;
-        };
-        networking.firewall.allowedTCPPorts = [ defaultPort ];
-        networking.firewall.allowedUDPPorts = [ defaultPort ];
+  { pkgs, ... }:
+  {
+    config = {
+      users.users.immich.extraGroups = [
+        "video"
+          "render"
+      ];
+      services.immich = {
+        enable = true;
+        port = defaultPort;
+        host = "0.0.0.0";
+        mediaLocation = "/var/lib/immich";
+        openFirewall = true;
       };
-    }
+      networking.firewall.allowedTCPPorts = [ defaultPort ];
+      networking.firewall.allowedUDPPorts = [ defaultPort ];
+    };
+  };
 }
 

@@ -3,8 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nix-darwin = {
-      url = "github:LnL7/nix-darwin";
+    nix-darwin = { url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     disko.url = "github:nix-community/disko";
@@ -13,6 +12,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     import-tree.url = "github:vic/import-tree";
+    systems.url = "github:nix-systems/default";
     statix = {
       url = "github:molybdenumsoftware/statix";
       inputs = {
@@ -41,10 +41,10 @@
   outputs = inputs: 
     inputs.flake-parts.lib.mkFlake { inherit inputs; } {
       imports = [ 
-        inputs.import-tree [
+        (inputs.import-tree [
           ./modules 
           ./hosts
-        ]
+        ])
       ];
       _module.args.rootPath = ./.;
     };

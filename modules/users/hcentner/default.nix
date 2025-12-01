@@ -10,7 +10,7 @@ in
       hcentner = {
         email = "harrisoncent@protonmail.com";
         name = "Harrison Centner";
-        username = username;
+        username = userName;
         # key = "0AAF2901E8040715"; # ed25519/0x0AAF2901E8040715
         # keygrip = [
         # ];

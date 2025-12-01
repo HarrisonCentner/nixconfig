@@ -1,9 +1,9 @@
-let common = {
+let common = 
   { pkgs, ... }:
   {
     useGlobalPkgs = true;
     useUserPkgs = true;
-    backupFileExtension = backup;
+    backupFileExtension = "backup";
     nix = {
       # From https://jackson.dev/post/nix-reasonable-defaults/
       extraOptions = ''
@@ -15,9 +15,6 @@ let common = {
         '';
       optimise.automatic = true;
       settings = {
-        trusted-users = [
-          "root"
-        ];
         auto-optimise-store = true;
         experimental-features = [
           "nix-command"
@@ -30,7 +27,6 @@ let common = {
         substituters = [
           "https://cache.iog.io"
         ];
-        trusted-users = [ "${username}" ];
         download-buffer-size = 524288000;
         allow-import-from-derivation = true;
       };

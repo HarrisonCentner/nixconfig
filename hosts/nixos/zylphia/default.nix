@@ -13,7 +13,7 @@
 
         # Users
         root
-        ${userName}
+        userName
       ]
       ++ [
         {
@@ -27,9 +27,10 @@
                 languages.haskell
                 languages.nix
                 shell
-                ${userName}
+                userName
               ];
           };
         }
       ];
+  };
 }

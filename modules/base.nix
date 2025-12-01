@@ -1,6 +1,13 @@
-{ config, ... }:
-let userName = config.flake.meta.owner.username;
-in {
+{ config, pkgs, lib, ... }:
+let 
+  userName = config.flake.meta.owner.username;
+  homeDirectory = lib.mkDefault (
+        if pkgs.stdenvNoCC.isDarwin 
+          then "/Users/${userName}" 
+          else "/home/${userName}"
+      );
+in 
+{
   flake.modules.nixos.${userName} = {
      users.users.${userName} = { isNormalUser = true; extraGroups = [ "wheel" ]; };
   };
@@ -9,15 +16,10 @@ in {
   };
   flake.modules.homeManager.${userName} = {
     home = {
-      username = userName;
-      homeDirectory = lib.mkDefault (
-          if pkgs.stdenvNoCC.isDarwin 
-            then "/Users/${userName}" 
-            else "/home/${userName}"
-        );
+      homeDirectory = homeDirectory;
       stateVersion = lib.mkDefault "24.11";
       sessionPath = [
-        "${homeDirectory}/nixcocnfig"
+        "${homeDirectory}/nixconfig"
       ];
       sessionVariables = {
         EDITOR = "vim";
@@ -30,7 +32,7 @@ in {
           "languageserver": {
           }
         }
-      ''
+      '';
     };
     programs.home-manager.enable = true;
   };

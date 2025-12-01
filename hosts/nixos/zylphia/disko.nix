@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.zylphia.disko = {
+  flake.modules.nixos.zylphia.disko = 
   { pkgs, ... }:
   {
     disko.devices = {
@@ -67,5 +67,5 @@
         };
       };
     };
-  }
+  };
 }

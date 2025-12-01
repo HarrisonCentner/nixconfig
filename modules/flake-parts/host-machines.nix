@@ -8,7 +8,7 @@ let
   nixosPrefix = "hosts/nixos/";
   collectNixosHostsModules = modules: lib.filterAttrs (name: _: lib.hasPrefix nixosPrefix name) modules;
   darwinPrefix = "hosts/darwin/";
-  collectDarwinHostsModules = modules: lib.filterAttrs (name: _: lib.hasPrefix darrwinPrefix name) modules;
+  collectDarwinHostsModules = modules: lib.filterAttrs (name: _: lib.hasPrefix darwinPrefix name) modules;
 in
 {
   flake.nixosConfigurations = lib.mkMerge [

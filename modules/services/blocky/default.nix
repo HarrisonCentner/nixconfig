@@ -1,11 +1,9 @@
 let
-  cfg = config.homelab.services.blocky;
-  homelab = config.homelab;
   dnsPort = 53; # port for incoming DNS Queries.
   stephenBlackUrl = "https://raw.githubusercontent.com/StevenBlack/hosts/master";
 in
 {
-  flake.modules.nixos.services.blocky = {
+  flake.modules.nixos.services.blocky =
   { pkgs, ... }:
   {
     config = {
@@ -53,5 +51,5 @@ in
       };
       networking.firewall.allowedTCPPorts = [ dnsPort ];
     };
-  }
+  };
 }

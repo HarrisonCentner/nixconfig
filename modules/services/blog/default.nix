@@ -1,8 +1,7 @@
 let
-cfg = config.homelab.services.blog;
-defaultPort = 21140;
-dir = "hcentner-blog";
-state-dir = "/var/lib/${dir}";
+  defaultPort = 21140;
+  dir = "hcentner-blog";
+  state-dir = "/var/lib/${dir}";
 in
 { 
   flake.modules.nixos.services.blog = 
@@ -16,10 +15,10 @@ in
         description = "Personal blog.";
         path = [ pkgs.coreutils ]; 
         script = ''
-          ${hcentner-blog.packages.${system}.default}/bin/site watch --host 0.0.0.0  --port ${defaultPort}
+          ${hcentner-blog.packages.${pkgs.hostPlatform}.default}/bin/site watch --host 0.0.0.0  --port ${defaultPort}
         ''; 
         postStop = ''
-          ${hcentner-blog.packages.${system}.default}/bin/site clean
+          ${hcentner-blog.packages.${pkgs.hostPlatform}.default}/bin/site clean
           '';
         serviceConfig = {
           Type = "simple";
@@ -66,5 +65,5 @@ in
       };
       networking.firewall.allowedTCPPorts = [ defaultPort ];
     };
-  }
+  };
 }
