@@ -1,29 +1,30 @@
 {
   config,
+  lib,
   ...
 }:
 {
-  flake.modules.darwin.xlthlx = {
+  flake.modules.darwin."hosts/darwin/xlthlx" = {
+    nixpkgs.hostPlatform = lib.mkDefault "x86_64-darwin";
     imports =
       with config.flake.modules.darwin;
       [
         # Users
-        root
-        userName
+        # root
+        base
       ]
       ++ [
         {
-          home-manager.users.${userName} = {
+          home-manager.users.harrisoncentner = {
             imports = 
               with config.flake.modules.homeManager; 
               [
                 # Modules
                 base
-                languages.clojure
-                languages.haskell
-                languages.nix
+                # languages.clojure
+                # languages.haskell
+                # languages.nix
                 shell
-                userName
               ];
           };
         }

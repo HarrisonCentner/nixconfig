@@ -1,7 +1,7 @@
 { config, ... }:
 {
   flake.modules.homeManager.shell = {
-    settings = {
+    programs = {
       tmux = {
         enable = true;
         mouse = true;

@@ -1,8 +1,14 @@
 topLevel@{
   inputs,
-  ...
+    ...
 }:
-let userName = "hcentner";
+let 
+  userName = "hcentner";
+
+  homeDirectory = 
+        # if inputs.nixpkgs.stdenvNoCC.isDarwin
+        #  then "/Users/${userName}"
+        "/home/${userName}";
 in
 {
   flake = {
@@ -26,8 +32,8 @@ in
         createHome = true;
         extraGroups = [
           "networkmanager"
-          "tty"
-          "wheel"
+            "tty"
+            "wheel"
         ];
         openssh.authorizedKeys.keys = topLevel.config.flake.meta.users.${userName}.authorizedKeys;
         initialPassword = "hkc";
@@ -36,10 +42,34 @@ in
       nix.settings.trusted-users = [ topLevel.config.flake.meta.users.${userName}.username ];
     };
 
-    modules.homeManager.${userName} = {
-      imports = [
-        inputs.infra-private.homeModules.${userName}
-      ];
+    flake.modules.nixos.base = {
+      users.users.${userName} = { isNormalUser = true; extraGroups = [ "wheel" ]; };
     };
+    flake.modules.darwin.base = {
+      system.primaryUser = userName;
+    };
+    flake.modules.homeManager.base = {
+      home = {
+        homeDirectory = homeDirectory;
+        stateVersion = "24.11";
+        sessionPath = [
+          "${homeDirectory}/nixconfig"
+        ];
+        sessionVariables = {
+          EDITOR = "vim";
+        };
+        file."vimrc".text = builtins.readFile ../shell/vimrc.txt;
+        file.".vim/coc-settings.json".text = ''
+        {
+          "suggest.autoTrigger": "always",
+            "diagnostic.virtualText": true,
+            "languageserver": {
+            }
+        }
+        '';
+      };
+      programs.home-manager.enable = true;
+    };
+
   };
 }

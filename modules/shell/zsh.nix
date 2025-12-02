@@ -1,7 +1,7 @@
 { config, ... }:
 {
   flake.modules.homeManager.shell = {
-    settings = {
+    programs = {
       zsh = {
         enable = true;
         oh-my-zsh = {

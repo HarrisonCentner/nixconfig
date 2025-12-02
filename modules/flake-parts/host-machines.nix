@@ -11,8 +11,19 @@ let
   collectDarwinHostsModules = modules: lib.filterAttrs (name: _: lib.hasPrefix darwinPrefix name) modules;
 in
 {
-  flake.nixosConfigurations = lib.mkMerge [
-    (lib.pipe (collectNixosHostsModules config.flake.modules.nixos) [
+  perSystem =
+    { system, ... }:
+    {
+      _module.args.pkgs = import inputs.nixpkgs {
+        inherit system;
+        config = {
+          allowUnfree = true;
+        };
+      };
+    };
+
+  flake.nixosConfigurations = 
+    lib.pipe (collectNixosHostsModules config.flake.modules.nixos) [
       (lib.mapAttrs' (
         name: module:
         let
@@ -39,8 +50,9 @@ in
           };
         }
       ))
-    ])
-    (lib.pipe (collectDarwinHostsModules config.flake.modules.darwin) [
+    ];
+  flake.darwinConfigurations = 
+    lib.pipe (collectDarwinHostsModules config.flake.modules.darwin) [
       (lib.mapAttrs' (
         name: module:
         let
@@ -67,6 +79,5 @@ in
           };
         }
       ))
-    ])
-  ];
+    ];
 }

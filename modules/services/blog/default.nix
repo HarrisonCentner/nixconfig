@@ -15,10 +15,10 @@ in
         description = "Personal blog.";
         path = [ pkgs.coreutils ]; 
         script = ''
-          ${hcentner-blog.packages.${pkgs.hostPlatform}.default}/bin/site watch --host 0.0.0.0  --port ${defaultPort}
+          ${hcentner-blog.packages.${pkgs.system}.default}/bin/site watch --host 0.0.0.0  --port ${defaultPort}
         ''; 
         postStop = ''
-          ${hcentner-blog.packages.${pkgs.hostPlatform}.default}/bin/site clean
+          ${hcentner-blog.packages.${pkgs.system}.default}/bin/site clean
           '';
         serviceConfig = {
           Type = "simple";

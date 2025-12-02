@@ -1,10 +1,8 @@
 {
-  flake.modules = {
-    homeManager.shell = {
-      programs = {
-        ripgrep = {
-          enable = true;
-        };
+  flake.modules.homeManager.shell = {
+    programs = {
+      ripgrep = {
+        enable = true;
       };
     };
   };

@@ -3,7 +3,7 @@
   ...
 }:
 {
-  flake.modules.darwin.zylphia = {
+  flake.modules.nixos."hosts/nixos/zylphia" = {
     imports =
       with config.flake.modules.nixos;
       [
