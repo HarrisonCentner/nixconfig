@@ -1,6 +1,6 @@
 {
-  flake.nixosModules."zylphia-disko" = 
-  { pkgs, disko, ... }:
+  flake.modules.nixos.rzwfs.disko = 
+  { pkgs, ... }:
   {
     disko.devices = {
       disk = {

@@ -38,9 +38,11 @@ in
           name = lib.removePrefix nixosPrefix name;
           value = inputs.nixpkgs.lib.nixosSystem {
             inherit specialArgs;
+            system = "x86_64-linux";
             modules = [
               module
               inputs.home-manager.nixosModules.home-manager
+              inputs.disko.nixosModules.default
             ]
             ++ [
               {

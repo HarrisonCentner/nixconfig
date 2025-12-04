@@ -3,13 +3,13 @@
   ...
 }:
 {
-  flake.modules.nixos."hosts/nixos/zylphia" = {
+  flake.modules.nixos."hosts/nixos/rwzfs" = {
     imports =
       with config.flake.modules.nixos;
       [
         # Modules
         base
-        config.flake.nixosModules."zylphia-disko"
+        rwzfs.disko
 
         # Users
         # root
@@ -17,7 +17,7 @@
       ]
       ++ [
         {
-          home-manager.users.harrisoncentner = {
+          home-manager.users.${userName} = {
             imports = 
               with config.flake.modules.homeManager; 
               [

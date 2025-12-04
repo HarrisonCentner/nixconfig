@@ -12,7 +12,7 @@
 
       nixos.base = {
         system = {
-          inherit stateVersion;
+          stateVersion = "24.11";
         };
       };
 
