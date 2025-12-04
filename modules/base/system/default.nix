@@ -1,12 +1,12 @@
 {
   flake.modules =
     let
-      stateVersion = "24.11";
+      stateVersion = 5;
     in
     {
       homeManager.base = {
         home = {
-          inherit stateVersion;
+          stateVersion = "24.11";
         };
       };
 

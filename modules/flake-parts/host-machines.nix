@@ -73,7 +73,12 @@ in
             ]
             ++ [
               {
-                home-manager.extraSpecialArgs = specialArgs;
+                home-manager = {
+                  extraSpecialArgs = specialArgs;
+                  useGlobalPkgs = true;
+                  useUserPackages = true;
+                  backupFileExtension = "backup";
+                };
               }
             ];
           };

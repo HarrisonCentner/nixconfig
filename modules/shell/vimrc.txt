@@ -122,8 +122,6 @@ filetype plugin indent on
 
 if has('mac')
     let g:vimtex_view_method = "skim"
-    let g:vimtex_view_general_viewer
-            \ = '/Applications/Skim.app/Contents/SharedSupport/displayline'
     let g:vimtex_view_general_options = '-r @line @pdf @tex'
 else
     let g:latex_view_general_viewer = "zathura"

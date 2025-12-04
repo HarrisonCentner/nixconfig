@@ -3,7 +3,7 @@ topLevel@{
     ...
 }:
 let 
-  userName = "hcentner";
+  userName = "harrisoncentner";
 
   homeDirectory = 
         # if inputs.nixpkgs.stdenvNoCC.isDarwin
@@ -13,7 +13,7 @@ in
 {
   flake = {
     meta.users = {
-      hcentner = {
+      harrisoncentner = {
         email = "harrisoncent@protonmail.com";
         name = "Harrison Centner";
         username = userName;
@@ -42,15 +42,16 @@ in
       nix.settings.trusted-users = [ topLevel.config.flake.meta.users.${userName}.username ];
     };
 
-    flake.modules.nixos.base = {
+    modules.nixos.base = {
       users.users.${userName} = { isNormalUser = true; extraGroups = [ "wheel" ]; };
     };
-    flake.modules.darwin.base = {
+    modules.darwin.base = {
       system.primaryUser = userName;
+      users.users.${userName}.home = "/Users/harrisoncentner";
     };
-    flake.modules.homeManager.base = {
+    modules.homeManager.base = {
       home = {
-        homeDirectory = homeDirectory;
+        # homeDirectory = homeDirectory;
         stateVersion = "24.11";
         sessionPath = [
           "${homeDirectory}/nixconfig"
@@ -58,7 +59,7 @@ in
         sessionVariables = {
           EDITOR = "vim";
         };
-        file."vimrc".text = builtins.readFile ../shell/vimrc.txt;
+        file."vimrc".source = ../../shell/vimrc.txt;
         file.".vim/coc-settings.json".text = ''
         {
           "suggest.autoTrigger": "always",

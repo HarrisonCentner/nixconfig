@@ -4,16 +4,14 @@
     programs = {
       zsh = {
         enable = true;
+        shellAliases = {
+          cat = "bat";
+          cd = "zoxide";
+        };
         oh-my-zsh = {
           enable = true;
           plugins = [ "history" "git" ];
           theme = "eastwood";
-          shellAliases = {
-            ll = "ls -l";
-            ls = "lsd";
-            cat = "bat";
-            cd = "zoxide";
-          };
         };
       };
     };
