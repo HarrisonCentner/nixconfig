@@ -6,7 +6,7 @@
         enable = true;
         shellAliases = {
           cat = "bat";
-          cd = "zoxide";
+          cd = "z";
         };
         oh-my-zsh = {
           enable = true;
