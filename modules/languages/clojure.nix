@@ -12,7 +12,7 @@
     ''
     ];
 
-    homeManager.languages.clojure =
+    homeManager.base =
       { pkgs, ... }:
       {
         home.packages = with pkgs; [
