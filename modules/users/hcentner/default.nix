@@ -3,7 +3,7 @@ topLevel@{
     ...
 }:
 let 
-  userName = "harrisoncentner";
+  userName = "hcentner";
 
   homeDirectory = 
         # if inputs.nixpkgs.stdenvNoCC.isDarwin
@@ -13,7 +13,7 @@ in
 {
   flake = {
     meta.users = {
-      harrisoncentner = {
+      hcentner = {
         email = "harrisoncent@protonmail.com";
         name = "Harrison Centner";
         username = userName;
@@ -47,7 +47,7 @@ in
     };
     modules.darwin.base = {
       system.primaryUser = userName;
-      users.users.${userName}.home = "/Users/harrisoncentner";
+      users.users.${userName}.home = "/home/hcentner";
     };
     modules.homeManager.base = {
       home = {

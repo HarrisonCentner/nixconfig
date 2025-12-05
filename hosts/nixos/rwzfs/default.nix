@@ -9,7 +9,8 @@
       [
         # Modules
         base
-        rwzfs.disko
+        config.flake.nixosModules."rwzfs-disko"
+        config.flake.nixosModules."rwzfs-hardware"
 
         # Users
         # root
@@ -17,7 +18,7 @@
       ]
       ++ [
         {
-          home-manager.users.${userName} = {
+          home-manager.users.hcentner = {
             imports = 
               with config.flake.modules.homeManager; 
               [
