@@ -28,6 +28,8 @@
                 # languages.haskell
                 # languages.nix
                 shell
+                messaging
+                editor
                 # userName
               ];
           };

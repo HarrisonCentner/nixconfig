@@ -16,7 +16,7 @@ in
     {
       _module.args.pkgs = import inputs.nixpkgs {
         inherit system;
-        config = {
+        nixpkgs.config = {
           allowUnfree = true;
         };
       };

@@ -9,8 +9,8 @@
     {
       _module.args.pkgs = import inputs.nixpkgs {
         inherit system;
-        config = {
-          allowUnfreePredicate = _pkg: true;
+        nixpkgs.config = {
+          allowUnfree = true;
         };
       };
     };
