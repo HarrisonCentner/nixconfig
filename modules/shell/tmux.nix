@@ -1,6 +1,6 @@
 { config, ... }:
 {
-  flake.modules.homeManager.shell = {
+  flake.modules.homeManager.shell = {pkgs, ...}: {
     programs = {
       tmux = {
         enable = true;
@@ -14,10 +14,10 @@
         sensibleOnTop = false;
         extraConfig = '' #
           bind -r h select-pane -L
-          bind -r h select-pane -D
+          bind -r j select-pane -D
           bind -r k select-pane -U
           bind -r l select-pane -R
-          set -g default-command /bin/zsh
+          set -g default-command "${pkgs.zsh}/bin/zsh"
         '';
       };
     };

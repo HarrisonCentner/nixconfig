@@ -16,6 +16,7 @@
           useXkbConfig = true;
           packages = with pkgs; [
             terminus_font
+            xterm
           ];
         };
       };

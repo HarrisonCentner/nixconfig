@@ -1,6 +1,7 @@
 " -----------------------------------------------------------------------------
 "  GENERAL SETTINGS FOR EVERYONE
 " -----------------------------------------------------------------------------
+set runtimepath+=~/.vim
 filetype plugin indent on
 set nocompatible
 set autoindent

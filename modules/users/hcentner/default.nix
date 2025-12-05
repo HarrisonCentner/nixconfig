@@ -25,7 +25,7 @@ in
       };
     };
 
-    modules.nixos.${userName} = {
+    modules.nixos.${userName} = { pkgs, ...}: {
       users.users.${userName} = {
         description = topLevel.config.flake.meta.users.${userName}.name;
         isNormalUser = true;
@@ -42,8 +42,12 @@ in
       nix.settings.trusted-users = [ topLevel.config.flake.meta.users.${userName}.username ];
     };
 
-    modules.nixos.base = {
-      users.users.${userName} = { isNormalUser = true; extraGroups = [ "wheel" ]; };
+    modules.nixos.base = { pkgs, ...}: {
+      users.users.${userName} = { 
+        isNormalUser = true; 
+        extraGroups = [ "wheel" "networkmanager" ]; 
+        shell = pkgs.zsh;
+      };
     };
     modules.darwin.base = {
       system.primaryUser = userName;
@@ -59,7 +63,7 @@ in
         sessionVariables = {
           EDITOR = "vim";
         };
-        file."vimrc".source = ../../shell/vimrc.txt;
+        file.".vimrc".source = ../../shell/vimrc.txt;
         file.".vim/coc-settings.json".text = ''
         {
           "suggest.autoTrigger": "always",

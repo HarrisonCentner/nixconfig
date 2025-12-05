@@ -16,6 +16,8 @@
     networking.networkmanager.enable = true; 
     # Enable the X11 windowing system.
     services.xserver.enable = true;
+    services.xserver.xkbOptions = "caps:swapescape";
+    console.useXkbConfig = true;
     
     # Enable the GNOME Desktop Environment.
     services.displayManager.gdm.enable = true;

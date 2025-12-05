@@ -7,6 +7,7 @@
         shellAliases = {
           cat = "bat";
           cd = "z";
+          vim = "vim -u $HOME/.vimrc";
         };
         oh-my-zsh = {
           enable = true;
