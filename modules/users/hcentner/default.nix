@@ -32,8 +32,8 @@ in
         createHome = true;
         extraGroups = [
           "networkmanager"
-            "tty"
-            "wheel"
+           "tty"
+           "wheel"
         ];
         openssh.authorizedKeys.keys = topLevel.config.flake.meta.users.${userName}.authorizedKeys;
         initialPassword = "hkc";
