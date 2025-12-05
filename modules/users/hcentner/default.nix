@@ -32,8 +32,9 @@ in
         createHome = true;
         extraGroups = [
           "networkmanager"
-           "tty"
-           "wheel"
+          "tty"
+          "wheel"
+          "docker"
         ];
         openssh.authorizedKeys.keys = topLevel.config.flake.meta.users.${userName}.authorizedKeys;
         initialPassword = "hkc";
@@ -45,7 +46,12 @@ in
     modules.nixos.base = { pkgs, ...}: {
       users.users.${userName} = { 
         isNormalUser = true; 
-        extraGroups = [ "wheel" "networkmanager" ]; 
+        extraGroups = [ 
+          "wheel" 
+          "networkmanager" 
+          "docker"
+          "tty"
+        ]; 
         shell = pkgs.zsh;
       };
     };

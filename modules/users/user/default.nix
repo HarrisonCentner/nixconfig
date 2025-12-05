@@ -24,6 +24,7 @@
         extraGroups = [
           "networkmanager"
           "tty"
+          "docker"
         ];
         initialPassword = "hkc";
       };

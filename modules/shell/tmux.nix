@@ -1,6 +1,9 @@
 { config, ... }:
 {
   flake.modules.homeManager.shell = {pkgs, ...}: {
+    home.packages = with pkgs; [
+      wl-clipboard
+    ];
     programs = {
       tmux = {
         enable = true;
@@ -17,6 +20,9 @@
           bind -r j select-pane -D
           bind -r k select-pane -U
           bind -r l select-pane -R
+          set -g mouse on
+          set -s copy-command 'wl-copy'
+          set -s set-clipboard on
           set -g default-command "${pkgs.zsh}/bin/zsh"
         '';
       };
