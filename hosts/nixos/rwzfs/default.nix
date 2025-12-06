@@ -13,7 +13,6 @@
         config.flake.nixosModules."rwzfs-hardware"
 
         # Users
-        # root
         hcentner
       ]
       ++ [
@@ -24,13 +23,10 @@
               [
                 # Modules
                 base
-                # languages.clojure
-                # languages.haskell
-                # languages.nix
                 shell
                 messaging
                 editor
-                # userName
+                graphical
               ];
           };
         }
