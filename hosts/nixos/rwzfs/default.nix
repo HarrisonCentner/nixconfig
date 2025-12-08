@@ -28,6 +28,7 @@
                 editor
                 graphical
                 browser
+                password-manager
               ];
           };
         }
