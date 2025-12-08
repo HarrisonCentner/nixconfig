@@ -27,6 +27,7 @@
                 messaging
                 editor
                 graphical
+                browser
               ];
           };
         }

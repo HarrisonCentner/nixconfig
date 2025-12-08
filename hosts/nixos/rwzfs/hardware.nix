@@ -15,15 +15,14 @@
     networking.firewall.enable = false; 
     networking.nameservers = [ "1.1.1.1" ]; 
     networking.networkmanager.enable = true; 
-    # Enable the X11 windowing system.
+
     services.xserver.enable = true;
     services.xserver.xkbOptions = "caps:swapescape";
     console.useXkbConfig = true;
     
-    # Enable the GNOME Desktop Environment.
     services.displayManager.gdm.enable = true;
     services.desktopManager.gnome.enable = true;
-    programs.firefox.enable = true;
+
     virtualisation.docker.enable = true;
   };
 }
