@@ -14,6 +14,9 @@
 
         # Users
         hcentner
+
+        # Apps
+        password-manager
       ]
       ++ [
         {
@@ -24,11 +27,12 @@
                 # Modules
                 base
                 shell
+                tiling-window-manager
+
+                # Apps
                 messaging
                 editor
-                graphical
                 browser
-                password-manager
               ];
           };
         }
