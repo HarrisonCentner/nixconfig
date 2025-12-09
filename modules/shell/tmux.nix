@@ -26,7 +26,9 @@
           set -g default-command "${pkgs.zsh}/bin/zsh"
         '';
         plugins = with pkgs.tmuxPlugins; [
-          resurrect # might try lazy-restore
+          resurrect 
+          continuum
+          yank
         ];
       };
     };
