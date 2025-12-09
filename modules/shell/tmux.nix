@@ -25,6 +25,9 @@
           set -s set-clipboard on
           set -g default-command "${pkgs.zsh}/bin/zsh"
         '';
+        plugins = with pkgs.tmuxPlugins; [
+          resurrect # might try lazy-restore
+        ];
       };
     };
   };
