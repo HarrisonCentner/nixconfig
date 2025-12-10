@@ -24,6 +24,8 @@
           set -s copy-command 'wl-copy'
           set -s set-clipboard on
           set -g default-command "${pkgs.zsh}/bin/zsh"
+          set -g @resurrect-strategy-vim 'session'
+          set -g @resurrect-capture-pane-contents 'on'
         '';
         plugins = with pkgs.tmuxPlugins; [
           resurrect 

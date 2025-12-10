@@ -6,7 +6,7 @@ filetype plugin indent on
 set nocompatible
 set autoindent
 set nomodeline " disable modeline vulnerability
-autocmd FileType tidal,Haskell setlocal nospell
+autocmd FileType tidal,yaml setlocal nospell
 
 " text encoding
 set encoding=utf8
@@ -66,6 +66,7 @@ Plug 'rafi/awesome-vim-colorschemes'
 Plug 'preservim/vimux'
 Plug 'JamshedVesuna/vim-markdown-preview'
 Plug 'itchyny/calendar.vim'
+Plug 'tpope/vim-obsession'
 
 " Programming plugins
 Plug 'PyGamer0/vim-apl'
