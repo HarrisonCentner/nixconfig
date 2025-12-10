@@ -4,17 +4,19 @@
       # unix utils
       duf
       tree
-      file
       htop
       # nix stuff
       direnv
       nix-direnv
       nix-output-monitor
-      # other
-      bc
+      # file processing
+      file
       jq
+      xan
       # unix networking
       dig
+      # cli utilities
+      bc
     ];
   };
 }

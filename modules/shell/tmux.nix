@@ -26,6 +26,7 @@
           set -g default-command "${pkgs.zsh}/bin/zsh"
           set -g @resurrect-strategy-vim 'session'
           set -g @resurrect-capture-pane-contents 'on'
+          set-window-option -g mode-keys vi
         '';
         plugins = with pkgs.tmuxPlugins; [
           resurrect 
