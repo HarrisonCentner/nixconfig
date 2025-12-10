@@ -27,7 +27,7 @@
                 # Modules
                 base
                 shell
-                tiling-window-manager
+                desktop
 
                 # Apps
                 messaging

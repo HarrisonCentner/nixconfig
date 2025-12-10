@@ -1,9 +1,8 @@
 {
-  flake.modules.homeManager.tiling-window-manager =
+  flake.modules.homeManager.desktop =
     { pkgs, ... }:
     {
       home.packages = with pkgs; [
-        gnomeExtensions.pop-shell
       ];
     };
 }
