@@ -88,6 +88,8 @@ Plug 'neovimhaskell/haskell-vim'
 Plug 'junegunn/goyo.vim'
 Plug 'HarrisonCentner/vimux-tidal'
 
+call plug#end() " start all the plugins above
+
 let g:vimtex_view_method='skim'
 let g:UltiSnipsSnippetDirectories = ['~/.vim/UltiSnips', 'UltiSnips']
 let g:UltiSnipsExpandTrigger="<tab>"
@@ -103,7 +105,10 @@ let g:typst_conceal_emoji=1
 
 let vim_markdown_preview_github=1
 
-call plug#end() " start all the plugins above
+" vim ariline options
+" let g:airline_statusline_ontop=1
+let g:airline#extensions#branch#enabled = 0
+
 " -----------------------------------------------------------------------------
 "  VIMTEX OPTIONS
 " -----------------------------------------------------------------------------
