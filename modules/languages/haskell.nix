@@ -10,7 +10,7 @@
     ''
     ];
 
-    homeManager.languages.haskell =
+    homeManager.haskell =
       { pkgs, ... }:
       {
         home.packages = with pkgs; [

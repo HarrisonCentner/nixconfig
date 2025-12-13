@@ -75,6 +75,11 @@ in
           "suggest.autoTrigger": "always",
             "diagnostic.virtualText": true,
             "languageserver": {
+            	"dhall": {
+                "command": "dhall-lsp-server",
+                "filetypes": [
+                  "dhall"
+                ]
             }
         }
         '';

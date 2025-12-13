@@ -9,8 +9,8 @@
       [
         # Modules
         base
-        config.flake.nixosModules."rwzfs-disko"
-        config.flake.nixosModules."rwzfs-hardware"
+        config.flake.nixosModules."rwzfs/disko"
+        config.flake.nixosModules."rwzfs/hardware"
 
         # Users
         hcentner
@@ -28,6 +28,11 @@
                 base
                 shell
                 desktop
+
+                # languages
+                dhall
+                haskell
+                nix
 
                 # Apps
                 messaging

@@ -4,6 +4,7 @@
     home.packages = with pkgs; [
       tor-browser
       tor
+      ungoogled-chromium
     ];
   };
 }

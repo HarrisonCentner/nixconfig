@@ -1,5 +1,5 @@
 {
-  flake.nixosModules."rwzfs-hardware" = { pkgs, lib, config, ...}: {
+  flake.nixosModules."rwzfs/hardware" = { pkgs, lib, config, ...}: {
 
     nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 

@@ -74,6 +74,8 @@ Plug 'lervag/vimtex'
 Plug 'preservim/vim-markdown'
 Plug 'nicwest/vim-camelsnek'
 Plug 'vim-airline/vim-airline'
+Plug 'vmchale/dhall-vim'
+Plug 'chrisbra/csv.vim'
 
 " Plug 'SirVer/ultisnips'
 Plug 'kaarmu/typst.vim'
