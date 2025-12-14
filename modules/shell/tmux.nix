@@ -1,9 +1,6 @@
 { config, ... }:
 {
   flake.modules.homeManager.shell = {pkgs, ...}: {
-    home.packages = with pkgs; [
-      wl-clipboard
-    ];
     programs = {
       tmux = {
         enable = true;

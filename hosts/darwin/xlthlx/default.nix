@@ -10,8 +10,8 @@
       with config.flake.modules.darwin;
       [
         # Users
-        # root
         base
+	harrisoncentner
       ]
       ++ [
         {

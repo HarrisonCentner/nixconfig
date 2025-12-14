@@ -8,7 +8,7 @@
 
         NixOS release: ${config.system.nixos.release}
         Nixpkgs revision: ${inputs.nixpkgs.rev}
-        hcentner/nixconfig revision: ${inputs.self.rev or inputs.self.dirtyRev}
+        nixconfig revision: ${inputs.self.rev or inputs.self.dirtyRev}
 
       '';
     };
