@@ -8,5 +8,5 @@ contains configurations grouped by device
 
 ## Inspiration
 
-+ [Dendrtic Nix](https://dendrix.oeiuwq.com/Dendritic.html)
++ [Dendritic Nix](https://dendrix.oeiuwq.com/Dendritic.html)
 + @drupol's [nixconfig](https://github.com/drupol/infra)

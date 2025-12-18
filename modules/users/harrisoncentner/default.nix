@@ -29,7 +29,6 @@ in
     };
     modules.homeManager.base = {
       home = {
-        # homeDirectory = homeDirectory;
         stateVersion = "24.11";
         sessionPath = [
           "${homeDirectory}/nixconfig"

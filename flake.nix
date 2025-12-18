@@ -1,5 +1,5 @@
 {
-  description = "My hybrid nixos / nix-darwin system via dendritic nix and flake parts";
+ description = "My hybrid nixos / nix-darwin system via dendritic nix and flake parts";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -13,28 +13,11 @@
     };
     import-tree.url = "github:vic/import-tree";
     systems.url = "github:nix-systems/default";
-    statix = {
-      url = "github:molybdenumsoftware/statix";
-      inputs = {
-        flake-parts.follows = "flake-parts";
-        nixpkgs.follows = "nixpkgs";
-      };
-    };
-
-    stylix = {
-      url = "github:nix-community/stylix";
-      flake = true;
-      inputs = {
-        flake-parts.follows = "flake-parts";
-        nixpkgs.follows = "nixpkgs";
-      };
-    };
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
       flake = true;
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # TODO: use quasigod/unify once it supports nix darwin
     hcentner-blog.url = "github:HarrisonCentner/blog";
   };
 
