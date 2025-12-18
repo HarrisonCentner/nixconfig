@@ -219,3 +219,6 @@ vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(
 
 " Highlight symbol under cursor
 autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Tab completion
+inoremap <silent><expr> <TAB> coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<TAB>"
