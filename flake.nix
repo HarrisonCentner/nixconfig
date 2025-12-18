@@ -18,7 +18,6 @@
       flake = true;
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hcentner-blog.url = "github:HarrisonCentner/blog";
   };
 
   outputs = inputs: 
