@@ -7,6 +7,7 @@
       programs = {
         git = {
           enable = true;
+          lfs.enable = true;
           settings = {
             user = {
               name = "HarrisonCentner";
@@ -20,13 +21,17 @@
             diff.colorMoved = "default";
             gpg.format = "ssh";
             init.defaultBranch = "master";
-            lfs.enable = true;
             merge.conflictstyle = "diff3";
             push.default = "current";
             rerere.enabled = true;
             tag.gpgsign = true;
             tag.sort = "taggerdate";
             user.signingKey = "~/.ssh/id_ed25519";
+            filter.lfs = {
+              clean = "git-lfs clean -- %f";
+              smudge = "git-lfs smudge -- %f";
+              process = "git-lfs filter-process";
+            };
             delta = {
               enable = true;
               options = {

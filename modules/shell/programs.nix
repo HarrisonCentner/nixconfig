@@ -3,7 +3,6 @@
     home.packages = with pkgs; [
       # unix utils
       duf
-      tree
       htop
       # nix stuff
       direnv
