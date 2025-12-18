@@ -17,7 +17,7 @@
     networking.networkmanager.enable = true; 
 
     services.xserver.enable = true;
-    services.xserver.xkbOptions = "caps:swapescape";
+    services.xserver.xkb.options = "caps:swapescape";
     console.useXkbConfig = true;
     
     services.displayManager.gdm.enable = true;
