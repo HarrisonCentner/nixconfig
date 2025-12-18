@@ -3,6 +3,10 @@
     programs = {
       lsd = {
         enable = true;
+        icons = {
+          extension = { };
+          filetype = { };
+        };
       };
     };
   };

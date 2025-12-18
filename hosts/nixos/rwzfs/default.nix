@@ -9,6 +9,7 @@
       [
         # Modules
         base
+        shell
         config.flake.nixosModules."rwzfs/disko"
         config.flake.nixosModules."rwzfs/hardware"
 
