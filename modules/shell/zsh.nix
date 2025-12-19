@@ -8,6 +8,7 @@
           cat = "bat";
           cd = "z";
           vim = "vim -u $HOME/.vimrc";
+          v = "vim -u $HOME/.vimrc";
           tree = "ls --tree";
         };
         oh-my-zsh = {
