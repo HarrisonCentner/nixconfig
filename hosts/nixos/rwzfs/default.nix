@@ -39,6 +39,7 @@
                 messaging
                 editor
                 browser
+                ebooks
               ];
           };
         }
