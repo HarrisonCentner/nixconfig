@@ -2,13 +2,13 @@ let
   defaultPort = 2283;
 in
 {
-  flake.modules.nixos.services.immich =
+  flake.modules.nixos.immich =
   { pkgs, ... }:
   {
     config = {
       users.users.immich.extraGroups = [
         "video"
-          "render"
+        "render"
       ];
       services.immich = {
         enable = true;

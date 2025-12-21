@@ -3,7 +3,7 @@ let
   stephenBlackUrl = "https://raw.githubusercontent.com/StevenBlack/hosts/master";
 in
 {
-  flake.modules.nixos.services.blocky =
+  flake.modules.nixos.blocky =
   { pkgs, ... }:
   {
     config = {

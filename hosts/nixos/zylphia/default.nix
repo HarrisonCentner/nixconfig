@@ -11,9 +11,10 @@
         base
         config.flake.nixosModules."zylphia-disko"
 
-        # Users
-        # root
-        # userName
+        # Services
+        blocky
+        immich
+        tailscale
       ]
       ++ [
         {
@@ -23,11 +24,7 @@
               [
                 # Modules
                 base
-                # languages.clojure
-                # languages.haskell
-                # languages.nix
                 shell
-                # userName
               ];
           };
         }

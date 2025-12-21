@@ -18,6 +18,8 @@
 
         # Apps
         password-manager
+
+        # Services
         tailscale
       ]
       ++ [
