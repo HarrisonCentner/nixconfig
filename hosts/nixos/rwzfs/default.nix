@@ -18,6 +18,7 @@
 
         # Apps
         password-manager
+        tailscale
       ]
       ++ [
         {
