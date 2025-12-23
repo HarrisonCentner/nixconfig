@@ -9,9 +9,10 @@
       [
         # Modules
         base
-        shell
+        desktop
         config.flake.nixosModules."rwzfs/disko"
         config.flake.nixosModules."rwzfs/hardware"
+        shell
 
         # Users
         hcentner
@@ -30,8 +31,8 @@
               [
                 # Modules
                 base
-                shell
                 desktop
+                shell
 
                 # languages
                 dhall
@@ -39,10 +40,10 @@
                 nix
 
                 # Apps
-                messaging
-                editor
                 browser
                 ebooks
+                editor
+                messaging
               ];
           };
         }
