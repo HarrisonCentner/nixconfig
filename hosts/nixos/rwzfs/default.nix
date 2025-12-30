@@ -22,6 +22,7 @@
 
         # Services
         tailscale
+        docker
       ]
       ++ [
         {
@@ -44,6 +45,9 @@
                 ebooks
                 editor
                 messaging
+
+                # Apps
+                docker
               ];
           };
         }

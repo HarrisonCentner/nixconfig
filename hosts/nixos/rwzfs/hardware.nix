@@ -10,7 +10,6 @@
     hardware.enableRedistributableFirmware = true;
     hardware.firmware = with pkgs; [ linux-firmware ];
     hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-    
 
     networking.firewall.enable = false; 
     networking.nameservers = [ "1.1.1.1" ]; 
@@ -22,7 +21,5 @@
     
     services.displayManager.gdm.enable = true;
     services.desktopManager.gnome.enable = true;
-
-    virtualisation.docker.enable = true;
   };
 }
