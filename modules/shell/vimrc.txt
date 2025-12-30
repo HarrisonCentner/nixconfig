@@ -67,6 +67,7 @@ Plug 'preservim/vimux'
 Plug 'JamshedVesuna/vim-markdown-preview'
 Plug 'itchyny/calendar.vim'
 Plug 'tpope/vim-obsession'
+Plug 'aserebryakov/vim-todo-lists'
 
 " Programming plugins
 Plug 'PyGamer0/vim-apl'
@@ -76,8 +77,6 @@ Plug 'nicwest/vim-camelsnek'
 Plug 'vim-airline/vim-airline'
 Plug 'vmchale/dhall-vim'
 Plug 'chrisbra/csv.vim'
-
-" Plug 'SirVer/ultisnips'
 Plug 'kaarmu/typst.vim'
 Plug 'MrPicklePinosaur/typst-conceal.vim', {'for': 'typst'}   " vim plug
 Plug 'neovimhaskell/haskell-vim'
@@ -86,8 +85,6 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'neovimhaskell/haskell-vim'
 
 " Tidal Cycles stuff
-" Plug 'tidalcycles/vim-tidal' -- at the moment just going to use Vimux
-" instead
 Plug 'junegunn/goyo.vim'
 Plug 'HarrisonCentner/vimux-tidal'
 
