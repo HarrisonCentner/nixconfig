@@ -24,7 +24,7 @@
         gnome-clocks 
         gnome-connections
         gnome-contacts
-        gnome-disk-utility 
+        # gnome-disk-utility (I like this one)
         gnome-font-viewer 
         gnome-logs 
         gnome-maps 
