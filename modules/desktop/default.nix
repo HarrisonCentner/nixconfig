@@ -21,7 +21,7 @@
         gnome-calculator 
         gnome-calendar 
         gnome-characters 
-        gnome-clocks 
+        # gnome-clocks (I use the timer and stopwatch)
         gnome-connections
         gnome-contacts
         # gnome-disk-utility (I like this one)
