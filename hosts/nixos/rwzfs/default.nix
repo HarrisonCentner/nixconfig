@@ -45,8 +45,9 @@
                 ebooks
                 editor
                 messaging
+                notes
 
-                # Apps
+                # Services
                 docker
               ];
           };
