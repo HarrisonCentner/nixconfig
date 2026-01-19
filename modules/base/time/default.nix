@@ -1,5 +1,5 @@
 {
   flake.modules.nixos.base = {
-    time.timeZone = "America/Chicago";
+    time.timeZone = "America/New_York";
   };
 }
