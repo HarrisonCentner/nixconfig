@@ -1,13 +1,16 @@
 {
   flake.modules.homeManager.shell = { pkgs, ... }:  {
     home.packages = with pkgs; [
-      # unix utils
+      # unix utilities
       duf
+      e2fsprogs
       htop
+      util-linux
       # nix stuff
       direnv
       nix-direnv
       nix-output-monitor
+      nurl
       # file processing
       file
       jq
@@ -16,6 +19,10 @@
       dig
       # cli utilities
       bc
+      # hardware
+      usbutils
+      # compression
+      xz
     ];
   };
 }
