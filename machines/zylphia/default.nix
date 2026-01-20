@@ -8,9 +8,13 @@
     group = "wheel";
   };
   networking.nameservers = [ "192.168.1.114" ];
+  networking.networkmanager.enable = true;
+  networking.networkmanager.wifi.backend = "wpa_supplicant";
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.kernelModules = [ "iwlwifi" ];
+  hardware.enableRedistributableFirmware = true;
 
   programs.zsh.enable = true;
   environment.shells = with pkgs; [
