@@ -23,7 +23,7 @@
       # hardware
       usbutils
       # compression
-      xz
+      zstd
     ];
   };
 }
