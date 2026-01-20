@@ -5,6 +5,7 @@
       duf
       e2fsprogs
       htop
+      parted
       util-linux
       # nix stuff
       direnv
