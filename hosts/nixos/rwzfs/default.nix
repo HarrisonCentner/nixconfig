@@ -46,6 +46,7 @@
                 editor
                 messaging
                 notes
+                utilities
 
                 # Services
                 docker
