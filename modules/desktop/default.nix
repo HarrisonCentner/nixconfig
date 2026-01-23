@@ -34,7 +34,7 @@
         gnome-system-monitor 
         gnome-text-editor
         gnome-tour     # tour app
-        # gnome-weather (I like the weather app)
+        gnome-weather # (displays fahrenheit incorrectly even after updating org.gnome.GWeather4.temperature-unit)
       ];
     };
   flake.modules.homeManager.desktop =
