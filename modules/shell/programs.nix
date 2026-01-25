@@ -18,6 +18,7 @@
       xan
       # unix networking
       dig
+      lsof
       # cli utilities
       bc
       # hardware
