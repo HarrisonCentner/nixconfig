@@ -5,7 +5,7 @@
 
     boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "nvme" "usb_storage" "sd_mod" ];
     boot.initrd.kernelModules = [ ];
-    boot.kernelModules = [ "kvm-intel" "iwlwifi" ];
+    boot.kernelModules = [ "kvm-intel" "iwlwifi" "8812au" ];
     boot.extraModulePackages = [ ];
     hardware.enableRedistributableFirmware = true;
     hardware.firmware = with pkgs; [ linux-firmware ];
