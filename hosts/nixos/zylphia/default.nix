@@ -10,11 +10,13 @@
         # Modules
         base
         config.flake.nixosModules."zylphia-disko"
+        config.flake.nixosModules."zylphia/hardware"
+        shell
 
         # Services
-        blocky
-        immich
-        tailscale
+        # blocky
+        # immich
+        # tailscale
       ]
       ++ [
         {
