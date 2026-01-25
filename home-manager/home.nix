@@ -28,39 +28,39 @@
   home.packages = with pkgs; [
     vim # vi improved
     duf # disk usage/free utility
-    fd # find alternative
-    gh # github CLI tool
-    jq # JSON processor
-    nixpkgs-fmt # nix formatter
-    cabal2nix # generate nix derivations from cabal files
-    sd # sed alternative
-    sqlite # transactional SQL database engine
-    unzip # extraction tool for archives compressed
-    usbutils # tools for USB devices
-    direnv # manage environment variables based on directory
-    nix-direnv # persistent use_nix implementation for direnv
-    ripgrep # parallel grep written in rust
-    tree # graphical file system display
-    nixd # nix language server
-    file # determine file types
-    htop # view compute statistics
-    lsof # view port information
-    lazygit # easy UI for git
-    bc # gnu basic calculator
-    typst # typesetting language
-    nix-output-monitor # nom for nix
-    dhall # configuration language
-    nurl # generate nix fetcher calls from repo URLS
-    cachix # nix binary cache hosting CLI tool
+#   fd # find alternative
+#   gh # github CLI tool
+#   jq # JSON processor
+#   nixpkgs-fmt # nix formatter
+#   cabal2nix # generate nix derivations from cabal files
+#   sd # sed alternative
+#   sqlite # transactional SQL database engine
+#   unzip # extraction tool for archives compressed
+#   usbutils # tools for USB devices
+#   direnv # manage environment variables based on directory
+#   nix-direnv # persistent use_nix implementation for direnv
+#   ripgrep # parallel grep written in rust
+#   tree # graphical file system display
+#   nixd # nix language server
+#   file # determine file types
+#   htop # view compute statistics
+#   lsof # view port information
+#   lazygit # easy UI for git
+#   bc # gnu basic calculator
+#   typst # typesetting language
+#   nix-output-monitor # nom for nix
+#   dhall # configuration language
+#   nurl # generate nix fetcher calls from repo URLS
+#   cachix # nix binary cache hosting CLI tool
     git # version control
-    haskellPackages.cabal-install # Haskell build tool
-    haskell.compiler.ghc9102 # the Glorious Glasgow Haskell Compiler
-    nodejs # nodejs
-    haskell-language-server # the glorious Haskell language server
-    # networking
-    blocky # DNS proxy CLI
-    dig # domain name server
-    tcpdump # network sniffer
+#   haskellPackages.cabal-install # Haskell build tool
+#   haskell.compiler.ghc9102 # the Glorious Glasgow Haskell Compiler
+#   nodejs # nodejs
+#   haskell-language-server # the glorious Haskell language server
+#   # networking
+#   blocky # DNS proxy CLI
+#   dig # domain name server
+#   tcpdump # network sniffer
   ] ++ lib.optionals stdenv.isLinux [
     nftables # edit domain filtering rules
     iptables # configure Linux IP filtering rules

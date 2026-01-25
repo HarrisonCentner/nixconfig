@@ -13,7 +13,7 @@
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.kernelModules = [ "iwlwifi" "8812au" ];
+  boot.kernelModules = [ "iwlwifi" "rtw88_8821au" ];
   hardware.enableRedistributableFirmware = true;
   boot.extraModulePackages = with config.boot.kernelPackages; [
     rtl8812au
