@@ -14,6 +14,7 @@
         shell
 
         # Services
+        ssh
         # blocky
         # immich
         # tailscale
