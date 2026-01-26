@@ -20,7 +20,7 @@
       ]
       ++ [
         {
-          home-manager.users.harrisoncentner = {
+          home-manager.users.hcentner = {
             imports = 
               with config.flake.modules.homeManager; 
               [
