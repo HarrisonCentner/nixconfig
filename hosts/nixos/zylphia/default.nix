@@ -15,9 +15,10 @@
 
         # Services
         ssh
-        # blocky
-        # immich
-        # tailscale
+        blocky
+        immich
+        tailscale
+        paperless
       ]
       ++ [
         {
