@@ -1,5 +1,5 @@
 {
   flake.modules.nixos.base = {
-    services.resolved.llmnr = "false";
+    services.resolved.settings.Resolve.LLMNR = "false";
   };
 }
