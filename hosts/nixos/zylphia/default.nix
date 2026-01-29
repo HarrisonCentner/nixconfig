@@ -18,6 +18,7 @@
         blocky
         immich
         tailscale
+        paperless
       ]
       ++ [
         {
