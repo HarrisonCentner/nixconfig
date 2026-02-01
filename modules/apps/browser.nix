@@ -7,7 +7,6 @@
       ungoogled-chromium
     ];
   };
-
   # Install extensions on ungoogled-chromium
   # 
   #  1. Download the latest release from chromium-web-store [here](https://github.com/NeverDecaf/chromium-web-store).
