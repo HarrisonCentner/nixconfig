@@ -21,8 +21,9 @@
         password-manager
 
         # Services
-        tailscale
         docker
+        invidious
+        tailscale
       ]
       ++ [
         {
