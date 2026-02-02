@@ -14,8 +14,9 @@
     },
     "dbt": {
       "command": "dbt-language-server",
+      "args": ["-d"],
       "filetypes": ["sql", "yml", "yaml"],
-      "rootPatterns": ["dbt_project.yml", "dbt_project.yaml"]
+      "rootPatterns": ["dbt_project.yml", "profiles.yml"]
     },
     "clojure": {
       "command": "clojure-lsp",
