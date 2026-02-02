@@ -1,15 +1,5 @@
 {
   flake.modules = {
-    home.vim.coc-settings.lsp = [
-    ''
-      "haskell": {
-        "command": "haskell-language-server-wrapper",
-        "args": ["--lsp"],
-        "filetypes": ["haskell", "lhaskell"]
-      }
-    ''
-    ];
-
     homeManager.haskell =
       { pkgs, ... }:
       {

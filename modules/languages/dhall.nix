@@ -1,15 +1,5 @@
 {
   flake.modules = {
-    home.vim.coc-settings.lsp = [
-    ''
-      "dhall": {
-        "command": "dhall-lsp-server",
-        "args": [],
-        "filetypes": ["dhall"]
-      }
-    ''
-    ];
-
     homeManager.dhall =
       { pkgs, ... }:
       {
