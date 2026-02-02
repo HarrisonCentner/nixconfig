@@ -36,20 +36,8 @@ in
         sessionVariables = {
           EDITOR = "vim";
         };
-        file.".vimrc".source = ../../shell/vimrc.txt;
-        file.".vim/coc-settings.json".text = ''
-        {
-          "suggest.autoTrigger": "always",
-            "diagnostic.virtualText": true,
-            "languageserver": {
-            	"dhall": {
-                "command": "dhall-lsp-server",
-                "filetypes": [
-                  "dhall"
-                ]
-            }
-        }
-        '';
+        file.".vimrc".source = ../../modules/shell/vimrc.txt;
+        file.".vim/coc-settings.json".source = ../../modules/shell/coc-settings.json;
       };
       programs.home-manager.enable = true;
     };
