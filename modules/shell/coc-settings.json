@@ -12,11 +12,14 @@
       "command": "nixd",
       "filetypes": ["nix"]
     },
+    "dbt": {
+      "command": "dbt-language-server",
+      "filetypes": ["sql", "yml", "yaml"],
+      "rootPatterns": ["dbt_project.yml", "dbt_project.yaml"]
+    },
     "clojure": {
       "command": "clojure-lsp",
-      "host": "127.0.0.1",
-      "port": 7891,
-      "filetypes": ["clojure", "edn"]
+      "filetypes": ["clojure", "edn"],
       "rootPatterns": ["project.clj", "deps.edn"],
       "additionalSchemes": ["jar", "zipfile"],
       "trace.server": "verbose",
@@ -26,38 +29,12 @@
       "diagnostic.highlightPriority": 1000000,
       "lsp-check-on-start": false,
       "startup-message": true,
-      "semanticTokens.enable": true
+      "semanticTokens.enable": true,
       "initializationOptions": {
         "semantic-tokens?": true,
         "use-metadata-for-privacy?": true,
         "ignore-classpath-directories": true
       }
-    },
-  },
-  "diagnostic-languageserver.linters": {
-    "clj_kondo_lint": {
-      "command": "clj-kondo",
-      "debounce": 100,
-      "args": [ "--lint", "%filepath"],
-      "offsetLine": 0,
-      "offsetColumn": 0,
-      "sourceName": "clj-kondo",
-      "formatLines": 1,
-      "formatPattern": [
-        "^[^:]+:(\\d+):(\\d+):\\s+([^:]+):\\s+(.*)$",
-        {
-          "line": 1,
-          "column": 2,
-          "message": 4,
-          "security": 3
-        }
-      ],
-      "securities": {
-        "error": "error",
-        "warning": "warning",
-        "note": "info"
-      }
     }
-  },
-  "diagnostic-languageserver.filetypes": {"clojure":"clj_kondo_lint"}
+  }
 }
