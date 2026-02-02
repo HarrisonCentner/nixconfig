@@ -66,77 +66,7 @@ in
           EDITOR = "vim";
         };
         file.".vimrc".source = ../../shell/vimrc.txt;
-        file.".vim/coc-settings.json".text = ''
-        {
-          "suggest.autoTrigger": "always",
-            "diagnostic.virtualText": true,
-            "languageserver": {
-              "dhall": {
-                "command": "dhall-lsp-server",
-                "filetypes": [
-                  "dhall"
-                ]
-            }
-          },
-          "languageserver": {
-            "clojure-lsp": {
-              // "command": "bash",
-              // "args": ["-c", "cd /Users/case/dev/lsp && clojure -J-Duser.dir=$PWD -Scp $(clj -Spath) -m clojure-lsp.main"],
-              // "args": ["-c", "export LEIN_JVM_OPTS=\"-Duser.dir=$cwd\" && cd /Users/case/dev/lsp/ && lein run"],
-              //"command": "bash",
-              //"args": ["-c", "cd /Users/case/dev/lsp/cli && clj -M:run"],
-              "command": "clojure-lsp",
-              //"command": "/Users/snoe/dev/clojure-lsp/clojure-lsp",
-              "filetypes": ["clojure"],
-              "rootPatterns": ["project.clj", "deps.edn"],
-              "additionalSchemes": ["jar", "zipfile"],
-              "trace.server": "verbose",
-              "progressOnInitialization": true,
-              "diagnostic.showUnused": true,
-              "diagnostic.showDeprecated": true,
-              "diagnostic.highlightPriority": 1000000,
-              "initializationOptions": {
-                "ignore-classpath-directories": true
-              }
-            },
-          },
-          "clojure.initialization-options.semantic-tokens?": true,
-          "clojure.initialization-options.use-metadata-for-privacy?": true,
-          "clojure.lsp-check-on-start": false,
-          "clojure.startup-message": true,
-          "clojure.trace.server": "verbose",
-          "[clojure]": {
-            "semanticTokens.enable": true
-          },
-          "diagnostic-languageserver.linters": {
-            "clj_kondo_lint": {
-              "command": "clj-kondo",
-              "debounce": 100,
-              "args": [ "--lint", "%filepath"],
-              "offsetLine": 0,
-              "offsetColumn": 0,
-              "sourceName": "clj-kondo",
-              "formatLines": 1,
-              "formatPattern": [
-                  "^[^:]+:(\\d+):(\\d+):\\s+([^:]+):\\s+(.*)$",
-                  {
-                      "line": 1,
-                      "column": 2,
-                      "message": 4,
-                      "security": 3
-                  }
-              ],
-              "securities": {
-                      "error": "error",
-                      "warning": "warning",
-                      "note": "info"
-              }
-
-            }
-          },
-          "diagnostic-languageserver.filetypes": {"clojure":"clj_kondo_lint"}
-          }
-        '';
+        file.".vim/coc-settings.json".source = ../../shell/coc-settings.json
       };
       programs.home-manager.enable = true;
     };
