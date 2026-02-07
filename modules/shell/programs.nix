@@ -8,6 +8,7 @@
       htop
       parted
       util-linux
+      bottom
       # nix stuff
       direnv
       nix-direnv
@@ -20,12 +21,12 @@
       # unix networking
       dig
       lsof
-      # cli utilities
+      # office utilities
       bc
       # hardware
       usbutils
       # compression
-      zstd
+      xz
     ];
   };
 }
