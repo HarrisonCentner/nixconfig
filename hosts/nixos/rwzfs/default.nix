@@ -22,7 +22,7 @@
 
         # Services
         docker
-        invidious
+        # invidious
         tailscale
       ]
       ++ [
