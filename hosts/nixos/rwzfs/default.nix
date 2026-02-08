@@ -47,7 +47,7 @@
                 editor
                 messaging
                 notes
-                utilities
+                libreoffice
 
                 # Services
                 docker
