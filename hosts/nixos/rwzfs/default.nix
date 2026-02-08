@@ -22,7 +22,6 @@
 
         # Services
         docker
-        # invidious
         tailscale
       ]
       ++ [
@@ -36,7 +35,7 @@
                 desktop
                 shell
 
-                # languages
+                # Languages
                 dhall
                 haskell
                 nix
