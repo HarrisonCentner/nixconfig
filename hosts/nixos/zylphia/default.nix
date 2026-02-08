@@ -15,7 +15,6 @@
 
         # Services
         ssh
-        blocky
         immich
         tailscale
         paperless
@@ -33,6 +32,9 @@
                 # Languages
                 haskell
                 nix
+
+                # Apps
+                editor
               ];
           };
         }
