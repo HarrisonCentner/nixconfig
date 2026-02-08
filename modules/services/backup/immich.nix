@@ -16,6 +16,7 @@ in
         host = "0.0.0.0";
         mediaLocation = "/var/lib/immich";
         openFirewall = true;
+        accelerationDevices = [ "/dev/dri/renderD128" ];
       };
       networking.firewall.allowedTCPPorts = [ defaultPort ];
       networking.firewall.allowedUDPPorts = [ defaultPort ];

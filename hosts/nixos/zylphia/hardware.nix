@@ -3,15 +3,29 @@
 
     nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
-    boot.initrd.availableKernelModules = [ "usb_storage" ];
-    boot.initrd.kernelModules = [ ];
-    boot.kernelModules = [ "iwlwifi" "8812au" ];
-    boot.extraModulePackages = with config.boot.kernelPackages; [ ];
-    hardware.enableRedistributableFirmware = true;
-    hardware.firmware = with pkgs; [ 
-      linux-firmware 
-    ];
-    hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+    boot = {
+      initrd = {
+        availableKernelModules = [ "usb_storage" ];
+        kernelModules = [ ];
+      };
+      kernelModules = [ "iwlwifi" "8812au" ];
+      extraModulePackages = with config.boot.kernelPackages; [ ];
+    };
+    hardware = {
+      enableRedistributableFirmware = true;
+      firmware = with pkgs; [ 
+        linux-firmware 
+      ];
+      cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+      graphics = {
+        enable = true;
+        extraPackages = with pkgs; [ 
+          intel-media-driver 
+          # intel-ocl (for now I don't need OpenCL)
+          intel-vaapi-driver 
+        ];
+      };
+    };
 
     networking.firewall.enable = false; 
     networking.nameservers = [ "1.1.1.1" ]; 
