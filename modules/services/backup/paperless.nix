@@ -1,6 +1,9 @@
 {
-  flake.modules.nixos.paperless = { pkgs, ... }:
+  flake.modules.nixos.paperless = { ... }:
   {
-    services.paperless.enable = true;
+    services.paperless = {
+      enable = true;
+      address = "0.0.0.0";
+    };
   };
 }
