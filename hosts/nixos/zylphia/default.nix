@@ -29,6 +29,10 @@
                 # Modules
                 base
                 shell
+
+                # Languages
+                haskell
+                nix
               ];
           };
         }
