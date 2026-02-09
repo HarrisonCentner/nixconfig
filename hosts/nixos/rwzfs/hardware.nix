@@ -19,6 +19,7 @@
     networking = {
       nameservers = [ "1.1.1.1" ]; # no google
       networkmanager.enable = true;
+      firewall.enable = false;
     };
 
     console.useXkbConfig = true;
