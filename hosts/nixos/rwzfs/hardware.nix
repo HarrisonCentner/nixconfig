@@ -17,16 +17,6 @@
     };
 
     networking = {
-      firewall = {
-        enable = true;
-        allowedTCPPorts = [ 
-          22 
-          80 
-          443 
-          2283   # immich
-          28981  # paperless
-        ];
-      };
       nameservers = [ "1.1.1.1" ]; # no google
       networkmanager.enable = true;
     };
