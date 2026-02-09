@@ -13,12 +13,20 @@
         prefix = "C-space";
         sensibleOnTop = false;
         extraConfig = '' #
+          # navigate panes with vim keybindings
           bind -r h select-pane -L
           bind -r j select-pane -D
           bind -r k select-pane -U
           bind -r l select-pane -R
+
+          # open new panes in the current directory
+          bind  c  new-window -c "#{pane_current_path}"
+          bind  %  split-window -h -c "#{pane_current_path}"
+          bind '"' split-window -v -c "#{pane_current_path}"
+
           # allows shift+enter to do multilines in claude code
           bind -n S-Enter send-keys Escape "[13;2u"
+
           set -g mouse on
           set -s copy-command 'wl-copy'
           set -s set-clipboard on
