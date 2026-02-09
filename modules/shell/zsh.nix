@@ -5,7 +5,6 @@
       zsh = {
         enable = true;
         shellAliases = {
-          cat = "bat";
           cd = "z";
           vim = "vim -u $HOME/.vimrc";
           v = "vim -u $HOME/.vimrc";
