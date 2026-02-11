@@ -1,5 +1,5 @@
 {
-  flake.nixosModules."zylphia/hardware" = { pkgs, lib, config, ...}: {
+  flake.nixosModules.zylphia-hardware = { pkgs, lib, config, ...}: {
 
     nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 

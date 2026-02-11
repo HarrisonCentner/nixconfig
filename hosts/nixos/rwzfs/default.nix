@@ -10,8 +10,8 @@
         # Modules
         base
         desktop
-        config.flake.nixosModules."rwzfs/disko"
-        config.flake.nixosModules."rwzfs/hardware"
+        config.flake.nixosModules.rwzfs-disko
+        config.flake.nixosModules.rwzfs-hardware
         shell
 
         # Users

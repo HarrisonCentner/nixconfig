@@ -10,7 +10,7 @@
         # Modules
         base
         config.flake.nixosModules."zylphia-disko"
-        config.flake.nixosModules."zylphia/hardware"
+        config.flake.nixosModules.zylphia-hardware
         shell
 
         # Services

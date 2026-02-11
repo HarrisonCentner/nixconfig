@@ -1,5 +1,5 @@
 {
-  flake.nixosModules."rwzfs/disko" = 
+  flake.nixosModules.rwzfs-disko =
   { pkgs, ... }:
   {
     disko.devices = {
