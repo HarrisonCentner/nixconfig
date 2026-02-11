@@ -29,7 +29,7 @@ in
         let
           specialArgs = {
             inherit inputs;
-            hostConfig = module // {
+            hostConfig = {
               name = lib.removePrefix nixosPrefix name;
             };
           };
@@ -60,7 +60,7 @@ in
         let
           specialArgs = {
             inherit inputs;
-            hostConfig = module // {
+            hostConfig = {
               name = lib.removePrefix darwinPrefix name;
             };
           };
