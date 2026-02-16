@@ -23,6 +23,7 @@
       lsof
       # office utilities
       bc
+      programmer-calculator
       # hardware
       usbutils
       # compression

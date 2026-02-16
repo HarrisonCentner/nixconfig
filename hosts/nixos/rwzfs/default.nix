@@ -47,6 +47,7 @@
                 messaging
                 notes
                 libreoffice
+                music
 
                 # Services
                 docker
