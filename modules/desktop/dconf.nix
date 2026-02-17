@@ -1,196 +1,238 @@
 {
   flake.modules.homeManager.desktop = 
-    { pkgs, lib, ... }:
-      with lib.hm.gvariant;
-    {
+  { lib, ... }:
+  with lib.hm.gvariant;
+  {
+      # Helpful commands:
+      #    dconf watch /org/gnome/desktop/
+      #    dconf dump /org/gnome/desktop/ | dconf2nix
+
       # Generated via dconf2nix: https://github.com/gvolpe/dconf2nix
       dconf.settings = {
-        "org/gnome/Console" = {
-          audible-bell = false;
-          font-scale = 1.0;
-          last-window-maximised = false;
-          last-window-size = mkTuple [ 1194 1030 ];
+        "app-folders" = {
+          folder-children = [ "System" "Utilities" "YaST" "Pardus" "15f41a6d-f9c4-489e-a12c-45add7cc993b" "f59196c8-dbd4-4d08-a457-0653c948e4b1" "8552c3fa-1d30-4582-80de-7a3023795af5" "d0ded591-d3b6-4c3a-afb4-edaa99713959" "12a30212-6c59-4ee8-aa6e-09730f50852e" "33b52964-d2c1-4700-9813-2cd56ee70124" "5bab0406-7fdc-484b-a941-7d93fb570b62" ];
         };
 
-        "org/gnome/Snapshot" = {
-          is-maximized = false;
-          window-height = 640;
-          window-width = 800;
+        "app-folders/folders/12a30212-6c59-4ee8-aa6e-09730f50852e" = {
+          apps = [ "bottom.desktop" "htop.desktop" "org.gnome.baobab.desktop" "org.gnome.DiskUtility.desktop" ];
+          name = "system observability";
+          translate = false;
         };
 
-        "org/gnome/control-center" = {
-          last-panel = "multitasking";
-          window-state = mkTuple [ 980 640 false ];
+        "app-folders/folders/15f41a6d-f9c4-489e-a12c-45add7cc993b" = {
+          apps = [ "base.desktop" "draw.desktop" "impress.desktop" "math.desktop" "writer.desktop" "startcenter.desktop" ];
+          name = "Office";
         };
 
-        "org/gnome/desktop/app-folders" = {
-          folder-children = [ "System" "Utilities" "YaST" "Pardus" ];
+        "app-folders/folders/2d6c18d4-91df-4605-b2ac-e88bf78585c3" = {
+          apps = [ "calc.desktop" "draw.desktop" "math.desktop" "impress.desktop" "writer.desktop" "startcenter.desktop" "base.desktop" ];
+          name = "Office";
         };
 
-        "org/gnome/desktop/app-folders/folders/Pardus" = {
+        "app-folders/folders/33b52964-d2c1-4700-9813-2cd56ee70124" = {
+          apps = [ "org.gnome.Console.desktop" "xterm.desktop" "vim.desktop" "gvim.desktop" ];
+          name = "editors";
+          translate = false;
+        };
+
+        "app-folders/folders/5bab0406-7fdc-484b-a941-7d93fb570b62" = {
+          apps = [ "org.gnome.Snapshot.desktop" "org.gnome.Settings.desktop" ];
+          name = "other";
+          translate = false;
+        };
+
+        "app-folders/folders/8552c3fa-1d30-4582-80de-7a3023795af5" = {
+          apps = [ "torbrowser.desktop" "firefox.desktop" ];
+          name = "Internet";
+        };
+
+        "app-folders/folders/Pardus" = {
           categories = [ "X-Pardus-Apps" ];
           name = "X-Pardus-Apps.directory";
           translate = true;
         };
 
-        "org/gnome/desktop/app-folders/folders/System" = {
-          apps = [ "org.gnome.baobab.desktop" "org.gnome.DiskUtility.desktop" "org.gnome.Logs.desktop" "org.gnome.SystemMonitor.desktop" ];
+        "app-folders/folders/System" = {
+          apps = [ "org.gnome.Logs.desktop" "org.gnome.SystemMonitor.desktop" ];
           name = "X-GNOME-Shell-System.directory";
           translate = true;
         };
 
-        "org/gnome/desktop/app-folders/folders/Utilities" = {
-          apps = [ "org.gnome.Decibels.desktop" "org.gnome.Connections.desktop" "org.gnome.Papers.desktop" "org.gnome.font-viewer.desktop" "org.gnome.Loupe.desktop" ];
+        "app-folders/folders/Utilities" = {
+          apps = [ "org.gnome.Decibels.desktop" "org.gnome.Connections.desktop" "org.gnome.Papers.desktop" "org.gnome.font-viewer.desktop" "org.gnome.Loupe.desktop" "org.gnome.Showtime.desktop" "org.gnome.Extensions.desktop" ];
           name = "X-GNOME-Shell-Utilities.directory";
           translate = true;
         };
 
-        "org/gnome/desktop/app-folders/folders/YaST" = {
+        "app-folders/folders/YaST" = {
           categories = [ "X-SuSE-YaST" ];
           name = "suse-yast.directory";
           translate = true;
         };
 
-        "org/gnome/desktop/break-reminders/eyesight" = {
+        "app-folders/folders/c5d3e3d5-c8c1-488f-937b-7ddf3fee5b41" = {
+          apps = [ "calibre-ebook-viewer.desktop" "calibre-lrfviewer.desktop" "calibre-ebook-edit.desktop" ];
+          name = "Calibre Tools";
+          translate = false;
+        };
+
+        "app-folders/folders/cf944c14-c8ec-4379-882d-a0766bfbe3b8" = {
+          apps = [ "calibre-ebook-edit.desktop" "calibre-lrfviewer.desktop" "calibre-ebook-viewer.desktop" ];
+          name = "Office";
+        };
+
+        "app-folders/folders/d0ded591-d3b6-4c3a-afb4-edaa99713959" = {
+          apps = [ "chrome-pacgdjiidkfdhilcljkeebfoklekebig-Profile_1.desktop" "chrome-ojibjkjikcpjonjjngfkegflhmffeemk-Default.desktop" ];
+          name = "proton";
+          translate = false;
+        };
+
+        "app-folders/folders/dc4b4a1e-4672-4d77-9282-6184d35b3e6f" = {
+          apps = [ "calibre-ebook-edit.desktop" "calibre-lrfviewer.desktop" "calibre-ebook-viewer.desktop" ];
+          name = "Office";
+        };
+
+        "app-folders/folders/f59196c8-dbd4-4d08-a457-0653c948e4b1" = {
+          apps = [ "calibre-ebook-viewer.desktop" "calibre-lrfviewer.desktop" "calibre-ebook-edit.desktop" "calibre-gui.desktop" ];
+          name = "ebook";
+          translate = false;
+        };
+
+        "background" = {
+          primary-color = "#3a4ba0";
+          secondary-color = "#2f302f";
+        };
+
+        "break-reminders/eyesight" = {
           play-sound = true;
         };
 
-        "org/gnome/desktop/break-reminders/movement" = {
+        "break-reminders/movement" = {
           duration-seconds = mkUint32 300;
           interval-seconds = mkUint32 1800;
           play-sound = true;
         };
 
-        "org/gnome/desktop/input-sources" = {
+        "calendar" = {
+          show-weekdate = true;
+        };
+
+        "input-sources" = {
           sources = [ (mkTuple [ "xkb" "us" ]) ];
           xkb-options = [ "caps:swapescape" ];
         };
 
-        "org/gnome/desktop/interface" = {
+        "interface" = {
+          accent-color = "pink";
+          clock-format = "12h";
+          clock-show-seconds = false;
+          clock-show-weekday = true;
           color-scheme = "prefer-dark";
           enable-hot-corners = false;
           show-battery-percentage = true;
           toolkit-accessibility = false;
         };
 
-        "org/gnome/desktop/notifications" = {
-          application-children = [ "gnome-about-panel" "org-gnome-console" "firefox" "slack" "gnome-power-panel" ];
+        "notifications" = {
+          application-children = [ "gnome-about-panel" "org-gnome-console" "firefox" "slack" "gnome-power-panel" "com-mitchellh-ghostty" "spotify" ];
+          show-banners = false;
         };
 
-        "org/gnome/desktop/notifications/application/firefox" = {
+        "notifications/application/1password" = {
+          application-id = "1password.desktop";
+        };
+
+        "notifications/application/calc" = {
+          application-id = "calc.desktop";
+        };
+
+        "notifications/application/chromium-browser" = {
+          application-id = "chromium-browser.desktop";
+        };
+
+        "notifications/application/com-mitchellh-ghostty" = {
+          application-id = "com.mitchellh.ghostty.desktop";
+        };
+
+        "notifications/application/firefox" = {
           application-id = "firefox.desktop";
         };
 
-        "org/gnome/desktop/notifications/application/gnome-about-panel" = {
+        "notifications/application/gnome-about-panel" = {
           application-id = "gnome-about-panel.desktop";
         };
 
-        "org/gnome/desktop/notifications/application/gnome-power-panel" = {
+        "notifications/application/gnome-power-panel" = {
           application-id = "gnome-power-panel.desktop";
         };
 
-        "org/gnome/desktop/notifications/application/org-gnome-console" = {
+        "notifications/application/obsidian" = {
+          application-id = "obsidian.desktop";
+        };
+
+        "notifications/application/org-gnome-baobab" = {
+          application-id = "org.gnome.baobab.desktop";
+        };
+
+        "notifications/application/org-gnome-clocks" = {
+          application-id = "org.gnome.clocks.desktop";
+        };
+
+        "notifications/application/org-gnome-console" = {
           application-id = "org.gnome.Console.desktop";
         };
 
-        "org/gnome/desktop/notifications/application/slack" = {
+        "notifications/application/org-gnome-nautilus" = {
+          application-id = "org.gnome.Nautilus.desktop";
+        };
+
+        "notifications/application/org-gnome-showtime" = {
+          application-id = "org.gnome.Showtime.desktop";
+        };
+
+        "notifications/application/slack" = {
           application-id = "slack.desktop";
         };
 
-        "org/gnome/desktop/peripherals/keyboard" = {
+        "notifications/application/spotify" = {
+          application-id = "spotify.desktop";
+        };
+
+        "peripherals/keyboard" = {
           numlock-state = true;
         };
 
-        "org/gnome/desktop/peripherals/mouse" = {
+        "peripherals/mouse" = {
           natural-scroll = false;
         };
 
-        "org/gnome/desktop/peripherals/touchpad" = {
-          speed = 0.45299145299145294;
+        "peripherals/touchpad" = {
+          speed = 0.452991;
           tap-to-click = false;
           two-finger-scrolling-enabled = true;
         };
 
-        "org/gnome/desktop/search-providers" = {
+        "screensaver" = {
+          color-shading-type = "solid";
+          picture-options = "zoom";
+          picture-uri = "file:///nix/store/k95b65cjxvwrlc3dq0crd61m1j72n820-simple-blue-2016-02-19/share/backgrounds/nixos/nix-wallpaper-simple-blue.png";
+          primary-color = "#3a4ba0";
+          secondary-color = "#2f302f";
+        };
+
+        "search-providers" = {
           sort-order = [ "org.gnome.Settings.desktop" "org.gnome.Contacts.desktop" "org.gnome.Nautilus.desktop" ];
         };
 
-        "org/gnome/evolution-data-server" = {
-          migrated = true;
+        "session" = {
+          idle-delay = mkUint32 0;
         };
 
-        "org/gnome/mutter" = {
-          edge-tiling = false;
-        };
-
-        "org/gnome/nautilus/preferences" = {
-          default-folder-viewer = "list-view";
-          migrated-gtk-settings = true;
-        };
-
-        "org/gnome/nautilus/window-state" = {
-          initial-size = mkTuple [ 890 550 ];
-          initial-size-file-chooser = mkTuple [ 1093 676 ];
-        };
-
-        "org/gnome/nm-applet/eap/e958a491-50f3-4ff0-beaf-adb6aefe56d1" = {
-          ignore-ca-cert = false;
-          ignore-phase2-ca-cert = false;
-        };
-
-        "org/gnome/papers" = {
-          night-mode = false;
-        };
-
-        "org/gnome/papers/default" = {
-          annot-color = "yellow";
-          continuous = true;
-          dual-page = false;
-          dual-page-odd-left = false;
-          enable-spellchecking = true;
-          show-sidebar = true;
-          sizing-mode = "automatic";
-          window-height = 1168;
-        };
-
-        "org/gnome/portal/filechooser/org/chromium/Chromium" = {
-          last-folder-path = "/home/hcentner/Downloads";
-        };
-
-        "org/gnome/settings-daemon/plugins/color" = {
-          night-light-enabled = true;
-          night-light-schedule-automatic = false;
-          night-light-schedule-to = 8.0;
-          night-light-temperature = mkUint32 2873;
-        };
-
-        "org/gnome/settings-daemon/plugins/housekeeping" = {
-          donation-reminder-last-shown = mkInt64 1764905648010415;
-        };
-
-        "org/gnome/shell/world-clocks" = {
-          locations = [];
-        };
-
-        "org/gtk/gtk4/settings/file-chooser" = {
-          show-hidden = true;
-        };
-
-        "org/gtk/settings/file-chooser" = {
-          date-format = "regular";
-          location-mode = "path-bar";
-          show-hidden = false;
-          show-size-column = true;
-          show-type-column = true;
-          sidebar-width = 167;
-          sort-column = "name";
-          sort-directories-first = false;
-          sort-order = "ascending";
-          type-format = "category";
-          window-position = mkTuple [ 26 23 ];
-          window-size = mkTuple [ 1231 902 ];
+        "sound" = {
+          event-sounds = true;
+          theme-name = "__custom";
         };
 
       };
     };
-}
+  }
