@@ -11,17 +11,6 @@ let
   collectDarwinHostsModules = modules: lib.filterAttrs (name: _: lib.hasPrefix darwinPrefix name) modules;
 in
 {
-  perSystem =
-    { system, ... }:
-    {
-      _module.args.pkgs = import inputs.nixpkgs {
-        inherit system;
-        nixpkgs.config = {
-          allowUnfree = true;
-        };
-      };
-    };
-
   flake.nixosConfigurations = 
     lib.pipe (collectNixosHostsModules config.flake.modules.nixos) [
       (lib.mapAttrs' (
