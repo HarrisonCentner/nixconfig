@@ -27,31 +27,29 @@
       ++ [
         {
           home-manager.users.hcentner = {
-            imports = 
-              with config.flake.modules.homeManager; 
-              [
-                # Modules
-                base
-                desktop
-                shell
+            imports = with config.flake.modules.homeManager; [
+              # Modules
+              base
+              desktop
+              shell
 
-                # Languages
-                dhall
-                haskell
-                nix
+              # Languages
+              dhall
+              haskell
+              nix
 
-                # Apps
-                browser
-                ebooks
-                editor
-                messaging
-                notes
-                libreoffice
-                music
+              # Apps
+              browser
+              ebooks
+              editor
+              messaging
+              notes
+              libreoffice
+              music
 
-                # Services
-                docker
-              ];
+              # Services
+              docker
+            ];
           };
         }
       ];

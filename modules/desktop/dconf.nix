@@ -1,8 +1,8 @@
 {
-  flake.modules.homeManager.desktop = 
-  { lib, ... }:
-  with lib.hm.gvariant;
-  {
+  flake.modules.homeManager.desktop =
+    { lib, ... }:
+    with lib.hm.gvariant;
+    {
       # Helpful commands:
       #    dconf watch /org/gnome/desktop/
       #    dconf dump /org/gnome/desktop/ | dconf2nix
@@ -10,39 +10,82 @@
       # Generated via dconf2nix: https://github.com/gvolpe/dconf2nix
       dconf.settings = {
         "app-folders" = {
-          folder-children = [ "System" "Utilities" "YaST" "Pardus" "15f41a6d-f9c4-489e-a12c-45add7cc993b" "f59196c8-dbd4-4d08-a457-0653c948e4b1" "8552c3fa-1d30-4582-80de-7a3023795af5" "d0ded591-d3b6-4c3a-afb4-edaa99713959" "12a30212-6c59-4ee8-aa6e-09730f50852e" "33b52964-d2c1-4700-9813-2cd56ee70124" "5bab0406-7fdc-484b-a941-7d93fb570b62" ];
+          folder-children = [
+            "System"
+            "Utilities"
+            "YaST"
+            "Pardus"
+            "15f41a6d-f9c4-489e-a12c-45add7cc993b"
+            "f59196c8-dbd4-4d08-a457-0653c948e4b1"
+            "8552c3fa-1d30-4582-80de-7a3023795af5"
+            "d0ded591-d3b6-4c3a-afb4-edaa99713959"
+            "12a30212-6c59-4ee8-aa6e-09730f50852e"
+            "33b52964-d2c1-4700-9813-2cd56ee70124"
+            "5bab0406-7fdc-484b-a941-7d93fb570b62"
+          ];
         };
 
         "app-folders/folders/12a30212-6c59-4ee8-aa6e-09730f50852e" = {
-          apps = [ "bottom.desktop" "htop.desktop" "org.gnome.baobab.desktop" "org.gnome.DiskUtility.desktop" ];
+          apps = [
+            "bottom.desktop"
+            "htop.desktop"
+            "org.gnome.baobab.desktop"
+            "org.gnome.DiskUtility.desktop"
+          ];
           name = "system observability";
           translate = false;
         };
 
         "app-folders/folders/15f41a6d-f9c4-489e-a12c-45add7cc993b" = {
-          apps = [ "base.desktop" "draw.desktop" "impress.desktop" "math.desktop" "writer.desktop" "startcenter.desktop" ];
+          apps = [
+            "base.desktop"
+            "draw.desktop"
+            "impress.desktop"
+            "math.desktop"
+            "writer.desktop"
+            "startcenter.desktop"
+          ];
           name = "Office";
         };
 
         "app-folders/folders/2d6c18d4-91df-4605-b2ac-e88bf78585c3" = {
-          apps = [ "calc.desktop" "draw.desktop" "math.desktop" "impress.desktop" "writer.desktop" "startcenter.desktop" "base.desktop" ];
+          apps = [
+            "calc.desktop"
+            "draw.desktop"
+            "math.desktop"
+            "impress.desktop"
+            "writer.desktop"
+            "startcenter.desktop"
+            "base.desktop"
+          ];
           name = "Office";
         };
 
         "app-folders/folders/33b52964-d2c1-4700-9813-2cd56ee70124" = {
-          apps = [ "org.gnome.Console.desktop" "xterm.desktop" "vim.desktop" "gvim.desktop" ];
+          apps = [
+            "org.gnome.Console.desktop"
+            "xterm.desktop"
+            "vim.desktop"
+            "gvim.desktop"
+          ];
           name = "editors";
           translate = false;
         };
 
         "app-folders/folders/5bab0406-7fdc-484b-a941-7d93fb570b62" = {
-          apps = [ "org.gnome.Snapshot.desktop" "org.gnome.Settings.desktop" ];
+          apps = [
+            "org.gnome.Snapshot.desktop"
+            "org.gnome.Settings.desktop"
+          ];
           name = "other";
           translate = false;
         };
 
         "app-folders/folders/8552c3fa-1d30-4582-80de-7a3023795af5" = {
-          apps = [ "torbrowser.desktop" "firefox.desktop" ];
+          apps = [
+            "torbrowser.desktop"
+            "firefox.desktop"
+          ];
           name = "Internet";
         };
 
@@ -53,13 +96,24 @@
         };
 
         "app-folders/folders/System" = {
-          apps = [ "org.gnome.Logs.desktop" "org.gnome.SystemMonitor.desktop" ];
+          apps = [
+            "org.gnome.Logs.desktop"
+            "org.gnome.SystemMonitor.desktop"
+          ];
           name = "X-GNOME-Shell-System.directory";
           translate = true;
         };
 
         "app-folders/folders/Utilities" = {
-          apps = [ "org.gnome.Decibels.desktop" "org.gnome.Connections.desktop" "org.gnome.Papers.desktop" "org.gnome.font-viewer.desktop" "org.gnome.Loupe.desktop" "org.gnome.Showtime.desktop" "org.gnome.Extensions.desktop" ];
+          apps = [
+            "org.gnome.Decibels.desktop"
+            "org.gnome.Connections.desktop"
+            "org.gnome.Papers.desktop"
+            "org.gnome.font-viewer.desktop"
+            "org.gnome.Loupe.desktop"
+            "org.gnome.Showtime.desktop"
+            "org.gnome.Extensions.desktop"
+          ];
           name = "X-GNOME-Shell-Utilities.directory";
           translate = true;
         };
@@ -71,29 +125,49 @@
         };
 
         "app-folders/folders/c5d3e3d5-c8c1-488f-937b-7ddf3fee5b41" = {
-          apps = [ "calibre-ebook-viewer.desktop" "calibre-lrfviewer.desktop" "calibre-ebook-edit.desktop" ];
+          apps = [
+            "calibre-ebook-viewer.desktop"
+            "calibre-lrfviewer.desktop"
+            "calibre-ebook-edit.desktop"
+          ];
           name = "Calibre Tools";
           translate = false;
         };
 
         "app-folders/folders/cf944c14-c8ec-4379-882d-a0766bfbe3b8" = {
-          apps = [ "calibre-ebook-edit.desktop" "calibre-lrfviewer.desktop" "calibre-ebook-viewer.desktop" ];
+          apps = [
+            "calibre-ebook-edit.desktop"
+            "calibre-lrfviewer.desktop"
+            "calibre-ebook-viewer.desktop"
+          ];
           name = "Office";
         };
 
         "app-folders/folders/d0ded591-d3b6-4c3a-afb4-edaa99713959" = {
-          apps = [ "chrome-pacgdjiidkfdhilcljkeebfoklekebig-Profile_1.desktop" "chrome-ojibjkjikcpjonjjngfkegflhmffeemk-Default.desktop" ];
+          apps = [
+            "chrome-pacgdjiidkfdhilcljkeebfoklekebig-Profile_1.desktop"
+            "chrome-ojibjkjikcpjonjjngfkegflhmffeemk-Default.desktop"
+          ];
           name = "proton";
           translate = false;
         };
 
         "app-folders/folders/dc4b4a1e-4672-4d77-9282-6184d35b3e6f" = {
-          apps = [ "calibre-ebook-edit.desktop" "calibre-lrfviewer.desktop" "calibre-ebook-viewer.desktop" ];
+          apps = [
+            "calibre-ebook-edit.desktop"
+            "calibre-lrfviewer.desktop"
+            "calibre-ebook-viewer.desktop"
+          ];
           name = "Office";
         };
 
         "app-folders/folders/f59196c8-dbd4-4d08-a457-0653c948e4b1" = {
-          apps = [ "calibre-ebook-viewer.desktop" "calibre-lrfviewer.desktop" "calibre-ebook-edit.desktop" "calibre-gui.desktop" ];
+          apps = [
+            "calibre-ebook-viewer.desktop"
+            "calibre-lrfviewer.desktop"
+            "calibre-ebook-edit.desktop"
+            "calibre-gui.desktop"
+          ];
           name = "ebook";
           translate = false;
         };
@@ -118,7 +192,12 @@
         };
 
         "input-sources" = {
-          sources = [ (mkTuple [ "xkb" "us" ]) ];
+          sources = [
+            (mkTuple [
+              "xkb"
+              "us"
+            ])
+          ];
           xkb-options = [ "caps:swapescape" ];
         };
 
@@ -134,7 +213,15 @@
         };
 
         "notifications" = {
-          application-children = [ "gnome-about-panel" "org-gnome-console" "firefox" "slack" "gnome-power-panel" "com-mitchellh-ghostty" "spotify" ];
+          application-children = [
+            "gnome-about-panel"
+            "org-gnome-console"
+            "firefox"
+            "slack"
+            "gnome-power-panel"
+            "com-mitchellh-ghostty"
+            "spotify"
+          ];
           show-banners = false;
         };
 
@@ -221,7 +308,11 @@
         };
 
         "search-providers" = {
-          sort-order = [ "org.gnome.Settings.desktop" "org.gnome.Contacts.desktop" "org.gnome.Nautilus.desktop" ];
+          sort-order = [
+            "org.gnome.Settings.desktop"
+            "org.gnome.Contacts.desktop"
+            "org.gnome.Nautilus.desktop"
+          ];
         };
 
         "session" = {
@@ -235,4 +326,4 @@
 
       };
     };
-  }
+}

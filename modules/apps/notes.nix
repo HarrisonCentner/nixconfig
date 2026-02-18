@@ -1,5 +1,7 @@
 {
-  flake.modules.homeManager.notes = { pkgs, ...}: {
-    programs.obsidian.enable = true;
-  };
+  flake.modules.homeManager.notes =
+    { pkgs, ... }:
+    {
+      programs.obsidian.enable = true;
+    };
 }

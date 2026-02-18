@@ -1,8 +1,8 @@
 topLevel@{
   inputs,
-    ...
+  ...
 }:
-let 
+let
   userName = "harrisoncentner";
 
   homeDirectory = "/Users/${userName}";
@@ -17,12 +17,14 @@ in
       };
     };
 
-    modules.darwin.${userName} = { pkgs, ...}: {
-      users.users.${userName} = {
-        description = topLevel.config.flake.meta.users.${userName}.name;
-        createHome = true;
+    modules.darwin.${userName} =
+      { pkgs, ... }:
+      {
+        users.users.${userName} = {
+          description = topLevel.config.flake.meta.users.${userName}.name;
+          createHome = true;
+        };
       };
-    };
     modules.darwin.base = {
       system.primaryUser = userName;
       users.users.${userName}.home = homeDirectory;

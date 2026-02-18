@@ -22,20 +22,18 @@
       ++ [
         {
           home-manager.users.hcentner = {
-            imports = 
-              with config.flake.modules.homeManager; 
-              [
-                # Modules
-                base
-                shell
+            imports = with config.flake.modules.homeManager; [
+              # Modules
+              base
+              shell
 
-                # Languages
-                haskell
-                nix
+              # Languages
+              haskell
+              nix
 
-                # Apps
-                editor
-              ];
+              # Apps
+              editor
+            ];
           };
         }
       ];
