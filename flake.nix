@@ -15,6 +15,7 @@
       flake = true;
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    claude-code.url = "github:sadjow/claude-code-nix";
   };
 
   outputs = inputs: 

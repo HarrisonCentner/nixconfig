@@ -1,9 +1,8 @@
 {
-  flake.modules.homeManager.editor = { pkgs, ...}: {
+  flake.modules.homeManager.editor = { pkgs, inputs, ...}: {
     nixpkgs.config.allowUnfree = true;
-    home.packages = with pkgs; [
-      # code-cursor
-      claude-code
+    home.packages = [
+      inputs.claude-code.packages.${pkgs.system}.claude-code-bun
     ];
   };
 }

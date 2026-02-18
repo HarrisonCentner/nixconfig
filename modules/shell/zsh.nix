@@ -8,6 +8,7 @@
           vim = "vim -u $HOME/.vimrc";
           v = "vim -u $HOME/.vimrc";
           tree = "ls --tree";
+          claude = "claude-bun";
         };
         oh-my-zsh = {
           enable = true;
