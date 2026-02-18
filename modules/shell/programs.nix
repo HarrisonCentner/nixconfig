@@ -4,7 +4,6 @@
       # unix utilities
       duf
       e2fsprogs
-      fcp
       htop
       parted
       util-linux
