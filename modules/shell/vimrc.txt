@@ -30,7 +30,6 @@ set spell spelllang=en_us
 
 " column ruler at 100
 set ruler
-set colorcolumn=80
 
 " Highlight searching
 set incsearch
