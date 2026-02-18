@@ -7,7 +7,7 @@
 
         networkmanager = {
           enable = true;
-          unmanaged = [];
+          unmanaged = [ ];
         };
 
         useDHCP = false;

@@ -1,5 +1,7 @@
 {
-  flake.modules.homeManager.libreoffice = { pkgs, ...}: {
-    home.packages = with pkgs; [ libreoffice ];
-  };
+  flake.modules.homeManager.libreoffice =
+    { pkgs, ... }:
+    {
+      home.packages = with pkgs; [ libreoffice ];
+    };
 }

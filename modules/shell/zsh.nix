@@ -12,7 +12,10 @@
         };
         oh-my-zsh = {
           enable = true;
-          plugins = [ "history" "git" ];
+          plugins = [
+            "history"
+            "git"
+          ];
           theme = "eastwood";
         };
       };

@@ -1,14 +1,14 @@
 topLevel@{
   inputs,
-    ...
+  ...
 }:
-let 
+let
   userName = "hcentner";
 
-  homeDirectory = 
-        # if inputs.nixpkgs.stdenvNoCC.isDarwin
-        #  then "/Users/${userName}"
-        "/home/${userName}";
+  homeDirectory =
+    # if inputs.nixpkgs.stdenvNoCC.isDarwin
+    #  then "/Users/${userName}"
+    "/home/${userName}";
 in
 {
   flake = {
@@ -25,36 +25,40 @@ in
       };
     };
 
-    modules.nixos.${userName} = { pkgs, ...}: {
-      users.users.${userName} = {
-        description = topLevel.config.flake.meta.users.${userName}.name;
-        isNormalUser = true;
-        createHome = true;
-        extraGroups = [
-          "networkmanager"
-          "tty"
-          "wheel"
-          "docker"
-        ];
-        openssh.authorizedKeys.keys = topLevel.config.flake.meta.users.${userName}.authorizedKeys;
-        initialPassword = "hkc";
+    modules.nixos.${userName} =
+      { pkgs, ... }:
+      {
+        users.users.${userName} = {
+          description = topLevel.config.flake.meta.users.${userName}.name;
+          isNormalUser = true;
+          createHome = true;
+          extraGroups = [
+            "networkmanager"
+            "tty"
+            "wheel"
+            "docker"
+          ];
+          openssh.authorizedKeys.keys = topLevel.config.flake.meta.users.${userName}.authorizedKeys;
+          initialPassword = "hkc";
+        };
+
+        nix.settings.trusted-users = [ topLevel.config.flake.meta.users.${userName}.username ];
       };
 
-      nix.settings.trusted-users = [ topLevel.config.flake.meta.users.${userName}.username ];
-    };
-
-    modules.nixos.base = { pkgs, ...}: {
-      users.users.${userName} = { 
-        isNormalUser = true; 
-        extraGroups = [ 
-          "wheel" 
-          "networkmanager" 
-          "docker"
-          "tty"
-        ]; 
-        shell = pkgs.zsh;
+    modules.nixos.base =
+      { pkgs, ... }:
+      {
+        users.users.${userName} = {
+          isNormalUser = true;
+          extraGroups = [
+            "wheel"
+            "networkmanager"
+            "docker"
+            "tty"
+          ];
+          shell = pkgs.zsh;
+        };
       };
-    };
     modules.homeManager.base = {
       home = {
         # homeDirectory = homeDirectory;

@@ -11,21 +11,19 @@
       [
         # Users
         base
-	harrisoncentner
+        harrisoncentner
       ]
       ++ [
         {
           home-manager.users.harrisoncentner = {
-            imports = 
-              with config.flake.modules.homeManager; 
-              [
-                # Modules
-                base
-                # languages.clojure
-                # languages.haskell
-                # languages.nix
-                shell
-              ];
+            imports = with config.flake.modules.homeManager; [
+              # Modules
+              base
+              # languages.clojure
+              # languages.haskell
+              # languages.nix
+              shell
+            ];
           };
         }
       ];
