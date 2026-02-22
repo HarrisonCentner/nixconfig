@@ -89,6 +89,10 @@ Plug 'HarrisonCentner/vimux-tidal'
 
 call plug#end() " start all the plugins above
 
+" Nerd Tree stuff
+autocmd VimEnter * if argc() == 0 | NERDTree | endif
+
+" UltiSnips stuff
 let g:vimtex_view_method='skim'
 let g:UltiSnipsSnippetDirectories = ['~/.vim/UltiSnips', 'UltiSnips']
 let g:UltiSnipsExpandTrigger="<tab>"
