@@ -4,16 +4,17 @@
     {
       home.packages = with pkgs; [
         # unix utilities
+        bottom
         duf
         e2fsprogs
         htop
         parted
         util-linux
-        bottom
         # nix stuff
         direnv
         nix-direnv
         nix-output-monitor
+        nix-tree
         nurl
         # file processing
         file
@@ -28,6 +29,7 @@
         # hardware
         usbutils
         # compression
+        ouch
         xz
       ];
     };
