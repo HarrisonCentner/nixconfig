@@ -5,10 +5,11 @@
       zsh = {
         enable = true;
         shellAliases = {
-          vim = "vim -u $HOME/.vimrc";
-          v = "vim -u $HOME/.vimrc";
-          tree = "ls --tree";
           claude = "claude-bun";
+          q = "exit";
+          tree = "ls --tree";
+          v = "vim -u $HOME/.vimrc";
+          vim = "vim -u $HOME/.vimrc";
         };
         oh-my-zsh = {
           enable = true;
