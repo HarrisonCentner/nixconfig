@@ -18,6 +18,7 @@
         hcentner
 
         # Apps
+        ebooks
         password-manager
 
         # Services
