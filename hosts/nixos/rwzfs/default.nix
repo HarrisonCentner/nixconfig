@@ -41,7 +41,6 @@
 
               # Apps
               browser
-              ebooks
               editor
               messaging
               notes
