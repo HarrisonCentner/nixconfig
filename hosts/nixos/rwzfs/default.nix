@@ -18,6 +18,7 @@
         hcentner
 
         # Apps
+        ebooks
         password-manager
 
         # Services
@@ -40,7 +41,6 @@
 
               # Apps
               browser
-              ebooks
               editor
               messaging
               notes

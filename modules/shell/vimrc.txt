@@ -60,7 +60,7 @@ Plug 'junegunn/vim-plug'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-unimpaired'
-Plug 'scrooloose/nerdtree', { 'on' : 'NERDTreeToggle' }
+Plug 'scrooloose/nerdtree'
 Plug 'rafi/awesome-vim-colorschemes'
 Plug 'preservim/vimux'
 Plug 'JamshedVesuna/vim-markdown-preview'
