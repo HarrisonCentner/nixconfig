@@ -12,12 +12,6 @@
       "command": "nixd",
       "filetypes": ["nix"]
     },
-    "dbt": {
-      "command": "dbt-language-server",
-      "args": ["-d"],
-      "filetypes": ["sql", "yml", "yaml"],
-      "rootPatterns": ["dbt_project.yml", "profiles.yml"]
-    },
     "clojure": {
       "command": "clojure-lsp",
       "filetypes": ["clojure", "edn"],
