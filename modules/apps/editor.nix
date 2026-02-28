@@ -3,8 +3,9 @@
     { pkgs, inputs, ... }:
     {
       nixpkgs.config.allowUnfree = true;
-      home.packages = [
-        inputs.claude-code.packages.${pkgs.system}.claude-code-bun
+      home.packages = with pkgs; [
+        gh
+        inputs.claude-code.packages.${pkgs.stdenv.hostPlatform.system}.claude-code-bun
       ];
     };
 }
