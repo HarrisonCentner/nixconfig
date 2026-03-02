@@ -42,10 +42,11 @@
               # Apps
               browser
               editor
-              messaging
-              notes
               libreoffice
+              messaging
               music
+              notes
+              photography
 
               # Services
               docker
