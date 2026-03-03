@@ -1,7 +1,13 @@
 {
   flake.modules.nixos.desktop =
-    { pkgs, ... }:
+    { pkgs, lib, ... }:
     {
+      # Disable accessibility features
+      services = {
+        speechd.enable = false; 
+        gnome.at-spi2-core.enable = lib.mkForce false;
+      };
+
       # Exclude Core Apps From Being Installed.
       environment.gnome.excludePackages = with pkgs; [
         # baobab      # disk usage analyzer (I actually like this one)
@@ -12,6 +18,7 @@
         file-roller # archive manager
         geary # email client
         gedit # text editor
+        orca # gnome screen reader
         seahorse # password manager
         simple-scan # document scanner
         # totem       # video player (currently still use)
