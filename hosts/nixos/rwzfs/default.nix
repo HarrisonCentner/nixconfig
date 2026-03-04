@@ -42,7 +42,7 @@
               # Apps
               browser
               editor
-              libreoffice
+              office
               messaging
               music
               notes
