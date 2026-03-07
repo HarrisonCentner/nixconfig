@@ -1,5 +1,5 @@
 {
-  description = "My hybrid nixos / nix-darwin system via dendritic nix and flake parts";
+  description = "Configs for my nixos & nix-darwin systems using dendritic nix.";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
