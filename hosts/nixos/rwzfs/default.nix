@@ -50,6 +50,7 @@
 
               # Services
               docker
+              cloud
             ];
           };
         }
