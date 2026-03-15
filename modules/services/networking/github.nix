@@ -7,6 +7,7 @@
         url = "https://github.com/kgwgk/hledger-romeai";
         tokenFile = "/var/lib/github-runners/hledger-romeai.token";
         name = "zylphia";
+        extraLabels = [ "nixos-zylphia" ];
         extraPackages = with pkgs; [
           git
           nix
