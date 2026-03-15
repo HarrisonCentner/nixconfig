@@ -18,6 +18,7 @@
         immich
         tailscale
         paperless
+        github-runner
       ]
       ++ [
         {
