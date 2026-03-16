@@ -70,15 +70,16 @@
         script = ''
           dd if=/dev/random of=/run/ephemeral.key bs=32 count=1
 
-          cryptsetup open --type plain --key-file /run/ephemeral.key /dev/vdb crypt-rw-store
-          mkfs.ext4 -L rw-store /dev/mapper/crypt-rw-store
-          mkdir -p /nix/.rw-store
-          mount /dev/mapper/crypt-rw-store /nix/.rw-store
+          setup_volume() {
+            local dev="$1" name="$2" mount="$3"
+            cryptsetup open --type plain --key-file /run/ephemeral.key "$dev" "$name"
+            mkfs.ext4 -L "$name" "/dev/mapper/$name"
+            mkdir -p "$mount"
+            mount "/dev/mapper/$name" "$mount"
+          }
 
-          cryptsetup open --type plain --key-file /run/ephemeral.key /dev/vdc crypt-data
-          mkfs.ext4 -L data /dev/mapper/crypt-data
-          mkdir -p /var/lib/microvm/agent-1
-          mount /dev/mapper/crypt-data /var/lib/microvm/agent-1
+          setup_volume /dev/vdb crypt-rw-store /nix/.rw-store
+          setup_volume /dev/vdc crypt-data /var/lib/microvm/agent-1
 
           rm /run/ephemeral.key
         '';
