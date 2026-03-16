@@ -41,14 +41,7 @@
 
       console.useXkbConfig = true;
 
-      services = {
-        xserver = {
-          enable = true;
-          xkb.options = "caps:swapescape";
-        };
-        displayManager.gdm.enable = true;
-        desktopManager.gnome.enable = true;
-      };
+      services.xserver.xkb.options = "caps:swapescape";
 
     };
 }

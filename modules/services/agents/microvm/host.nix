@@ -6,15 +6,9 @@
   flake.modules.nixos.microvm-host =
     { pkgs, ... }:
     {
-      # TAP device for microvm-agent-1
+      # Network config for TAP device (QEMU creates the TAP itself)
       systemd.network = {
         enable = true;
-        netdevs."10-vm-agent-1" = {
-          netdevConfig = {
-            Name = "vm-agent-1";
-            Kind = "tap";
-          };
-        };
         networks."10-vm-agent-1" = {
           matchConfig.Name = "vm-agent-1";
           networkConfig = {
@@ -42,5 +36,30 @@
           ExecStart = "${pkgs.virtiofsd}/bin/virtiofsd --socket-path=/var/lib/microvm/agent-1/virtiofs-ro-store.sock --shared-dir=/nix/store --sandbox=none --socket-group=users";
         };
       };
+
+      # Shared directory between host and guest via virtiofs
+      systemd.tmpfiles.rules = [
+        "d /var/lib/microvm/agent-1/shared 0755 root users -"
+      ];
+
+      systemd.services.virtiofsd-microvm-agent-1-shared = {
+        description = "virtiofsd for microvm-agent-1 shared directory";
+        wantedBy = [ "multi-user.target" ];
+        serviceConfig = {
+          Type = "simple";
+          Restart = "always";
+          ExecStart = "${pkgs.virtiofsd}/bin/virtiofsd --socket-path=/var/lib/microvm/agent-1/virtiofs-shared.sock --shared-dir=/var/lib/microvm/agent-1/shared --sandbox=none --socket-group=users";
+        };
+      };
+
+      # Script to copy host Nix DB to the shared directory
+      environment.systemPackages = [
+        (pkgs.writeShellScriptBin "microvm-sync-nix-db" ''
+          set -euo pipefail
+          echo "Copying Nix DB to shared directory..."
+          cp /nix/var/nix/db/db.sqlite /var/lib/microvm/agent-1/shared/db.sqlite
+          echo "Done."
+        '')
+      ];
     };
 }

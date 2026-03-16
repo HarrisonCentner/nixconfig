@@ -2,10 +2,14 @@
   flake.modules.nixos.desktop =
     { pkgs, lib, ... }:
     {
+
       # Disable accessibility features
       services = {
-        speechd.enable = false;
+        desktopManager.gnome.enable = true;
+        displayManager.gdm.enable = true;
         gnome.at-spi2-core.enable = lib.mkForce false;
+        speechd.enable = false;
+        xserver.enable = true;
       };
 
       # Exclude Core Apps From Being Installed.
@@ -48,6 +52,7 @@
     { pkgs, ... }:
     {
       home.packages = with pkgs; [
+        # gnome won't let me completely control my screen brightness
         brightnessctl
       ];
     };
