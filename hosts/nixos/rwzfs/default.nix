@@ -24,6 +24,7 @@
         # Services
         docker
         tailscale
+        microvm-host
       ]
       ++ [
         {

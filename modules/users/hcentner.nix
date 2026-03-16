@@ -38,6 +38,7 @@ in
             "wheel"
             "docker"
           ];
+          shell = pkgs.zsh;
           openssh.authorizedKeys.keys = topLevel.config.flake.meta.users.${userName}.authorizedKeys;
           initialPassword = "hkc";
         };
@@ -45,20 +46,6 @@ in
         nix.settings.trusted-users = [ topLevel.config.flake.meta.users.${userName}.username ];
       };
 
-    modules.nixos.base =
-      { pkgs, ... }:
-      {
-        users.users.${userName} = {
-          isNormalUser = true;
-          extraGroups = [
-            "wheel"
-            "networkmanager"
-            "docker"
-            "tty"
-          ];
-          shell = pkgs.zsh;
-        };
-      };
     modules.homeManager.base = {
       home = {
         # homeDirectory = homeDirectory;

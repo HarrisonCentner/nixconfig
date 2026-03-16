@@ -4,7 +4,7 @@
     {
       # Disable accessibility features
       services = {
-        speechd.enable = false; 
+        speechd.enable = false;
         gnome.at-spi2-core.enable = lib.mkForce false;
       };
 
