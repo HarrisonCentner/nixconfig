@@ -5,75 +5,53 @@
   ...
 }:
 let
-  nixosPrefix = "hosts/nixos/";
-  collectNixosHostsModules =
-    modules: lib.filterAttrs (name: _: lib.hasPrefix nixosPrefix name) modules;
-  darwinPrefix = "hosts/darwin/";
-  collectDarwinHostsModules =
-    modules: lib.filterAttrs (name: _: lib.hasPrefix darwinPrefix name) modules;
+  mkHosts =
+    prefix: modules: builder:
+    lib.mapAttrs' (
+      name: module:
+      let
+        hostName = lib.removePrefix prefix name;
+        specialArgs = {
+          inherit inputs;
+          hostConfig.name = hostName;
+        };
+      in
+      {
+        name = hostName;
+        value = builder specialArgs module;
+      }
+    ) (lib.filterAttrs (name: _: lib.hasPrefix prefix name) modules);
 in
 {
-  flake.nixosConfigurations = lib.pipe (collectNixosHostsModules config.flake.modules.nixos) [
-    (lib.mapAttrs' (
-      name: module:
-      let
-        specialArgs = {
-          inherit inputs;
-          hostConfig = {
-            name = lib.removePrefix nixosPrefix name;
+  flake.nixosConfigurations = mkHosts "hosts/nixos/" config.flake.modules.nixos (
+    specialArgs: module:
+    inputs.nixpkgs.lib.nixosSystem {
+      inherit specialArgs;
+      system = "x86_64-linux";
+      modules = [
+        module
+        inputs.home-manager.nixosModules.home-manager
+        inputs.disko.nixosModules.default
+        { home-manager.extraSpecialArgs = specialArgs; }
+      ];
+    }
+  );
+  flake.darwinConfigurations = mkHosts "hosts/darwin/" config.flake.modules.darwin (
+    specialArgs: module:
+    inputs.nix-darwin.lib.darwinSystem {
+      inherit specialArgs;
+      modules = [
+        module
+        inputs.home-manager.darwinModules.home-manager
+        {
+          home-manager = {
+            extraSpecialArgs = specialArgs;
+            useGlobalPkgs = true;
+            useUserPackages = true;
+            backupFileExtension = "backup";
           };
-        };
-      in
-      {
-        name = lib.removePrefix nixosPrefix name;
-        value = inputs.nixpkgs.lib.nixosSystem {
-          inherit specialArgs;
-          system = "x86_64-linux";
-          modules = [
-            module
-            inputs.home-manager.nixosModules.home-manager
-            inputs.disko.nixosModules.default
-          ]
-          ++ [
-            {
-              home-manager.extraSpecialArgs = specialArgs;
-            }
-          ];
-        };
-      }
-    ))
-  ];
-  flake.darwinConfigurations = lib.pipe (collectDarwinHostsModules config.flake.modules.darwin) [
-    (lib.mapAttrs' (
-      name: module:
-      let
-        specialArgs = {
-          inherit inputs;
-          hostConfig = {
-            name = lib.removePrefix darwinPrefix name;
-          };
-        };
-      in
-      {
-        name = lib.removePrefix darwinPrefix name;
-        value = inputs.nix-darwin.lib.darwinSystem {
-          inherit specialArgs;
-          modules = [
-            module
-            inputs.home-manager.darwinModules.home-manager
-          ]
-          ++ [
-            {
-              home-manager = {
-                extraSpecialArgs = specialArgs;
-                useGlobalPkgs = true;
-                useUserPackages = true;
-                backupFileExtension = "backup";
-              };
-            }
-          ];
-        };
-      }
-    ))
-  ];
+        }
+      ];
+    }
+  );
 }
