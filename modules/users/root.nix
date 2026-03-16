@@ -6,14 +6,13 @@
   flake = {
     meta.users = {
       root = {
-        authorizedKeys = [
-        ];
+        authorizedKeys = [ ];
       };
     };
 
     modules.nixos.root = {
       users.users.root = {
-        initialPassword = "hkc";
+        initialPassword = "root";
       };
     };
   };
