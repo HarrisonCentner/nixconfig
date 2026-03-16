@@ -28,6 +28,7 @@
       # NAT for VM internet access
       networking.nat = {
         enable = true;
+        externalInterface = "wlp0s20f3";
         internalInterfaces = [ "vm-agent-1" ];
       };
 
@@ -37,7 +38,7 @@
         wantedBy = [ "multi-user.target" ];
         serviceConfig = {
           Type = "simple";
-          Restart = "on-failure";
+          Restart = "always";
           ExecStart = "${pkgs.virtiofsd}/bin/virtiofsd --socket-path=/var/lib/microvm/agent-1/virtiofs-ro-store.sock --shared-dir=/nix/store --sandbox=none --socket-group=users";
         };
       };

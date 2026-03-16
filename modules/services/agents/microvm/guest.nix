@@ -9,6 +9,7 @@
       imports = [ inputs.microvm.nixosModules.microvm ];
 
       nix.optimise.automatic = lib.mkForce false;
+      networking.firewall.enable = false;
 
       microvm = {
         hypervisor = "qemu";
@@ -51,7 +52,10 @@
         enable = true;
         networks."20-eth0" = {
           matchConfig.MACAddress = "02:00:00:00:00:01";
-          networkConfig.Address = "10.0.100.2/30";
+          networkConfig = {
+            Address = "10.0.100.2/30";
+            DNS = [ "1.1.1.1" ];
+          };
           routes = [{ Gateway = "10.0.100.1"; }];
         };
       };
@@ -78,8 +82,8 @@
             mount "/dev/mapper/$name" "$mount"
           }
 
-          setup_volume /dev/vdb crypt-rw-store /nix/.rw-store
-          setup_volume /dev/vdc crypt-data /var/lib/microvm/agent-1
+          setup_volume /dev/vda crypt-rw-store /nix/.rw-store
+          setup_volume /dev/vdb crypt-data /var/lib/microvm/agent-1
 
           rm /run/ephemeral.key
         '';
