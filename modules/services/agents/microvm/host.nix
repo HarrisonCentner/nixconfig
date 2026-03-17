@@ -26,29 +26,31 @@
         internalInterfaces = [ "vm-agent-1" ];
       };
 
-      # virtiofsd for microvm-agent-1
-      systemd.services.virtiofsd-microvm-agent-1 = {
-        description = "virtiofsd for microvm-agent-1 /nix/store";
-        wantedBy = [ "multi-user.target" ];
-        serviceConfig = {
-          Type = "simple";
-          Restart = "always";
-          ExecStart = "${pkgs.virtiofsd}/bin/virtiofsd --socket-path=/var/lib/microvm/agent-1/virtiofs-ro-store.sock --shared-dir=/nix/store --sandbox=none --socket-group=users";
+      systemd = {
+        # virtiofsd for microvm-agent-1
+        services.virtiofsd-microvm-agent-1 = {
+          description = "virtiofsd for microvm-agent-1 /nix/store";
+          wantedBy = [ "multi-user.target" ];
+          serviceConfig = {
+            Type = "simple";
+            Restart = "always";
+            ExecStart = "${pkgs.virtiofsd}/bin/virtiofsd --socket-path=/var/lib/microvm/agent-1/virtiofs-ro-store.sock --shared-dir=/nix/store --sandbox=none --socket-group=users";
+          };
         };
-      };
 
-      # Shared directory between host and guest via virtiofs
-      systemd.tmpfiles.rules = [
-        "d /var/lib/microvm/agent-1/shared 0755 root users -"
-      ];
+        # Shared directory between host and guest via virtiofs
+        tmpfiles.rules = [
+          "d /var/lib/microvm/agent-1/shared 0755 root users -"
+        ];
 
-      systemd.services.virtiofsd-microvm-agent-1-shared = {
-        description = "virtiofsd for microvm-agent-1 shared directory";
-        wantedBy = [ "multi-user.target" ];
-        serviceConfig = {
-          Type = "simple";
-          Restart = "always";
-          ExecStart = "${pkgs.virtiofsd}/bin/virtiofsd --socket-path=/var/lib/microvm/agent-1/virtiofs-shared.sock --shared-dir=/var/lib/microvm/agent-1/shared --sandbox=none --socket-group=users";
+        services.virtiofsd-microvm-agent-1-shared = {
+          description = "virtiofsd for microvm-agent-1 shared directory";
+          wantedBy = [ "multi-user.target" ];
+          serviceConfig = {
+            Type = "simple";
+            Restart = "always";
+            ExecStart = "${pkgs.virtiofsd}/bin/virtiofsd --socket-path=/var/lib/microvm/agent-1/virtiofs-shared.sock --shared-dir=/var/lib/microvm/agent-1/shared --sandbox=none --socket-group=users";
+          };
         };
       };
 

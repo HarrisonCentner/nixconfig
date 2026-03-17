@@ -10,11 +10,15 @@ in
         services.blocky = {
           enable = true;
           settings = {
-            ports.dns = dnsPort;
-            ports.http = 4000;
-            ports.https = 443;
-            log.level = "warning";
-            log.privacy = true;
+            ports = {
+              dns = dnsPort;
+              http = 4000;
+              https = 443;
+            };
+            log = {
+              level = "warning";
+              privacy = true;
+            };
             upstreams.groups.default = [
               "https://one.one.one.one/dns-query" # Using Cloudflare's DNS over HTTPS server for resolving queries.
             ];

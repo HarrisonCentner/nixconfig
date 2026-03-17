@@ -18,8 +18,10 @@ in
           openFirewall = true;
           accelerationDevices = [ "/dev/dri/renderD128" ];
         };
-        networking.firewall.allowedTCPPorts = [ defaultPort ];
-        networking.firewall.allowedUDPPorts = [ defaultPort ];
+        networking.firewall = {
+          allowedTCPPorts = [ defaultPort ];
+          allowedUDPPorts = [ defaultPort ];
+        };
       };
     };
 }

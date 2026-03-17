@@ -8,21 +8,23 @@
     {
       imports = [ inputs.microvm.nixosModules.microvm ];
 
-      nix.optimise.automatic = lib.mkForce false;
+      nix = {
+        optimise.automatic = lib.mkForce false;
+        channel.enable = false;
+        settings = {
+          accept-flake-config = true;
+          substituters = [
+            "https://devenv.cachix.org"
+          ];
+          trusted-public-keys = [
+            "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
+          ];
+        };
+      };
       boot.nixStoreMountOpts = [
         "nodev"
         "nosuid"
       ];
-      nix.channel.enable = false;
-      nix.settings = {
-        accept-flake-config = true;
-        substituters = [
-          "https://devenv.cachix.org"
-        ];
-        trusted-public-keys = [
-          "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
-        ];
-      };
       environment.systemPackages = [
         pkgs.cachix
         pkgs.dconf
@@ -91,41 +93,43 @@
       };
 
       # Set up dm-crypt for rw-store in initrd, before the overlay is mounted
-      boot.initrd.kernelModules = [
-        "dm-mod"
-        "dm-crypt"
-        "algif_skcipher"
-        "aes"
-        "xts"
-      ];
-      boot.initrd.systemd = {
-        enable = true;
-        extraBin = {
-          cryptsetup = "${pkgs.cryptsetup}/bin/cryptsetup";
-          mkfs-ext4 = "${pkgs.e2fsprogs}/bin/mkfs.ext4";
-        };
-        services.ephemeral-crypt = {
-          description = "Set up dm-crypt with ephemeral keys";
-          wantedBy = [ "initrd.target" ];
-          before = [ "sysroot-nix-.rw\\x2dstore.mount" ];
-          after = [ "systemd-modules-load.service" ];
-          unitConfig.DefaultDependencies = false;
-          serviceConfig = {
-            Type = "oneshot";
-            RemainAfterExit = true;
+      boot.initrd = {
+        kernelModules = [
+          "dm-mod"
+          "dm-crypt"
+          "algif_skcipher"
+          "aes"
+          "xts"
+        ];
+        systemd = {
+          enable = true;
+          extraBin = {
+            cryptsetup = "${pkgs.cryptsetup}/bin/cryptsetup";
+            mkfs-ext4 = "${pkgs.e2fsprogs}/bin/mkfs.ext4";
           };
-          script = ''
-            setup_volume() {
-              local dev="$1" name="$2"
-              dd if=/dev/random of=/run/ephemeral.key bs=32 count=1
-              cryptsetup open --type plain --key-file /run/ephemeral.key "$dev" "$name"
-              mkfs.ext4 -L "$name" "/dev/mapper/$name"
-              rm /run/ephemeral.key
-            }
+          services.ephemeral-crypt = {
+            description = "Set up dm-crypt with ephemeral keys";
+            wantedBy = [ "initrd.target" ];
+            before = [ "sysroot-nix-.rw\\x2dstore.mount" ];
+            after = [ "systemd-modules-load.service" ];
+            unitConfig.DefaultDependencies = false;
+            serviceConfig = {
+              Type = "oneshot";
+              RemainAfterExit = true;
+            };
+            script = ''
+              setup_volume() {
+                local dev="$1" name="$2"
+                dd if=/dev/random of=/run/ephemeral.key bs=32 count=1
+                cryptsetup open --type plain --key-file /run/ephemeral.key "$dev" "$name"
+                mkfs.ext4 -L "$name" "/dev/mapper/$name"
+                rm /run/ephemeral.key
+              }
 
-            setup_volume /dev/vda crypt-rw-store
-            setup_volume /dev/vdb crypt-data
-          '';
+              setup_volume /dev/vda crypt-rw-store
+              setup_volume /dev/vdb crypt-data
+            '';
+          };
         };
       };
 
@@ -152,34 +156,36 @@
       # Copy host Nix DB then re-register guest closure paths on top.
       # microvm.nix's postBootCommands registers the guest closure first,
       # then this service overwrites with the host DB and re-registers.
-      systemd.services.nix-load-host-db = {
-        description = "Load host Nix DB into guest";
-        wantedBy = [ "multi-user.target" ];
-        before = [
-          "nix-daemon.service"
-          "home-manager-microvm\\x2dagent.service"
-        ];
-        after = [ "nix-store.mount" ];
-        requires = [ "nix-store.mount" ];
-        serviceConfig = {
-          Type = "oneshot";
-          RemainAfterExit = true;
+      systemd = {
+        services.nix-load-host-db = {
+          description = "Load host Nix DB into guest";
+          wantedBy = [ "multi-user.target" ];
+          before = [
+            "nix-daemon.service"
+            "home-manager-microvm\\x2dagent.service"
+          ];
+          after = [ "nix-store.mount" ];
+          requires = [ "nix-store.mount" ];
+          serviceConfig = {
+            Type = "oneshot";
+            RemainAfterExit = true;
+          };
+          script = ''
+            if [ -f /mnt/host-shared/db.sqlite ]; then
+              cp /mnt/host-shared/db.sqlite /nix/var/nix/db/db.sqlite
+            fi
+
+            # Re-register guest closure paths on top of the host DB
+            if [[ "$(cat /proc/cmdline)" =~ regInfo=([^ ]*) ]]; then
+              ${pkgs.nix}/bin/nix-store --load-db < "''${BASH_REMATCH[1]}"
+            fi
+          '';
         };
-        script = ''
-          if [ -f /mnt/host-shared/db.sqlite ]; then
-            cp /mnt/host-shared/db.sqlite /nix/var/nix/db/db.sqlite
-          fi
 
-          # Re-register guest closure paths on top of the host DB
-          if [[ "$(cat /proc/cmdline)" =~ regInfo=([^ ]*) ]]; then
-            ${pkgs.nix}/bin/nix-store --load-db < "''${BASH_REMATCH[1]}"
-          fi
-        '';
+        # Create home directory on first mount
+        tmpfiles.rules = [
+          "d /var/lib/microvm/agent-1/home/microvm-agent 0700 microvm-agent users -"
+        ];
       };
-
-      # Create home directory on first mount
-      systemd.tmpfiles.rules = [
-        "d /var/lib/microvm/agent-1/home/microvm-agent 0700 microvm-agent users -"
-      ];
     };
 }
