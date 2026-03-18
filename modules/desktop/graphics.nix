@@ -1,6 +1,11 @@
 {
   flake.modules.nixos.intel-graphics =
-    { pkgs, lib, config, ... }:
+    {
+      pkgs,
+      lib,
+      config,
+      ...
+    }:
     {
       hardware = {
         enableRedistributableFirmware = true;
