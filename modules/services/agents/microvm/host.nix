@@ -1,5 +1,9 @@
 {
   flake.modules.nixos.microvm-host = {
+    systemd.tmpfiles.rules = [
+      "d /var/lib/microvms 0755 hcentner users -"
+    ];
+
     systemd.network = {
       enable = true;
       networks = {
