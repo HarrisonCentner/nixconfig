@@ -9,6 +9,7 @@
       [
         # Modules
         base
+        intel-graphics
         config.flake.nixosModules."zylphia-disko"
         config.flake.nixosModules.zylphia-hardware
         shell

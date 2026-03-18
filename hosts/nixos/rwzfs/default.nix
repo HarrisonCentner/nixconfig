@@ -10,6 +10,7 @@
         # Modules
         base
         desktop
+        intel-graphics
         config.flake.nixosModules.rwzfs-disko
         config.flake.nixosModules.rwzfs-hardware
         shell

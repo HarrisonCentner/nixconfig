@@ -1,9 +1,7 @@
 {
   flake.nixosModules.rwzfs-hardware =
     {
-      pkgs,
       lib,
-      config,
       ...
     }:
     {
@@ -25,12 +23,6 @@
           "8812au"
         ];
         extraModulePackages = [ ];
-      };
-
-      hardware = {
-        enableRedistributableFirmware = true;
-        firmware = with pkgs; [ linux-firmware ];
-        cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
       };
 
       networking = {
