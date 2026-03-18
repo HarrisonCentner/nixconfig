@@ -14,6 +14,9 @@
         config.flake.nixosModules.zylphia-hardware
         shell
 
+        # Users
+        hcentner
+
         # Services
         ssh
         immich

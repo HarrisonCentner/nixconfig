@@ -20,8 +20,7 @@ in
         # key = "0AAF2901E8040715"; # ed25519/0x0AAF2901E8040715
         # keygrip = [
         # ];
-        # authorizedKeys = [
-        # ];
+        authorizedKeys = [ ];
       };
     };
 
