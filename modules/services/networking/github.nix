@@ -2,10 +2,10 @@
   flake.modules.nixos.github-runner =
     { pkgs, ... }:
     {
-      services.github-runners.hledger-romeai = {
+      services.github-runners.kgwgk = {
         enable = true;
-        url = "https://github.com/kgwgk/hledger-romeai";
-        tokenFile = "/var/lib/github-runners/hledger-romeai.token";
+        url = "https://github.com/kgwgk";
+        tokenFile = "/var/lib/github-runners/kgwgk.token";
         name = "zylphia";
         replace = true;
         extraLabels = [ "nixos-zylphia" ];
