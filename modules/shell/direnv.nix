@@ -8,6 +8,9 @@
             global = {
               hide_env_diff = true;
             };
+            whitelist = {
+              prefix = ["/home/hcentner/software/rome"];
+            };
           };
           nix-direnv.enable = true;
         };
