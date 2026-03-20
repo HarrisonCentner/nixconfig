@@ -14,6 +14,7 @@
               name = "HarrisonCentner";
               email = "harrisoncent@proton.me";
             };
+            revset-aliases."immutable_heads()" = "none()";
           };
         };
 
