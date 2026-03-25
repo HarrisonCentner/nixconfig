@@ -1,38 +1,12 @@
 {
-  flake.modules.nixos.microvm-host = {
-    systemd.tmpfiles.rules = [
-      "d /var/lib/microvms 0755 hcentner users -"
-    ];
-
-    systemd.network = {
-      enable = true;
-      networks = {
-        "10-vm-desktop" = {
-          matchConfig.Name = "vm-desktop";
-          networkConfig = {
-            Address = "10.0.100.1/30";
-            IPv4Forwarding = true;
-            IPv6Forwarding = true;
-          };
-        };
-        "10-vm-headless" = {
-          matchConfig.Name = "vm-headless";
-          networkConfig = {
-            Address = "10.0.100.5/30";
-            IPv4Forwarding = true;
-            IPv6Forwarding = true;
-          };
-        };
-      };
+  microvmLib,
+  ...
+}:
+{
+  flake.modules.nixos.microvm-host =
+    { pkgs, ... }:
+    microvmLib.mkHostConfig {
+      vmCount = 3;
+      virtiofsdPackage = pkgs.virtiofsd;
     };
-
-    networking.nat = {
-      enable = true;
-      externalInterface = "wlp0s20f3";
-      internalInterfaces = [
-        "vm-desktop"
-        "vm-headless"
-      ];
-    };
-  };
 }
