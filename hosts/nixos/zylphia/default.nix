@@ -18,7 +18,6 @@
         hcentner
 
         # Services
-        ssh
         immich
         tailscale
         paperless
