@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.desktop =
+  flake.modules.nixos.desktop-gnome =
     { pkgs, lib, ... }:
     {
 
@@ -48,7 +48,7 @@
         gnome-weather # (displays fahrenheit incorrectly even after updating org.gnome.GWeather4.temperature-unit)
       ];
     };
-  flake.modules.homeManager.desktop =
+  flake.modules.homeManager.desktop-gnome =
     { pkgs, ... }:
     {
       home.packages = with pkgs; [

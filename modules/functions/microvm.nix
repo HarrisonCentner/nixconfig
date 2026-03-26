@@ -35,6 +35,7 @@
             microvm-guest
             root
             microvm-agent
+            shell
             ssh
           ])
           ++ nixosModules;

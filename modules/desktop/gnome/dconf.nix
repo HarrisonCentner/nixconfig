@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.desktop =
+  flake.modules.homeManager.desktop-gnome =
     { lib, ... }:
     with lib.hm.gvariant;
     {

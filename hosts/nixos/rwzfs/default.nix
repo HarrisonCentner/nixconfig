@@ -9,7 +9,7 @@
       [
         # Modules
         base
-        desktop
+        desktop-gnome
         intel-graphics
         config.flake.nixosModules.rwzfs-disko
         config.flake.nixosModules.rwzfs-hardware
@@ -33,7 +33,7 @@
             imports = with config.flake.modules.homeManager; [
               # Modules
               base
-              desktop
+              desktop-gnome
               shell
 
               # Languages

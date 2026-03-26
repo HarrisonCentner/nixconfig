@@ -14,12 +14,12 @@ in
   flake.modules.nixos = lib.mkMerge [
     (mkQwfwq 1 {
       nixosModules = with config.flake.modules.nixos; [
-        desktop
+        desktop-niri
         microvm-guest-qemu
         docker
       ];
       homeManagerModules = with config.flake.modules.homeManager; [
-        desktop
+        desktop-niri
         browser
       ];
     })
