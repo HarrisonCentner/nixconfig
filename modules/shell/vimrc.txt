@@ -61,6 +61,8 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-unimpaired'
 Plug 'scrooloose/nerdtree'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 Plug 'rafi/awesome-vim-colorschemes'
 Plug 'preservim/vimux'
 Plug 'JamshedVesuna/vim-markdown-preview'
@@ -91,6 +93,11 @@ call plug#end() " start all the plugins above
 
 " Nerd Tree stuff
 autocmd VimEnter * if argc() == 0 | NERDTree | endif
+
+" fzf fuzzy file search
+nnoremap <C-p> :Files<CR>
+nnoremap <leader>b :Buffers<CR>
+nnoremap <leader>/ :Rg<CR>
 
 " UltiSnips stuff
 let g:vimtex_view_method='skim'
