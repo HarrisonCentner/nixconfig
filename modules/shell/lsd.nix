@@ -8,6 +8,9 @@
           filetype = { };
         };
       };
+      zsh.shellAliases = {
+        tree = "ls --tree";
+      };
     };
   };
 }

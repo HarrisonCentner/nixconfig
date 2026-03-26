@@ -9,6 +9,10 @@
         vim = {
           enable = true;
         };
+        zsh.shellAliases = {
+          v = "vim -u $HOME/.vimrc";
+          vim = "vim -u $HOME/.vimrc";
+        };
       };
     };
 }
