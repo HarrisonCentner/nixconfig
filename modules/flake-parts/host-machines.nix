@@ -32,6 +32,8 @@ in
         module
         inputs.home-manager.nixosModules.home-manager
         inputs.disko.nixosModules.default
+        inputs.microvm.nixosModules.microvm
+        inputs.niri.nixosModules.niri
         { home-manager.extraSpecialArgs = specialArgs; }
       ];
     }

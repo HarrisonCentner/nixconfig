@@ -1,13 +1,7 @@
 {
-  inputs,
-  ...
-}:
-{
   flake.modules.nixos.microvm-guest =
     { lib, pkgs, ... }:
     {
-      imports = [ inputs.microvm.nixosModules.microvm ];
-
       nix = {
         optimise.automatic = lib.mkForce false;
         channel.enable = false;

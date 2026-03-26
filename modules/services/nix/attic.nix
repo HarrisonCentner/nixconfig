@@ -1,12 +1,13 @@
 {
-  inputs,
-  ...
-}:
-{
   flake.modules.nixos.attic =
     { ... }:
     {
-      imports = [ inputs.attic.nixosModules.atticd ];
+      services.tailscale.serve = {
+        enable = true;
+        services.attic.endpoints = {
+          "tcp:5580" = "http://localhost:5580";
+        };
+      };
 
       services.atticd = {
         enable = true;

@@ -6,7 +6,6 @@
   flake.modules.nixos.desktop-niri =
     { pkgs, ... }:
     {
-      imports = [ inputs.niri.nixosModules.niri ];
 
       programs.niri = {
         enable = true;
