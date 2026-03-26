@@ -10,6 +10,12 @@ in
           "video"
           "render"
         ];
+        services.tailscale.serve = {
+          enable = true;
+          services.immich.endpoints = {
+            "tcp:${toString defaultPort}" = "http://localhost:${toString defaultPort}";
+          };
+        };
         services.immich = {
           enable = true;
           port = defaultPort;
