@@ -1,7 +1,15 @@
 {
+  inputs,
+  ...
+}:
+{
   flake.modules.nixos.microvm-guest =
     { lib, pkgs, ... }:
     {
+      # Imported here instead of host-machines.nix because applying the microvm
+      # module globally overrides filesystem/boot config on bare-metal hosts,
+      # preventing the nix store from mounting and dropping into emergency mode.
+      imports = [ inputs.microvm.nixosModules.microvm ];
       nix = {
         optimise.automatic = lib.mkForce false;
         channel.enable = false;
