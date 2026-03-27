@@ -1,30 +1,12 @@
 # NixConfig
 
-NixOS and nix-darwin system configurations using flake-parts and import-tree.
+NixOS and nix-darwin system configurations using [flake-parts](https://github.com/hercules-ci/flake-parts) and [import-tree](https://github.com/vic/import-tree).
 
 ## Architecture
 
-This project uses [flake-parts](https://github.com/hercules-ci/flake-parts) with [import-tree](https://github.com/vic/import-tree) to auto-import all `.nix` files under `modules/` and `hosts/`.
-
 ### Flake-parts modules
 
-Every `.nix` file under `modules/` and `hosts/` is a **flake-parts module**. These are NOT raw NixOS/home-manager modules — they are flake-parts modules that *define* NixOS and home-manager modules via `flake.modules.nixos.<name>` and `flake.modules.homeManager.<name>`.
-
-Example module pattern:
-```nix
-{
-  flake.modules.nixos.desktop =
-    { pkgs, lib, ... }:
-    {
-      # NixOS config goes here
-    };
-  flake.modules.homeManager.desktop =
-    { pkgs, ... }:
-    {
-      # home-manager config goes here
-    };
-}
-```
+Every `.nix` file under `modules/` and `hosts/` is a **flake-parts module**, which *defines* NixOS and home-manager modules via `flake.modules.nixos.<name>` and `flake.modules.homeManager.<name>`.
 
 ### Host configs
 
