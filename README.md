@@ -6,7 +6,7 @@ NixOS and nix-darwin system configurations using [flake-parts](https://github.co
 
 ### Flake-parts modules
 
-Every `.nix` file under `modules/` and `hosts/` is a **flake-parts module**, which *defines* NixOS and home-manager modules via `flake.modules.nixos.<name>` and `flake.modules.homeManager.<name>`.
+Every `.nix` file under `modules/` and `hosts/` is a **flake-parts module**, which defines NixOS and home-manager modules via `flake.modules.nixos.<name>` and `flake.modules.homeManager.<name>`.
 
 ### Host configs
 
