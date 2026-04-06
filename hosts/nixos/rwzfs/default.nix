@@ -9,10 +9,10 @@
       [
         # Modules
         base
-        desktop-gnome
-        intel-graphics
         config.flake.nixosModules.rwzfs-disko
         config.flake.nixosModules.rwzfs-hardware
+        desktop-gnome
+        intel-graphics
         shell
 
         # Users
@@ -24,8 +24,8 @@
 
         # Services
         docker
-        tailscale
         microvm-host
+        tailscale
       ]
       ++ [
         {
@@ -44,15 +44,16 @@
               # Apps
               browser
               editor
-              office
               messaging
               music
               notes
+              office
               photography
+              rss
 
               # Services
-              docker
               cloud
+              docker
             ];
           };
         }
