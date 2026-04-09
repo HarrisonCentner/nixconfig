@@ -6,6 +6,10 @@
           enable = true;
         };
       };
+      xdg.desktopEntries.bottom = {
+        name = "bottom";
+        noDisplay = true;
+      };
     };
   };
 }

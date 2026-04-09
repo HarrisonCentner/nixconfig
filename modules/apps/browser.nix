@@ -2,7 +2,7 @@
   flake.modules.homeManager.browser =
     { pkgs, ... }:
     {
-      programs.firefox.enable = true;
+      # programs.firefox.enable = true;
       home.packages = with pkgs; [
         ungoogled-chromium
       ];

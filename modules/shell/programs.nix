@@ -2,9 +2,12 @@
   flake.modules.homeManager.shell =
     { pkgs, ... }:
     {
+      xdg.desktopEntries.htop = {
+        name = "htop";
+        noDisplay = true;
+      };
       home.packages = with pkgs; [
         # unix utilities
-        bottom
         duf
         e2fsprogs
         htop
