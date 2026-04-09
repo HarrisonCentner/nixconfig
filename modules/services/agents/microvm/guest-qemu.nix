@@ -3,6 +3,10 @@
     microvm = {
       hypervisor = "qemu";
       graphics.enable = true;
+      qemu.extraArgs = [
+        "-display"
+        "gtk,gl=on,grab-on-hover=on"
+      ];
     };
   };
 }

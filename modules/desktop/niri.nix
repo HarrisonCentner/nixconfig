@@ -21,6 +21,7 @@
         swaybg
         swappy
         brightnessctl
+        noctalia-shell
       ];
 
       # Pipewire for audio
@@ -145,7 +146,7 @@
         };
 
         spawn-at-startup = [
-          { argv = [ "noctalia" ]; }
+          { argv = [ "${pkgs.noctalia-shell}/bin/noctalia-shell" ]; }
         ];
       };
     };
