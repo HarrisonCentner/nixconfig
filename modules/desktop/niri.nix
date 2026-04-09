@@ -44,6 +44,8 @@
   flake.modules.homeManager.desktop-niri =
     { pkgs, lib, ... }:
     {
+      programs.ghostty.settings.command = "sh -c 'tmux has-session -t main 2>/dev/null && exec tmux new-session -t main \\; new-window || exec tmux new-session -s main'";
+
       programs.niri.settings = {
         prefer-no-csd = true;
 
