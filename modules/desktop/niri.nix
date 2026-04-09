@@ -13,6 +13,11 @@
         };
       };
 
+      hardware.bluetooth = {
+        enable = true;
+        powerOnBoot = true;
+      };
+
       # Noctalia shell and Wayland utilities
       environment.systemPackages = with pkgs; [
         grim
