@@ -11,7 +11,7 @@
         base
         config.flake.nixosModules.rwzfs-disko
         config.flake.nixosModules.rwzfs-hardware
-        desktop-gnome
+        desktop-niri
         intel-graphics
         shell
 
@@ -33,7 +33,7 @@
             imports = with config.flake.modules.homeManager; [
               # Modules
               base
-              desktop-gnome
+              desktop-niri
               shell
 
               # Languages
