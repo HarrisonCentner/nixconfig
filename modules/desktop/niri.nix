@@ -29,6 +29,39 @@
         noctalia-shell
       ];
 
+      # Battery status and power management
+      services.upower.enable = true;
+      services.power-profiles-daemon.enable = true;
+
+      # Polkit authentication agent
+      security.polkit.enable = true;
+      systemd.user.services.polkit-gnome-agent = {
+        description = "polkit-gnome-authentication-agent-1";
+        wantedBy = [ "graphical-session.target" ];
+        wants = [ "graphical-session.target" ];
+        after = [ "graphical-session.target" ];
+        serviceConfig = {
+          Type = "simple";
+          ExecStart = "${pkgs.polkit_gnome}/lib/polkit-gnome-authentication-agent-1";
+          Restart = "on-failure";
+          RestartSec = 1;
+          TimeoutStopSec = 10;
+        };
+      };
+
+      # Portal for file picker, screen sharing, etc.
+      xdg.portal = {
+        enable = true;
+        extraPortals = with pkgs; [
+          xdg-desktop-portal-gtk
+          xdg-desktop-portal-gnome
+        ];
+        config.niri = {
+          default = [ "gtk" "gnome" ];
+          "org.freedesktop.impl.portal.FileChooser" = [ "gtk" ];
+        };
+      };
+
       # Pipewire for audio
       services.pipewire = {
         enable = true;
@@ -145,6 +178,10 @@
           "XF86AudioRaiseVolume".action.spawn = [ "wpctl" "set-volume" "-l" "1.4" "@DEFAULT_AUDIO_SINK@" "5%+" ];
           "XF86AudioLowerVolume".action.spawn = [ "wpctl" "set-volume" "-l" "1.4" "@DEFAULT_AUDIO_SINK@" "5%-" ];
           "XF86AudioMute".action.spawn = [ "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle" ];
+
+          # Brightness
+          "XF86MonBrightnessUp".action.spawn = [ "brightnessctl" "set" "5%+" ];
+          "XF86MonBrightnessDown".action.spawn = [ "brightnessctl" "set" "5%-" ];
 
           # Screenshots
           "Mod+Ctrl+S".action.spawn = [ "sh" "-c" "${lib.getExe pkgs.grim} -l 0 - | ${pkgs.wl-clipboard}/bin/wl-copy" ];
