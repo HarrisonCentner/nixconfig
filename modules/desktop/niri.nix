@@ -122,6 +122,13 @@
           "Mod+Shift+8".action.move-column-to-workspace = 8;
           "Mod+Shift+9".action.move-column-to-workspace = 9;
 
+          # Column consume/expel
+          "Mod+BracketLeft".action.consume-or-expel-window-left = [];
+          "Mod+BracketRight".action.consume-or-expel-window-right = [];
+
+          # Set column width to 50%
+          "Mod+D".action.set-column-width = "50%";
+
           # Resize
           "Mod+Ctrl+H".action.set-column-width = "-5%";
           "Mod+Ctrl+L".action.set-column-width = "+5%";
