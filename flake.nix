@@ -30,6 +30,10 @@
       url = "github:sodiboo/niri-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    exomonad = {
+      url = "github:HarrisonCentner/exomonad";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
