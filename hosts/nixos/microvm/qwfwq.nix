@@ -19,6 +19,7 @@ in
       ];
       homeManagerModules = with config.flake.modules.homeManager; [
         desktop-niri
+        noctalia-shell
         browser
       ];
     })

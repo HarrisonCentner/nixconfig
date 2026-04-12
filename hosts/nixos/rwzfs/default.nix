@@ -34,6 +34,7 @@
               # Modules
               base
               desktop-niri
+              noctalia-shell
               shell
 
               # Languages

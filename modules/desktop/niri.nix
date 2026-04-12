@@ -18,7 +18,7 @@
         powerOnBoot = true;
       };
 
-      # Noctalia shell and Wayland utilities
+      # Wayland utilities
       environment.systemPackages = with pkgs; [
         grim
         slurp
@@ -26,7 +26,6 @@
         swaybg
         swappy
         brightnessctl
-        noctalia-shell
       ];
 
       # Battery status and power management
@@ -196,9 +195,7 @@
           };
         };
 
-        spawn-at-startup = [
-          { argv = [ "${pkgs.noctalia-shell}/bin/noctalia-shell" ]; }
-        ];
+        spawn-at-startup = [ ];
       };
     };
 }
