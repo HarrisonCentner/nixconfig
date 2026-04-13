@@ -10,7 +10,7 @@
       ];
       programs.zsh.shellAliases = {
         claude = "claude-bun";
-        claudius = "claude-bun --dangerously-skip-permissions";
+        claudius = "sbox -- claude-bun --dangerously-skip-permissions";
       };
     };
 }

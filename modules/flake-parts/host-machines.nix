@@ -33,7 +33,12 @@ in
         inputs.home-manager.nixosModules.home-manager
         inputs.disko.nixosModules.default
         inputs.niri.nixosModules.niri
-        { home-manager.extraSpecialArgs = specialArgs; }
+        {
+          home-manager = {
+            extraSpecialArgs = specialArgs;
+            sharedModules = [ inputs.sbox.homeManagerModules.sbox ];
+          };
+        }
       ];
     }
   );
@@ -47,6 +52,7 @@ in
         {
           home-manager = {
             extraSpecialArgs = specialArgs;
+            sharedModules = [ inputs.sbox.homeManagerModules.sbox ];
             useGlobalPkgs = true;
             useUserPackages = true;
             backupFileExtension = "backup";

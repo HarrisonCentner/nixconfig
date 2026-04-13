@@ -38,6 +38,7 @@
       url = "github:HarrisonCentner/exomonad";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    sbox.url = "github:DavHau/sbox";
   };
 
   outputs =
