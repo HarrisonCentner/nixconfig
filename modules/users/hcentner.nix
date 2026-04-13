@@ -56,8 +56,8 @@ in
           EDITOR = "vim";
         };
         file = {
-          ".vimrc".source = ../../modules/shell/vimrc.txt;
-          ".vim/coc-settings.json".source = ../../modules/shell/coc-settings.json;
+          ".vimrc".source = ../../modules/shell/editor/vimrc.txt;
+          ".vim/coc-settings.json".source = ../../modules/shell/editor/coc-settings.json;
         };
       };
       programs.home-manager.enable = true;

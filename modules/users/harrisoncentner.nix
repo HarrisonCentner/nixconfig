@@ -38,8 +38,8 @@ in
         sessionVariables = {
           EDITOR = "vim";
         };
-        file.".vimrc".source = ../../modules/shell/vimrc.txt;
-        file.".vim/coc-settings.json".source = ../../modules/shell/coc-settings.json;
+        file.".vimrc".source = ../../modules/shell/editor/vimrc.txt;
+        file.".vim/coc-settings.json".source = ../../modules/shell/editor/coc-settings.json;
       };
       programs.home-manager.enable = true;
     };
