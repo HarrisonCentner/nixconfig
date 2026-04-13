@@ -1,9 +1,19 @@
 {
-  flake.modules.homeManager.shell = {
+  flake.modules.homeManager.shell =
+    { pkgs, ... }:
+    let
+      nsbox = pkgs.writeShellScriptBin "nsbox" ''
+        exec ${pkgs.util-linux}/bin/nsenter -t "$1" -n -- "''${2:-zsh}"
+      '';
+    in
+    {
+    home.packages = [ nsbox ];
+
     programs.sbox = {
       enable = true;
       # git worktrees need read access to the parent's .git directory
       allowParent = "read";
+      network = "isolated";
       shareHistory = "off";
       bind = {
         # claude code settings and conversation state

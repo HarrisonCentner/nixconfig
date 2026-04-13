@@ -1,16 +1,21 @@
 {
   flake.modules.homeManager.editor =
-    { pkgs, inputs, ... }:
+    { pkgs, claude-code, exomonad, ... }:
+    let
+      claudius = pkgs.writeShellScriptBin "claudius" ''
+        pid=$(cut -d' ' -f4 /proc/self/stat)
+        echo "Sandbox PID: $pid (use: nsbox $pid)"
+        exec sbox -- claude-bun --dangerously-skip-permissions "$@"
+      '';
+    in
     {
       nixpkgs.config.allowUnfree = true;
       home.packages = with pkgs; [
         gh
-        inputs.claude-code.packages.${pkgs.stdenv.hostPlatform.system}.claude-code-bun
-        inputs.exomonad.packages.${pkgs.stdenv.hostPlatform.system}.exomonad
+        claude-code
+        exomonad
+        claudius
       ];
-      programs.zsh.shellAliases = {
-        claude = "claude-bun";
-        claudius = "sbox -- claude-bun --dangerously-skip-permissions";
-      };
+      programs.zsh.shellAliases.claude = "claude-bun";
     };
 }
