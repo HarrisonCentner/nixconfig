@@ -24,6 +24,10 @@ in
           openFirewall = true;
           accelerationDevices = [ "/dev/dri/renderD128" ];
         };
+
+        ephemeralRoot.persist.directories = [
+          "/var/lib/immich"
+        ];
       };
     };
 }

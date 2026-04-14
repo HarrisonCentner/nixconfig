@@ -3,6 +3,10 @@
     { pkgs, ... }:
     {
       virtualisation.docker.enable = true;
+
+      ephemeralRoot.persist.directories = [
+        "/var/lib/docker"
+      ];
     };
 
   flake.modules.homeManager.docker =

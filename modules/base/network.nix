@@ -21,5 +21,10 @@
       services.resolved = {
         enable = true;
       };
+
+      ephemeralRoot.persist.directories = [
+        "/var/lib/NetworkManager"
+        "/etc/NetworkManager/system-connections"
+      ];
     };
 }

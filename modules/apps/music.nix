@@ -6,5 +6,9 @@
       home.packages = with pkgs; [
         spotify
       ];
+
+      ephemeralRoot.persist.directories = [
+        ".config/spotify"
+      ];
     };
 }

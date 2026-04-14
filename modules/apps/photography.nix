@@ -6,5 +6,10 @@
         darktable
         gimp
       ];
+
+      ephemeralRoot.persist.directories = [
+        ".config/darktable"
+        ".config/GIMP"
+      ];
     };
 }

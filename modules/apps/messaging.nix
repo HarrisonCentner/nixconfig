@@ -7,5 +7,10 @@
         signal-desktop
         slack
       ];
+
+      ephemeralRoot.persist.directories = [
+        ".config/Signal"
+        ".config/Slack"
+      ];
     };
 }

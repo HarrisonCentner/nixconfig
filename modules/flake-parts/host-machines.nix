@@ -33,13 +33,16 @@ in
         inputs.home-manager.nixosModules.home-manager
         inputs.disko.nixosModules.default
         inputs.niri.nixosModules.niri
+        inputs.impermanence.nixosModules.impermanence
         {
           home-manager = {
             extraSpecialArgs = specialArgs // {
               claude-code = inputs.claude-code.packages."x86_64-linux".claude-code-bun;
               exomonad = inputs.exomonad.packages."x86_64-linux".exomonad;
             };
-            sharedModules = [ inputs.sbox.homeManagerModules.sbox ];
+            sharedModules = [
+              inputs.sbox.homeManagerModules.sbox
+            ];
           };
         }
       ];

@@ -7,5 +7,10 @@
         granted
       ];
       programs.zsh.shellAliases.assume = "source ${pkgs.granted}/bin/assume";
+
+      ephemeralRoot.persist.directories = [
+        ".aws"
+        ".granted"
+      ];
     };
 }

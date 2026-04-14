@@ -66,5 +66,9 @@
         };
 
       };
+
+      ephemeralRoot.persist.directories = [
+        ".local/share/jujutsu"
+      ];
     };
 }

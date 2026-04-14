@@ -9,9 +9,10 @@
       [
         # Modules
         base
-        intel-graphics
         config.flake.nixosModules."zylphia-disko"
         config.flake.nixosModules.zylphia-hardware
+        ephemeral-root
+        intel-graphics
         shell
 
         # Users
@@ -29,6 +30,7 @@
             imports = with config.flake.modules.homeManager; [
               # Modules
               base
+              ephemeral-root
               shell
 
               # Languages

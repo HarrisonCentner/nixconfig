@@ -39,6 +39,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     sbox.url = "github:DavHau/sbox";
+    impermanence = {
+      url = "github:nix-community/impermanence";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
   };
 
   outputs =

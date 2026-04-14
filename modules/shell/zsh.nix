@@ -25,6 +25,15 @@
           };
         };
       };
+
+      ephemeralRoot.persist = {
+        directories = [
+          ".local/share/oh-my-zsh"
+        ];
+        files = [
+          ".zsh_history"
+        ];
+      };
     };
   };
 }

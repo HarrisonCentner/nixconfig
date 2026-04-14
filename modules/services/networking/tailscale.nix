@@ -8,5 +8,9 @@
           "--ssh"
         ];
       };
+
+      ephemeralRoot.persist.directories = [
+        "/var/lib/tailscale"
+      ];
     };
 }

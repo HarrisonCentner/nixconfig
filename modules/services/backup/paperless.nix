@@ -14,5 +14,9 @@
           };
         };
       };
+
+      ephemeralRoot.persist.directories = [
+        "/var/lib/paperless"
+      ];
     };
 }

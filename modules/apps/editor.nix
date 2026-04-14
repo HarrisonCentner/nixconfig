@@ -17,5 +17,9 @@
         claudius
       ];
       programs.zsh.shellAliases.claude = "claude-bun";
+
+      ephemeralRoot.persist.directories = [
+        ".claude"
+      ];
     };
 }

@@ -6,6 +6,10 @@
       home.packages = with pkgs; [
         ungoogled-chromium
       ];
+
+      ephemeralRoot.persist.directories = [
+        ".config/chromium"
+      ];
     };
   # Install extensions on ungoogled-chromium
   #

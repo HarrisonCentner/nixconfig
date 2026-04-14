@@ -7,5 +7,15 @@
         _1password-gui.enable = true;
         _1password.enable = true;
       };
+
+      ephemeralRoot.persist.directories = [
+        "/etc/1password"
+      ];
     };
+
+  flake.modules.homeManager.password-manager = {
+    ephemeralRoot.persist.directories = [
+      ".config/1Password"
+    ];
+  };
 }

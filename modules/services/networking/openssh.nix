@@ -9,5 +9,9 @@
           PermitRootLogin = "no";
         };
       };
+
+      ephemeralRoot.persist.directories = [
+        "/etc/ssh"
+      ];
     };
 }

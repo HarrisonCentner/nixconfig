@@ -14,5 +14,9 @@
           nix
         ];
       };
+
+      ephemeralRoot.persist.directories = [
+        "/var/lib/github-runners"
+      ];
     };
 }

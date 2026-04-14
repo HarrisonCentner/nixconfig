@@ -11,5 +11,10 @@
         hledger-iadd
         hledger-fmt
       ];
+
+      ephemeralRoot.persist.directories = [
+        ".config/libreoffice"
+        ".config/sioyek"
+      ];
     };
 }

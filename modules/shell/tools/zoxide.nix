@@ -6,5 +6,9 @@
         enableFishIntegration = true;
       };
     };
+
+    ephemeralRoot.persist.directories = [
+      ".local/share/zoxide"
+    ];
   };
 }

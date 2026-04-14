@@ -15,6 +15,10 @@
           nix-direnv.enable = true;
         };
       };
+
+      ephemeralRoot.persist.directories = [
+        ".local/share/direnv"
+      ];
     };
   };
 }
