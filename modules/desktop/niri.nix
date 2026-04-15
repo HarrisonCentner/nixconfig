@@ -108,6 +108,8 @@
 
         binds = {
           "Mod+Return".action.spawn = "ghostty";
+          "Mod+Slash".action.spawn = "noctalia-shell --toggle-launcher";
+          "Mod+Shift+Slash".action.show-hotkey-overlay = [ ];
 
           "Mod+Q".action.close-window = [];
           "Mod+F".action.maximize-column = [];
