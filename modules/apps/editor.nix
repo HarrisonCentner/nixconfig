@@ -1,6 +1,11 @@
 {
   flake.modules.homeManager.editor =
-    { pkgs, claude-code, exomonad, ... }:
+    {
+      pkgs,
+      claude-code,
+      exomonad,
+      ...
+    }:
     let
       claudius = pkgs.writeShellScriptBin "claudius" ''
         pid=$(cut -d' ' -f4 /proc/self/stat)
