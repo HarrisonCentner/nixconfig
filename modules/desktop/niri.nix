@@ -48,6 +48,20 @@
         };
       };
 
+      # File manager with MTP/automount support (Kindle, phones, USB)
+      programs.thunar = {
+        enable = true;
+        plugins = with pkgs.xfce; [
+          thunar-volman
+          thunar-archive-plugin
+        ];
+      };
+      services = {
+        gvfs.enable = true;
+        udisks2.enable = true;
+        tumbler.enable = true;
+      };
+
       # Portal for file picker, screen sharing, etc.
       xdg.portal = {
         enable = true;
