@@ -37,7 +37,7 @@ in
         {
           home-manager = {
             extraSpecialArgs = specialArgs // {
-              claude-code = inputs.claude-code.packages."x86_64-linux".claude-code-bun;
+              claude-code = inputs.claude-code.packages."x86_64-linux".claude-code;
               exomonad = inputs.exomonad.packages."x86_64-linux".exomonad;
             };
             sharedModules = [

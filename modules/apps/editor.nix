@@ -10,7 +10,7 @@
       claudius = pkgs.writeShellScriptBin "claudius" ''
         pid=$(cut -d' ' -f4 /proc/self/stat)
         echo "Sandbox PID: $pid (use: nsbox $pid)"
-        exec sbox -- claude-bun --dangerously-skip-permissions "$@"
+        exec sbox -- claude --dangerously-skip-permissions "$@"
       '';
     in
     {
@@ -21,7 +21,7 @@
         exomonad
         claudius
       ];
-      programs.zsh.shellAliases.claude = "claude-bun";
+      programs.zsh.shellAliases.claude = "claude";
 
       ephemeralRoot.persist.directories = [
         ".claude"
