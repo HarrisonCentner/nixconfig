@@ -13,9 +13,14 @@
       ];
     };
 
-  flake.modules.homeManager.password-manager = {
-    ephemeralRoot.persist.directories = [
-      ".config/1Password"
-    ];
-  };
+  flake.modules.homeManager.password-manager =
+    { pkgs, ... }:
+    {
+      ephemeralRoot.persist.directories = [
+        ".config/1Password"
+        # KeePassXC database and config
+        ".config/keepassxc"
+        ".local/share/KeePassXC"
+      ];
+    };
 }
