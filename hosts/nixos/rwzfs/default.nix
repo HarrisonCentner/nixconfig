@@ -26,6 +26,7 @@
         docker
         microvm-host
         tailscale
+        dns-private
       ]
       ++ [
         {

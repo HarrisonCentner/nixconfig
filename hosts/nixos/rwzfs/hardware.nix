@@ -26,7 +26,7 @@
       };
 
       networking = {
-        nameservers = [ "1.1.1.1" ]; # no google
+        # nameservers managed by the dns-private module (→ 127.0.0.1 → blocky)
         networkmanager.enable = true;
         firewall.enable = false;
       };
