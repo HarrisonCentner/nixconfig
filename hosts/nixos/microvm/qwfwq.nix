@@ -16,6 +16,7 @@ in
       nixosModules = with config.flake.modules.nixos; [
         desktop-niri
         microvm-guest-qemu
+        openssh
       ];
       homeManagerModules = with config.flake.modules.homeManager; [
         desktop-niri

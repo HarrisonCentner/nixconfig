@@ -5,10 +5,12 @@
       services.openssh = {
         enable = true;
         settings = {
-          PasswordAuthentication = false;
+          PasswordAuthentication = true;
           PermitRootLogin = "no";
         };
       };
+
+      networking.firewall.allowedTCPPorts = [ 22 ];
 
       ephemeralRoot.persist.directories = [
         "/etc/ssh"

@@ -32,7 +32,7 @@
         pkgs.dconf
       ];
       programs.dconf.enable = true;
-      networking.firewall.enable = false;
+      networking.firewall.enable = lib.mkDefault false;
       zramSwap.enable = true;
 
       microvm = {

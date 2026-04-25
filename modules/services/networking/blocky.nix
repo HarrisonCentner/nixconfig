@@ -63,7 +63,10 @@ in
             };
           };
         };
-        networking.firewall.allowedTCPPorts = [ dnsPort ];
+        networking.firewall = {
+          allowedTCPPorts = [ dnsPort ];
+          allowedUDPPorts = [ dnsPort ];
+        };
       };
     };
 }
