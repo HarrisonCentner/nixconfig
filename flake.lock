@@ -51,15 +51,16 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1775942971,
-        "narHash": "sha256-UoDUYbYMhe5KOlFAHRPgu08n3XtSr3tuNkK+uuVSE+8=",
+        "lastModified": 1777309666,
+        "narHash": "sha256-UubX3RjMQyoHzZuX3HdGBpt+XptZowLuPY/VwvE1WRA=",
         "owner": "HarrisonCentner",
         "repo": "exomonad",
-        "rev": "e7251fac1234190506689e4ca7e1e5a2a5e0aaab",
+        "rev": "e9165d339419528530e4c7b0f624cabd48226183",
         "type": "github"
       },
       "original": {
         "owner": "HarrisonCentner",
+        "ref": "hcentner/sanitize-branch",
         "repo": "exomonad",
         "type": "github"
       }

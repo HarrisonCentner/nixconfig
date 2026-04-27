@@ -25,6 +25,7 @@
           "$HOME/.infisical" = { };
           # tmux socket so exomonad can spawn panes
           "$XDG_RUNTIME_DIR/tmux-$(id -u)" = { };
+          "$HOME/.cargo/bin/exomonad" = { };
         };
       };
     };
