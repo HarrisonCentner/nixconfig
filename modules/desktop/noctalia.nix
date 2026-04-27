@@ -97,10 +97,10 @@
               {
                 clockColor = "none";
                 customFont = "";
-                formatHorizontal = "hh:mm ddd, MMM dd";
-                formatVertical = "hh mm - dd MM";
+                formatHorizontal = "h:mm AP ddd, MMM dd";
+                formatVertical = "h mm AP - dd MM";
                 id = "Clock";
-                tooltipFormat = "hh:mm ddd, MMM dd";
+                tooltipFormat = "h:mm AP ddd, MMM dd";
                 useCustomFont = false;
               }
               {
@@ -314,7 +314,7 @@
           autoStartAuth = false;
           avatarImage = "/home/hcentner/.face";
           boxRadiusRatio = 1;
-          clockFormat = "hh\\nmm";
+          clockFormat = "h\\nmm\\nAP";
           clockStyle = "custom";
           compactLockScreen = false;
           dimmerOpacity = 0.2;
