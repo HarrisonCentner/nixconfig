@@ -255,7 +255,9 @@
           };
         };
 
-        spawn-at-startup = [ ];
+        spawn-at-startup = [
+          { command = [ "noctalia-shell" ]; }
+        ];
       };
     };
 }
