@@ -18,6 +18,7 @@
         bind = {
           # claude code settings and conversation state
           "$HOME/.claude" = { };
+          "$HOME/.gemini" = { };
           "$HOME/.claude.json" = { };
           # gh cli auth token and config
           "$HOME/.config/gh" = { };
