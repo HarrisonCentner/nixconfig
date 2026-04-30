@@ -27,7 +27,7 @@
           overviewLayer = false;
           pinnedApps = [ ];
           position = "center";
-          screenshotAnnotationTool = "";
+          screenshotAnnotationTool = "swappy";
           showCategories = true;
           showIconBackground = false;
           sortByMostUsed = true;
