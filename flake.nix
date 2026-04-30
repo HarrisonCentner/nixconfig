@@ -1,6 +1,8 @@
 {
   description = "Configs for my nixos & nix-darwin systems using dendritic nix.";
 
+  # All inputs with a `nixpkgs` input follow ours; the rest (flake-parts,
+  # import-tree, systems, sbox) have no `nixpkgs` input to follow.
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nix-darwin = {

@@ -27,7 +27,12 @@
     };
 
   flake.modules.homeManager.base =
-    { lib, osConfig, config, ... }:
+    {
+      lib,
+      osConfig,
+      config,
+      ...
+    }:
     {
       options.ephemeralRoot.persist = {
         directories = lib.mkOption {
