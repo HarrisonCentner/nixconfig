@@ -7,7 +7,8 @@
       ...
     }:
     let
-      mkAgentJail = name: agent: skipCmd:
+      mkAgentJail =
+        name: agent: skipCmd:
         pkgs.writeShellScriptBin name ''
           pid=$(cut -d' ' -f4 /proc/self/stat)
           echo "Sandbox PID: $pid (use: nsbox $pid)"
