@@ -2,10 +2,12 @@
   flake.modules.homeManager.shell =
     { pkgs, ... }:
     {
+      # hide htop from app launcher
       xdg.desktopEntries.htop = {
         name = "htop";
         noDisplay = true;
       };
+
       home.packages = with pkgs; [
         # unix utilities
         duf
