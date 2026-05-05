@@ -55,6 +55,7 @@
         (inputs.import-tree [
           ./modules
           ./hosts
+          ./tests
         ])
       ];
       _module.args.rootPath = ./.;
