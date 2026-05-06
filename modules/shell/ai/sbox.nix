@@ -15,6 +15,8 @@
         allowParent = "read";
         network = "isolated";
         shareHistory = "off";
+        shareKnownHosts = false;
+        allowAudio = false;
         bind = {
           # claude code settings and conversation state
           "$HOME/.claude" = { };
