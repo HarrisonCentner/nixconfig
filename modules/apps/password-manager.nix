@@ -18,10 +18,6 @@
     {
       ephemeralRoot.persist.directories = [
         ".config/1Password"
-        # KeePassXC database and config
-        ".keepassxc"
-        ".config/keepassxc"
-        ".local/share/KeePassXC"
       ];
     };
 }
