@@ -20,6 +20,8 @@
 
         # Services
         immich
+        nixflix
+        secrets
         tailscale
         paperless
         github-runner

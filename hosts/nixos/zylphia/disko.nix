@@ -2,6 +2,8 @@
   flake.nixosModules."zylphia-disko" =
     { pkgs, disko, ... }:
     {
+      fileSystems."/home".neededForBoot = true;
+
       disko.devices = {
         disk = {
           main = {

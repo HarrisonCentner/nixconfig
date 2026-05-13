@@ -52,6 +52,12 @@ Host configs in `hosts/` compose modules via imports. Hosts with the prefix `hos
   - `nixos/` — NixOS hosts (rwzfs, zylphia, microvm/)
   - `darwin/` — macOS hosts (xlthlx)
 
+
+### Secret Management and Provisioning
+
+I use `agenix` to deploy secrets to `NixOS` units. The secrets in this repo are dummy files.
+
+
 ## Inspiration
 
 + [Dendritic Nix](https://dendrix.oeiuwq.com/Dendritic.html)
