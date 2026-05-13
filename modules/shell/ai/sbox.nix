@@ -1,35 +1,48 @@
 {
-  flake.modules.homeManager.shell =
-    { pkgs, ... }:
+  flake.modules.homeManager =
     let
-      nsbox = pkgs.writeShellScriptBin "nsbox" ''
-        exec ${pkgs.util-linux}/bin/nsenter -t "$1" -n -- "''${2:-zsh}"
-      '';
+      hmFragment =
+        { pkgs, ... }:
+        let
+          nsbox = pkgs.writeShellScriptBin "nsbox" ''
+            exec ${pkgs.util-linux}/bin/nsenter -t "$1" -n -- "''${2:-zsh}"
+          '';
+          agent-jail = pkgs.writeShellScriptBin "agent-jail" ''
+            worktree_args=()
+            if common=$(${pkgs.git}/bin/git rev-parse --path-format=absolute --git-common-dir 2>/dev/null) \
+                && [ -d "$common" ] && [ "$common" != "$PWD/.git" ]; then
+              worktree_args=(--bind "$common" "$common")
+            fi
+            echo "Sandbox PID: $$ (use: nsbox $$)"
+            exec sbox "''${worktree_args[@]}" "$@"
+          '';
+        in
+        {
+          home.packages = [
+            nsbox
+            agent-jail
+          ];
+
+          programs.sbox = {
+            enable = true;
+            network = "isolated";
+            shareHistory = "off";
+            shareKnownHosts = false;
+            allowAudio = false;
+            bind = {
+              "$HOME/.claude" = { };
+              "$HOME/.gemini" = { };
+              "$HOME/.claude.json" = { };
+              "$HOME/.config/gh" = { };
+              "$HOME/.infisical" = { };
+              "$XDG_RUNTIME_DIR/tmux-$(id -u)" = { };
+              "$HOME/.cargo/bin/exomonad" = { };
+            };
+          };
+        };
     in
     {
-      home.packages = [ nsbox ];
-
-      programs.sbox = {
-        enable = true;
-        # git worktrees need read access to the parent's .git directory
-        allowParent = "read";
-        network = "isolated";
-        shareHistory = "off";
-        shareKnownHosts = false;
-        allowAudio = false;
-        bind = {
-          # claude code settings and conversation state
-          "$HOME/.claude" = { };
-          "$HOME/.gemini" = { };
-          "$HOME/.claude.json" = { };
-          # gh cli auth token and config
-          "$HOME/.config/gh" = { };
-          # infisical auth and secrets config
-          "$HOME/.infisical" = { };
-          # tmux socket so exomonad can spawn panes
-          "$XDG_RUNTIME_DIR/tmux-$(id -u)" = { };
-          "$HOME/.cargo/bin/exomonad" = { };
-        };
-      };
+      shell = hmFragment;
+      agentJail = hmFragment;
     };
 }

@@ -2,36 +2,20 @@
   flake.modules.homeManager.editor =
     {
       pkgs,
-      lib,
       claude-code,
       exomonad,
       ...
     }:
     let
-      mkAgentJail =
-        { name, agent, skipCmd, sboxArgs ? [ ] }:
-        pkgs.writeShellScriptBin name ''
-          pid=$(cut -d' ' -f4 /proc/self/stat)
-          echo "Sandbox PID: $pid (use: nsbox $pid)"
-          exec sbox ${lib.escapeShellArgs sboxArgs} -- ${agent} ${skipCmd} "$@"
-        '';
-      claudeOptions = {
-        agent = "claude";
-        skipCmd = "--dangerously-skip-permissions";
-      };
-
-      claudius = mkAgentJail (claudeOptions // {
-        name = "claudius";
-      });
-      claudius-host = mkAgentJail (claudeOptions // {
-        name = "claudius-host";
-        sboxArgs = [ "--network" "host" ];
-      });
-      gemini-jail = mkAgentJail {
-        name = "gemini-jail"; 
-        agent = "gemini"; 
-        skipCmd ="--yolo";
-      };
+      claudius = pkgs.writeShellScriptBin "claudius" ''
+        exec agent-jail -- claude --dangerously-skip-permissions "$@"
+      '';
+      claudius-host = pkgs.writeShellScriptBin "claudius-host" ''
+        exec agent-jail --network host -- claude --dangerously-skip-permissions "$@"
+      '';
+      gemini-jail = pkgs.writeShellScriptBin "gemini-jail" ''
+        exec agent-jail -- gemini --yolo "$@"
+      '';
     in
     {
       nixpkgs.config.allowUnfree = true;
