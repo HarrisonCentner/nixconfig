@@ -2,11 +2,6 @@ let
   common =
     { pkgs, ... }:
     {
-      # home-manager = {
-      #   backupFileExtension = "backup";
-      #   useGlobalPkgs = true;
-      #   useUserPkgs = true;
-      # };
       nix = {
         # From https://jackson.dev/post/nix-reasonable-defaults/
         extraOptions = ''

@@ -1,15 +1,6 @@
 {
   flake.modules.nixos.grafana =
-    { pkgs, ... }:
     {
-      # loki is broken atm
-      # services.loki = {
-      #   enable = true;
-      #   configuration = {
-      #     auth_enabled = false;
-      #     server.http_listen_port = 3100;
-      #   };
-      # };
       services.grafana = {
         enable = true;
         openFirewall = true;
