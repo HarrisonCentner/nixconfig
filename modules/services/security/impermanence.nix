@@ -45,7 +45,7 @@
         };
       };
 
-      config = lib.mkIf osConfig.ephemeralRoot.enable {
+      config = lib.mkIf (osConfig.ephemeralRoot.enable or false) {
         home.persistence."/persist" = {
           inherit (config.ephemeralRoot.persist) directories files;
         };
