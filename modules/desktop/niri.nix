@@ -32,6 +32,12 @@
       services.upower.enable = true;
       services.power-profiles-daemon.enable = true;
 
+      services.logind.settings.Login = {
+        HandleLidSwitch = "ignore";
+        HandleLidSwitchDocked = "ignore";
+        HandleLidSwitchExternalPower = "ignore";
+      };
+
       # Polkit authentication agent
       security.polkit.enable = true;
       systemd.user.services.polkit-gnome-agent = {
@@ -246,6 +252,12 @@
           ];
         };
 
+        switch-events.lid-close.action.spawn = [
+          "sh"
+          "-c"
+          "qs -c noctalia-shell ipc call lockScreen lock && systemctl suspend"
+        ];
+
         layout = {
           gaps = 5;
           focus-ring = {
@@ -255,6 +267,20 @@
 
         spawn-at-startup = [
           { command = [ "noctalia-shell" ]; }
+        ];
+      };
+
+      services.swayidle = {
+        enable = true;
+        timeouts = [
+          {
+            timeout = 900;
+            command = "qs -c noctalia-shell ipc call lockScreen lock";
+          }
+          {
+            timeout = 1800;
+            command = "systemctl suspend";
+          }
         ];
       };
     };
