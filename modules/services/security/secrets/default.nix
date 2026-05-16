@@ -4,7 +4,10 @@
     { lib, ... }:
     let
       dummy = lib.mkDefault ./dummy.age;
-      mkSecret = owner: { file = dummy; inherit owner; };
+      mkSecret = owner: {
+        file = dummy;
+        inherit owner;
+      };
     in
     {
       imports = [ inputs.agenix.nixosModules.default ];
@@ -28,7 +31,9 @@
         "sabnzbd/api_key" = mkSecret "sabnzbd";
         "sabnzbd/nzb_key" = mkSecret "sabnzbd";
         "qbittorrent/password" = mkSecret "qbittorrent";
-        "wireguard/conf" = { file = dummy; };
+        "wireguard/conf" = {
+          file = dummy;
+        };
       };
     };
 }

@@ -101,63 +101,62 @@
       };
     };
 
-  flake.modules.homeManager.desktop-niri =
-    {
-      programs.ghostty.settings.command = "sh -c 'tmux has-session -t main 2>/dev/null && exec tmux new-session -t main \\; new-window || exec tmux new-session -s main'";
+  flake.modules.homeManager.desktop-niri = {
+    programs.ghostty.settings.command = "sh -c 'tmux has-session -t main 2>/dev/null && exec tmux new-session -t main \\; new-window || exec tmux new-session -s main'";
 
-      programs.niri.settings = {
-        prefer-no-csd = true;
+    programs.niri.settings = {
+      prefer-no-csd = true;
 
-        input = {
-          keyboard = {
-            xkb = {
-              layout = "us";
-              options = "caps:swapescape";
-            };
-            repeat-rate = 40;
-            repeat-delay = 250;
+      input = {
+        keyboard = {
+          xkb = {
+            layout = "us";
+            options = "caps:swapescape";
           };
-
-          touchpad = {
-            natural-scroll = true;
-            tap = true;
-          };
-
-          mouse = {
-            accel-profile = "flat";
-          };
+          repeat-rate = 40;
+          repeat-delay = 250;
         };
 
-        switch-events.lid-close.action.spawn = [
-          "sh"
-          "-c"
-          "qs -c noctalia-shell ipc call lockScreen lock && systemctl suspend"
-        ];
-
-        layout = {
-          gaps = 5;
-          focus-ring = {
-            width = 2;
-          };
+        touchpad = {
+          natural-scroll = true;
+          tap = true;
         };
 
-        spawn-at-startup = [
-          { command = [ "noctalia-shell" ]; }
-        ];
+        mouse = {
+          accel-profile = "flat";
+        };
       };
 
-      services.swayidle = {
-        enable = true;
-        timeouts = [
-          {
-            timeout = 900;
-            command = "qs -c noctalia-shell ipc call lockScreen lock";
-          }
-          {
-            timeout = 1800;
-            command = "systemctl suspend";
-          }
-        ];
+      switch-events.lid-close.action.spawn = [
+        "sh"
+        "-c"
+        "qs -c noctalia-shell ipc call lockScreen lock && systemctl suspend"
+      ];
+
+      layout = {
+        gaps = 5;
+        focus-ring = {
+          width = 2;
+        };
       };
+
+      spawn-at-startup = [
+        { command = [ "noctalia-shell" ]; }
+      ];
     };
+
+    services.swayidle = {
+      enable = true;
+      timeouts = [
+        {
+          timeout = 900;
+          command = "qs -c noctalia-shell ipc call lockScreen lock";
+        }
+        {
+          timeout = 1800;
+          command = "systemctl suspend";
+        }
+      ];
+    };
+  };
 }

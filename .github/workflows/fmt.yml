@@ -1,0 +1,28 @@
+name: fmt
+
+on:
+  workflow_dispatch:
+
+jobs:
+  fmt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: cachix/install-nix-action@v30
+
+      - uses: nix-community/cache-nix-action@v7
+        with:
+          primary-key: nix-${{ runner.os }}-fmt-${{ hashFiles('**/*.nix', 'flake.lock') }}
+          restore-prefixes-first-match: nix-${{ runner.os }}-fmt-
+          gc-max-store-size-linux: 8G
+          purge: true
+          purge-prefixes: nix-${{ runner.os }}-fmt-
+          purge-created: 0
+          purge-primary-key: never
+          purge-last-accessed: 604800
+
+      - run: nix fmt
+      - run: git diff --exit-code
+
+      - run: find . -name '*.hs' -print0 | xargs -0 -r nix run nixpkgs#ormolu -- --mode check
