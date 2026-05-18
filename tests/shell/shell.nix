@@ -11,7 +11,7 @@
             h.base64-bytestring
             h.aeson
           ]))
-          ormolu
+          fourmolu
         ];
       };
     };

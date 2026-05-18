@@ -27,4 +27,4 @@ jobs:
       - run: nix fmt
       - run: git diff --exit-code
 
-      - run: find . -name '*.hs' -print0 | xargs -0 -r nix run nixpkgs#ormolu -- --mode check
+      - run: find . -name '*.hs' -print0 | xargs -0 -r nix run nixpkgs#fourmolu -- --mode check
