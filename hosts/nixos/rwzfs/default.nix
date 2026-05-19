@@ -47,7 +47,7 @@
               browser
               editor
               messaging
-              music
+              everyday
               notes
               office
               photography
