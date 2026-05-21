@@ -111,6 +111,7 @@
         keyboard = {
           xkb = {
             layout = "us";
+            variant = "altgr-intl";
             options = "caps:swapescape";
           };
           repeat-rate = 40;

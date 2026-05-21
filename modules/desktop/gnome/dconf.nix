@@ -195,7 +195,7 @@
           sources = [
             (mkTuple [
               "xkb"
-              "us"
+              "us+altgr-intl"
             ])
           ];
           xkb-options = [ "caps:swapescape" ];

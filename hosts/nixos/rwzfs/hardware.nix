@@ -31,9 +31,5 @@
         firewall.enable = false;
       };
 
-      console.useXkbConfig = true;
-
-      services.xserver.xkb.options = "caps:swapescape";
-
     };
 }
