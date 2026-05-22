@@ -213,6 +213,9 @@ nnoremap <leader>f  <Plug>(coc-format-selected)
 nnoremap <silent> [g <Plug>(coc-diagnostic-prev)
 nnoremap <silent> ]g <Plug>(coc-diagnostic-next)
 
+" Toggle CoC on/off (LSP server keeps running in background)
+nnoremap <leader>tc :exe g:coc_enabled ? 'CocDisable' : 'CocEnable'<CR>
+
 " Code actions (like quick fix)
 nnoremap <leader>ac  <Plug>(coc-codeaction)
 xnoremap <leader>ac  <Plug>(coc-codeaction-selected)
