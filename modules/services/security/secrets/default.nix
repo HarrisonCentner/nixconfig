@@ -31,9 +31,8 @@
         "sabnzbd/api_key" = mkSecret "sabnzbd";
         "sabnzbd/nzb_key" = mkSecret "sabnzbd";
         "qbittorrent/password" = mkSecret "qbittorrent";
-        "wireguard/conf" = {
-          file = dummy;
-        };
+        "wireguard/conf" = mkSecret "wireguard";
+        "kopia/env" = mkSecret "kopia";
       };
     };
 }

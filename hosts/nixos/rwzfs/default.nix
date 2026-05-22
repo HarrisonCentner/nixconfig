@@ -27,6 +27,8 @@
         microvm-host
         tailscale
         dns
+        secrets
+        kopia-backup
       ]
       ++ [
         {
