@@ -112,11 +112,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1779292416,
-        "narHash": "sha256-wa18cPc/VjEII6rF1JZZZ5Y5iO0KKBvjo5w7M30lzIg=",
+        "lastModified": 1779472184,
+        "narHash": "sha256-GUpkDlL5pXVYAhfY05ruzjTU9Z/EX2cD06fr5gpjC4A=",
         "owner": "HarrisonCentner",
         "repo": "exomonad",
-        "rev": "be983abab5cf04ebc2d9232f5afdb731dc19757a",
+        "rev": "298705f7754e1964081494da6bd156c2d10ca5f7",
         "type": "github"
       },
       "original": {
