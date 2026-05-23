@@ -113,7 +113,7 @@
           xkb = {
             layout = "us";
             variant = "altgr-intl";
-            options = "caps:swapescape";
+            options = "caps:swapescape,lv3:rwin_switch";
           };
           repeat-rate = 40;
           repeat-delay = 250;
