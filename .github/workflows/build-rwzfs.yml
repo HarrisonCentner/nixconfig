@@ -2,6 +2,8 @@ name: build-rwzfs
 
 on:
   workflow_dispatch:
+  push:
+    branches: [master]
   schedule:
     - cron: '17 7 * * *'
 
