@@ -26,7 +26,7 @@
       };
 
       networking = {
-        # nameservers managed by the dns-onion module (→ 127.0.0.1 → blocky)
+        # nameservers managed by blocky (→ 127.0.0.1)
         networkmanager.enable = true;
         firewall.enable = false;
       };
