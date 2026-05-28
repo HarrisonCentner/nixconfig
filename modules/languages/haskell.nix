@@ -5,7 +5,7 @@
       {
         home.packages = with pkgs; [
           haskellPackages.cabal-install
-          haskell.compiler.ghc9102
+          haskell.compiler.ghc912
           haskell-language-server
         ];
       };

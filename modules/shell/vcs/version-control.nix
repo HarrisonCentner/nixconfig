@@ -47,11 +47,6 @@
             tag.gpgsign = true;
             tag.sort = "taggerdate";
             user.signingKey = "~/.ssh/id_ed25519";
-            filter.lfs = {
-              clean = "git-lfs clean -- %f";
-              smudge = "git-lfs smudge -- %f";
-              process = "git-lfs filter-process";
-            };
             delta = {
               enable = true;
               options = {
