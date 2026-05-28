@@ -8,13 +8,10 @@
     }:
     let
       claudius = pkgs.writeShellScriptBin "claudius" ''
-        exec agent-jail -- claude --dangerously-skip-permissions "$@"
-      '';
-      claudius-host = pkgs.writeShellScriptBin "claudius-host" ''
-        exec agent-jail --network host -- claude --dangerously-skip-permissions "$@"
+        exec agent-jail "$@" -- claude --dangerously-skip-permissions
       '';
       gemini-jail = pkgs.writeShellScriptBin "gemini-jail" ''
-        exec agent-jail -- gemini --yolo "$@"
+        exec agent-jail "$@" -- gemini --yolo
       '';
     in
     {
@@ -22,7 +19,6 @@
       home.packages = with pkgs; [
         claude-code
         claudius
-        claudius-host
         exomonad
         gemini-cli
         gemini-jail

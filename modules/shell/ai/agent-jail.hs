@@ -2,17 +2,20 @@
 {-# LANGUAGE ImportQualifiedPost #-}
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE StrictData #-}
 
 {- | Run @sbox@ with extra binds wired up for AI agent workflows.
 
-Recognises @--readable DIR@ (repeatable) and forwards everything else to
-@sbox@. When invoked inside a linked git worktree, the main repo's
-common @.git@ directory is bind-mounted so the worktree stays usable.
+Recognises @--readable DIR@, @--writeable DIR@, and @--network MODE@.
+Anything else is appended to the inner program command (after the
+@--@), so e.g. @agent-jail --readable /foo --resume X -- claude@ reaches
+@claude@ as @claude --resume X@. When invoked inside a linked git
+worktree, the main repo's common @.git@ directory is bind-mounted so the
+worktree stays usable.
 -}
 module Main where
 
+import Control.Applicative ((<|>))
 import Data.Text qualified as T
 import Options.Applicative qualified as Opt
 import System.Directory (canonicalizePath, doesDirectoryExist, getCurrentDirectory)
@@ -26,35 +29,52 @@ data BindMode
     = ReadOnly
     | ReadWrite
 
-data Opts = Opts
-    { readable :: [FilePath]
-    , writeable :: [FilePath]
-    , forwarded :: [String]
-    }
+data Arg
+    = ArgBind BindMode FilePath
+    | ArgNetwork String
+    | ArgOther String
 
-optsParser :: Opt.Parser Opts
-optsParser =
-    Opts
-        <$> Opt.many
-            ( Opt.strOption
-                ( Opt.long "readable"
-                    <> Opt.metavar "DIR"
-                    <> Opt.help "Bind DIR into the sandbox read-only"
-                )
+-- Wrap each token in a sum so the alternatives are tried per-arg; this
+-- avoids the forwardOptions + many strArgument interaction where the
+-- positional parser swallows recognised long options.
+argParser :: Opt.Parser Arg
+argParser =
+    ArgBind ReadOnly
+        <$> Opt.strOption
+            ( Opt.long "readable"
+                <> Opt.metavar "DIR"
+                <> Opt.help "Bind DIR into the sandbox read-only"
             )
-        <*> Opt.many
-            ( Opt.strOption
+        <|> ArgBind ReadWrite
+            <$> Opt.strOption
                 ( Opt.long "writeable"
                     <> Opt.metavar "DIR"
                     <> Opt.help "Bind DIR into the sandbox read-write"
                 )
-            )
-        <*> Opt.many (Opt.strArgument (Opt.metavar "SBOX_ARGS..."))
+        <|> ArgNetwork
+            <$> Opt.strOption
+                ( Opt.long "network"
+                    <> Opt.metavar "MODE"
+                    <> Opt.help "Network mode forwarded to sbox"
+                )
+        <|> ArgOther <$> Opt.strArgument (Opt.metavar "FWD...")
 
-parserInfo :: Opt.ParserInfo Opts
+-- Each branch yields (sbox-side, forwarded-side); mconcat over the
+-- tuple monoid stitches them together in argv order.
+contribute :: Arg -> IO ([String], [String])
+contribute (ArgBind mode dir) = do
+    bind <- bbwrapBind mode dir
+    pure (bind, [])
+contribute (ArgNetwork n) = pure (["--network", n], [])
+contribute (ArgOther s) = pure ([], [s])
+
+build :: [Arg] -> IO ([String], [String])
+build = fmap mconcat . traverse contribute
+
+parserInfo :: Opt.ParserInfo [Arg]
 parserInfo =
     Opt.info
-        (optsParser Opt.<**> Opt.helper)
+        (Opt.many argParser Opt.<**> Opt.helper)
         ( Opt.fullDesc
             <> Opt.progDesc "Run sbox with extra binds for AI agent workflows"
             <> Opt.forwardOptions
@@ -123,15 +143,14 @@ runSandbox sboxArgs = do
 main :: IO ()
 main = do
     -- Split at the first literal `--` so it (and anything after) reaches
-    -- sbox verbatim; optparse-applicative would otherwise eat it.
+    -- sbox verbatim as the inner program command line.
     (before, rest) <- break (== "--") <$> getArgs
-    Opts{..} <-
+    args <-
         Opt.handleParseResult $
             Opt.execParserPure Opt.defaultPrefs parserInfo before
-    readables <- concat <$> traverse (bbwrapBind ReadOnly) readable
-    writeables <- concat <$> traverse (bbwrapBind ReadWrite) writeable
+    (sboxArgs, forwarded) <- build args
     worktree <-
         gitCommonDir >>= \case
             Just dir -> bbwrapBind ReadWrite dir
             Nothing -> pure []
-    runSandbox (worktree <> readables <> forwarded <> rest)
+    runSandbox (worktree <> sboxArgs <> rest <> forwarded)
