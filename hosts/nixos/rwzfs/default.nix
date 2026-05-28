@@ -8,6 +8,7 @@
       with config.flake.modules.nixos;
       [
         # Modules
+        ai-agents
         base
         config.flake.nixosModules.rwzfs-disko
         config.flake.nixosModules.rwzfs-hardware
@@ -23,18 +24,19 @@
         password-manager
 
         # Services
-        docker
-        microvm-host
-        tailscale
         dns
-        secrets
+        docker
         kopia-backup
+        microvm-host
+        secrets
+        tailscale
       ]
       ++ [
         {
           home-manager.users.hcentner = {
             imports = with config.flake.modules.homeManager; [
               # Modules
+              ai-agents
               base
               desktop-niri
               noctalia-shell
@@ -48,8 +50,8 @@
               # Apps
               browser
               editor
-              messaging
               everyday
+              messaging
               notes
               office
               photography

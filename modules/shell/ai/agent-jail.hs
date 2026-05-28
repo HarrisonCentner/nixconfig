@@ -16,8 +16,9 @@ module Main where
 import Data.Text qualified as T
 import Options.Applicative qualified as Opt
 import System.Directory (canonicalizePath, doesDirectoryExist, getCurrentDirectory)
-import System.Environment (getArgs)
+import System.Environment (getArgs, lookupEnv)
 import System.Exit (ExitCode (..))
+import System.Posix.Files (fileExist)
 import System.Posix.Process (executeFile, getProcessID)
 import Turtle qualified as Tu
 
@@ -88,6 +89,37 @@ gitCommonDir = do
                     then Just path
                     else Nothing
 
+{- | Exec @sbox@ inside a transient @ai-agents.slice@ scope via
+@systemd-run --scope@ when the user manager is reachable; otherwise run
+@sbox@ directly so the binary stays usable outside a user session.
+-}
+runSandbox :: [String] -> IO ()
+runSandbox sboxArgs = do
+    runtime <- lookupEnv "XDG_RUNTIME_DIR"
+    hasUserBus <- case runtime of
+        Nothing -> pure False
+        Just xdg -> fileExist (xdg <> "/systemd/private")
+    if not hasUserBus
+        then executeFile "sbox" True sboxArgs Nothing
+        else do
+            pid <- getProcessID
+            let unit = "agent-jail-" <> show pid
+                desc = "Agent jail session (pid " <> show pid <> ")"
+                args =
+                    [ "--user"
+                    , "--quiet"
+                    , "--scope"
+                    , "--collect"
+                    , "--slice=ai-agents.slice"
+                    , "--unit=" <> unit
+                    , "--property=Description=" <> desc
+                    , "--"
+                    , "sbox"
+                    ]
+                        <> sboxArgs
+            putStrLn $ "Sandbox scope: " <> unit <> ".scope"
+            executeFile "systemd-run" True args Nothing
+
 main :: IO ()
 main = do
     -- Split at the first literal `--` so it (and anything after) reaches
@@ -102,17 +134,4 @@ main = do
         gitCommonDir >>= \case
             Just dir -> bbwrapBind ReadWrite dir
             Nothing -> pure []
-    pid <- getProcessID
-    putStrLn $
-        mconcat
-            [ "Sandbox PID: "
-            , show pid
-            , " (use: nsbox "
-            , show pid
-            , ")"
-            ]
-    executeFile
-        "sbox"
-        True
-        (worktree <> readables <> forwarded <> rest)
-        Nothing
+    runSandbox (worktree <> readables <> forwarded <> rest)

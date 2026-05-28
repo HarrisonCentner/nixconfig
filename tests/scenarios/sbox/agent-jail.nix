@@ -1,6 +1,6 @@
 { config, inputs, ... }:
 let
-  agentJailHm = config.flake.modules.homeManager.agentJail;
+  aiAgentsHm = config.flake.modules.homeManager.ai-agents;
 in
 {
   perSystem =
@@ -39,7 +39,7 @@ in
                 useUserPackages = true;
                 sharedModules = [ inputs.sbox.homeManagerModules.sbox ];
                 users.alice = {
-                  imports = [ agentJailHm ];
+                  imports = [ aiAgentsHm ];
                   home.stateVersion = "24.05";
                   # Override the production bind set with literal paths the
                   # verifier knows about. The production config uses $HOME and
@@ -67,9 +67,9 @@ in
                   Group = "users";
                   RemainAfterExit = true;
                 };
-                path = [
-                  pkgs.git
-                  pkgs.coreutils
+                path = with pkgs; [
+                  git
+                  coreutils
                 ];
                 script = ''
                   set -eu
