@@ -27,6 +27,7 @@ in
 
         ephemeralRoot.persist.directories = [
           "/var/lib/immich"
+          "/var/lib/postgresql"
         ];
       };
     };

@@ -11,7 +11,6 @@
         base
         config.flake.nixosModules."zylphia-disko"
         config.flake.nixosModules.zylphia-hardware
-        ephemeral-root
         intel-graphics
         shell
 
@@ -31,7 +30,6 @@
             imports = with config.flake.modules.homeManager; [
               # Modules
               base
-              ephemeral-root
               shell
 
               # Languages
