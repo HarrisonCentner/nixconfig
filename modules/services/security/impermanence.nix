@@ -26,13 +26,10 @@
       };
     };
 
+  # Home is its own btrfs subvolume that survives the root rollback, so no
+  # bind-persistence is wired. Options kept so modules may still declare intent.
   flake.modules.homeManager.base =
-    {
-      lib,
-      osConfig,
-      config,
-      ...
-    }:
+    { lib, ... }:
     {
       options.ephemeralRoot.persist = {
         directories = lib.mkOption {
@@ -42,12 +39,6 @@
         files = lib.mkOption {
           type = lib.types.listOf lib.types.str;
           default = [ ];
-        };
-      };
-
-      config = lib.mkIf (osConfig.ephemeralRoot.enable or false) {
-        home.persistence."/persist" = {
-          inherit (config.ephemeralRoot.persist) directories files;
         };
       };
     };
@@ -65,6 +56,9 @@
         files = [
           "/etc/machine-id"
           "/etc/shadow"
+          "/etc/passwd"
+          "/etc/group"
+          "/etc/gshadow"
         ];
       };
     };
