@@ -24,7 +24,6 @@
         secrets
         tailscale
         paperless
-        github-runner
       ]
       ++ [
         {
