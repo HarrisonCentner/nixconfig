@@ -41,7 +41,6 @@
           "$HOME/.config/gh" = { };
           "$HOME/.infisical" = { };
           "$XDG_RUNTIME_DIR/tmux-$(id -u)" = { };
-          "$HOME/.cargo/bin/exomonad" = { };
         };
       };
     };

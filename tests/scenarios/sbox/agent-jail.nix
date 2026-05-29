@@ -44,7 +44,7 @@ in
                   # Override the production bind set with literal paths the
                   # verifier knows about. The production config uses $HOME and
                   # $XDG_RUNTIME_DIR expansions plus paths that don't exist in
-                  # a fresh VM (tmux socket, exomonad binary).
+                  # a fresh VM (tmux socket).
                   programs.sbox.bind = lib.mkForce {
                     "/home/alice/.claude" = { };
                     "/home/alice/.gemini" = { };

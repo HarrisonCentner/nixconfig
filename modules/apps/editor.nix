@@ -3,7 +3,6 @@
     {
       pkgs,
       claude-code,
-      exomonad,
       ...
     }:
     let
@@ -19,7 +18,6 @@
       home.packages = with pkgs; [
         claude-code
         claudius
-        exomonad
         gemini-cli
         geminidius
         gh

@@ -36,10 +36,6 @@
       url = "github:noctalia-dev/noctalia-shell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    exomonad = {
-      url = "github:HarrisonCentner/exomonad/hcentner/sanitize-branch";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     sbox.url = "github:DavHau/sbox";
     impermanence = {
       url = "github:nix-community/impermanence";
