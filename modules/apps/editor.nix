@@ -10,7 +10,7 @@
       claudius = pkgs.writeShellScriptBin "claudius" ''
         exec agent-jail "$@" -- claude --dangerously-skip-permissions
       '';
-      gemini-jail = pkgs.writeShellScriptBin "gemini-jail" ''
+      geminidius = pkgs.writeShellScriptBin "gemini-jail" ''
         exec agent-jail "$@" -- gemini --yolo
       '';
     in
@@ -21,13 +21,9 @@
         claudius
         exomonad
         gemini-cli
-        gemini-jail
+        geminidius
         gh
       ];
-      programs.zsh.shellAliases = {
-        gemini = "gemini-jail";
-      };
-
       ephemeralRoot.persist.directories = [
         ".claude"
       ];
