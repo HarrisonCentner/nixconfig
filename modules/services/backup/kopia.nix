@@ -1,3 +1,4 @@
+{ mkSecret, ... }:
 {
   flake.modules.nixos.kopia-backup =
     {
@@ -19,6 +20,8 @@
       };
     in
     {
+      age.secrets."kopia/env" = mkSecret "root";
+
       environment.systemPackages = [ pkgs.kopia ];
 
       ephemeralRoot.persist.directories = [
@@ -68,5 +71,16 @@
           RandomizedDelaySec = "2h";
         };
       };
+    };
+
+  flake.modules.homeManager.kopia-backup =
+    {
+      pkgs,
+      ...
+    }:
+    {
+      home.packages = with pkgs; [
+        backblaze-b2
+      ];
     };
 }

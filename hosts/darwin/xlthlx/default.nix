@@ -19,9 +19,6 @@
             imports = with config.flake.modules.homeManager; [
               # Modules
               base
-              # languages.clojure
-              # languages.haskell
-              # languages.nix
               shell
             ];
           };

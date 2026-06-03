@@ -6,12 +6,13 @@
   flake.modules.nixos."hosts/nixos/rwzfs" = {
     imports =
       with config.flake.modules.nixos;
+      with config.flake.nixosModules;
       [
         # Modules
         ai-agents
         base
-        config.flake.nixosModules.rwzfs-disko
-        config.flake.nixosModules.rwzfs-hardware
+        rwzfs-disko
+        rwzfs-hardware
         desktop-niri
         intel-graphics
         shell
@@ -60,6 +61,7 @@
               # Services
               cloud
               docker
+              kopia-backup
             ];
           };
         }
