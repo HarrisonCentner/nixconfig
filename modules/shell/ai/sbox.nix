@@ -1,3 +1,4 @@
+{ writeHaskellBinCompleted, ... }:
 {
   flake.modules.nixos.ai-agents = {
     systemd.user.slices.ai-agents = {
@@ -13,7 +14,7 @@
   flake.modules.homeManager.ai-agents =
     { pkgs, ... }:
     let
-      agent-jail = pkgs.writers.writeHaskellBin "agent-jail" {
+      agent-jail = writeHaskellBinCompleted pkgs "agent-jail" {
         libraries = with pkgs.haskellPackages; [
           turtle
           optparse-applicative

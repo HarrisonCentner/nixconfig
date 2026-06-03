@@ -1,3 +1,4 @@
+{ mkCompletionAlias, ... }:
 {
   flake.modules.homeManager.editor =
     {
@@ -6,12 +7,16 @@
       ...
     }:
     let
-      claudius = pkgs.writeShellScriptBin "claudius" ''
-        exec agent-jail "$@" -- claude --dangerously-skip-permissions
-      '';
-      geminidius = pkgs.writeShellScriptBin "gemini-jail" ''
-        exec agent-jail "$@" -- gemini --yolo
-      '';
+      claudius = mkCompletionAlias pkgs "agent-jail" (
+        pkgs.writeShellScriptBin "claudius" ''
+          exec agent-jail "$@" -- claude --dangerously-skip-permissions
+        ''
+      );
+      geminidius = mkCompletionAlias pkgs "agent-jail" (
+        pkgs.writeShellScriptBin "gemini-jail" ''
+          exec agent-jail "$@" -- gemini --yolo
+        ''
+      );
     in
     {
       nixpkgs.config.allowUnfree = true;
