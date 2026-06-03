@@ -1,10 +1,16 @@
 { inputs, ... }:
 {
-  flake.modules.nixos.secrets =
-    { lib, ... }:
-    {
-      imports = [ inputs.agenix.nixosModules.default ];
+  flake.modules.nixos.secrets = {
+    imports = [ inputs.opnix.nixosModules.default ];
 
-      age.identityPaths = lib.mkDefault [ "${./dummy-key.txt}" ];
+    services.onepassword-secrets = {
+      enable = true;
+      tokenFile = "/etc/opnix-token";
     };
+
+    ephemeralRoot.persist = {
+      files = [ "/etc/opnix-token" ];
+      directories = [ "/var/lib/opnix" ];
+    };
+  };
 }

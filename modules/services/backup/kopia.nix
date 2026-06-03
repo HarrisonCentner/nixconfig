@@ -1,4 +1,4 @@
-{ mkSecret, ... }:
+{ mkOpSecret, ... }:
 {
   flake.modules.nixos.kopia-backup =
     {
@@ -16,11 +16,19 @@
       common = {
         Type = "oneshot";
         User = "root";
-        EnvironmentFile = config.age.secrets."kopia/env".path;
+        EnvironmentFile = config.services.onepassword-secrets.secretPaths.kopiaEnv;
       };
     in
     {
-      age.secrets."kopia/env" = mkSecret "root";
+      services.onepassword-secrets.secrets.kopiaEnv = mkOpSecret {
+        service = "kopia";
+        field = "env";
+        owner = "root";
+        services = [
+          "kopia-backup"
+          "kopia-maintenance"
+        ];
+      };
 
       environment.systemPackages = [ pkgs.kopia ];
 

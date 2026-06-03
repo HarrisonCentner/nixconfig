@@ -1,7 +1,15 @@
-{ lib, ... }:
 {
-  _module.args.mkSecret = owner: {
-    file = lib.mkDefault ../services/security/secrets/dummy.age;
-    inherit owner;
-  };
+  _module.args.mkOpSecret =
+    {
+      service,
+      field,
+      owner ? service,
+      services ? [ service ],
+    }:
+    {
+      reference = "op://nixconfig/${service}/${field}";
+      inherit owner services;
+      group = owner;
+      mode = "0400";
+    };
 }

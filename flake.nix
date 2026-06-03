@@ -42,8 +42,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
-    agenix = {
-      url = "github:ryantm/agenix";
+    opnix = {
+      url = "github:brizzbuzz/opnix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixflix = {

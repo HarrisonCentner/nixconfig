@@ -55,8 +55,7 @@ Host configs in `hosts/` compose modules via imports. Hosts with the prefix `hos
 
 ### Secret Management and Provisioning
 
-I use `agenix` to deploy secrets to `NixOS` units. The secrets in this repo are dummy files.
-
+Secrets are fetched from 1Password with [opnix](https://github.com/brizzbuzz/opnix). 
 
 ## Inspiration
 
