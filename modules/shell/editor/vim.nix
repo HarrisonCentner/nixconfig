@@ -5,19 +5,24 @@
       home.packages = with pkgs; [
         nodejs # required for coc-nvim
       ];
-      xdg.desktopEntries = {
-        vim = {
-          name = "Vim";
-          noDisplay = true;
+      xdg = {
+        desktopEntries = {
+          vim = {
+            name = "Vim";
+            exec = "ghostty -e vim %F";
+            noDisplay = true;
+            mimeType = [ "text/plain" ];
+          };
         };
-        gvim = {
-          name = "GVim";
-          noDisplay = true;
+        mimeApps = {
+          enable = true;
+          defaultApplications."text/plain" = "vim.desktop";
         };
       };
       programs = {
         vim = {
           enable = true;
+          packageConfigurable = pkgs.vim;
         };
         zsh.shellAliases = {
           v = "vim -u $HOME/.vimrc";

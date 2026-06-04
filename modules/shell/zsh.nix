@@ -7,33 +7,36 @@
         programs.zsh.enable = true;
       };
 
-    homeManager.shell = {
-      programs = {
-        zsh = {
-          enable = true;
-          shellAliases = {
-            nsp = "nix-shell -p $@ --command zsh";
-            q = "exit";
-          };
-          oh-my-zsh = {
+    homeManager.shell =
+      { pkgs, lib, ... }:
+      {
+        programs = {
+          zsh = {
             enable = true;
-            plugins = [
-              "history"
-              "git"
-            ];
-            theme = "eastwood";
+            shellAliases = {
+              nsp = "nix-shell -p $@ --command zsh";
+              open = lib.mkIf pkgs.stdenv.isLinux "xdg-open";
+              q = "exit";
+            };
+            oh-my-zsh = {
+              enable = true;
+              plugins = [
+                "history"
+                "git"
+              ];
+              theme = "eastwood";
+            };
           };
         };
-      };
 
-      ephemeralRoot.persist = {
-        directories = [
-          ".local/share/oh-my-zsh"
-        ];
-        files = [
-          ".zsh_history"
-        ];
+        ephemeralRoot.persist = {
+          directories = [
+            ".local/share/oh-my-zsh"
+          ];
+          files = [
+            ".zsh_history"
+          ];
+        };
       };
-    };
   };
 }

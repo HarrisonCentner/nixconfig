@@ -12,6 +12,13 @@
         hledger-fmt
       ];
 
+      xdg.mimeApps = {
+        enable = true;
+        defaultApplications = {
+          "application/pdf" = "sioyek.desktop";
+        };
+      };
+
       ephemeralRoot.persist.directories = [
         ".config/libreoffice"
         ".config/sioyek"
