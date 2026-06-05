@@ -21,7 +21,7 @@
         hcentner
 
         # Apps
-        ebooks
+        library
         password-manager
 
         # Services
@@ -52,6 +52,7 @@
               browser
               editor
               everyday
+              library
               messaging
               notes
               office
