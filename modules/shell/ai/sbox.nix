@@ -41,6 +41,7 @@
           "$HOME/.claude.json" = { };
           "$HOME/.config/gh" = { };
           "$HOME/.infisical" = { };
+          "$HOME/.local/share/nix" = { };
           "$XDG_RUNTIME_DIR/tmux-$(id -u)" = { };
         };
       };
