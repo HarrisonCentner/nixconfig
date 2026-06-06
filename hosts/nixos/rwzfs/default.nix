@@ -30,6 +30,7 @@
         kopia-backup
         microvm-host
         secrets
+        syncthing
         tailscale
       ]
       ++ [
