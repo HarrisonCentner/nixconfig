@@ -116,12 +116,12 @@
           "Mod+Ctrl+S".action.spawn = [
             "sh"
             "-c"
-            "${lib.getExe pkgs.grim} -l 0 - | ${pkgs.wl-clipboard}/bin/wl-copy"
+            ''mkdir -p ~/Pictures/Screenshots && ${lib.getExe pkgs.grim} -l 0 - | tee ~/Pictures/Screenshots/"$(date +%Y%m%d-%H%M%S)".png | ${pkgs.wl-clipboard}/bin/wl-copy''
           ];
           "Mod+Shift+S".action.spawn = [
             "sh"
             "-c"
-            ''${lib.getExe pkgs.grim} -g "$(${lib.getExe pkgs.slurp} -w 0)" - | ${pkgs.wl-clipboard}/bin/wl-copy''
+            ''mkdir -p ~/Pictures/Screenshots && ${lib.getExe pkgs.grim} -g "$(${lib.getExe pkgs.slurp} -w 0)" - | tee ~/Pictures/Screenshots/"$(date +%Y%m%d-%H%M%S)".png | ${pkgs.wl-clipboard}/bin/wl-copy''
           ];
           "Mod+Shift+E".action.spawn = [
             "sh"
