@@ -29,6 +29,10 @@ in
           "/var/lib/immich"
           "/var/lib/postgresql"
         ];
+        backup.directories = [
+          "/var/lib/immich"
+          "/var/lib/postgresql"
+        ];
       };
     };
 }

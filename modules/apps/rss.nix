@@ -9,5 +9,8 @@
       ephemeralRoot.persist.directories = [
         ".local/share/gnome-feeds"
       ];
+      backup.directories = [
+        ".local/share/gnome-feeds"
+      ];
     };
 }

@@ -14,5 +14,8 @@
       ephemeralRoot.persist.directories = [
         ".config/obsidian"
       ];
+      backup.directories = [
+        ".config/obsidian"
+      ];
     };
 }

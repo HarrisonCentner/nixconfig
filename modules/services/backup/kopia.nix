@@ -1,12 +1,38 @@
 { mkOpSecret, ... }:
 {
+  flake.modules.nixos.base =
+    { lib, ... }:
+    {
+      options.backup.directories = lib.mkOption {
+        type = lib.types.listOf lib.types.str;
+        default = [ ];
+      };
+    };
+
+  flake.modules.homeManager.base =
+    { lib, ... }:
+    {
+      options.backup.directories = lib.mkOption {
+        type = lib.types.listOf lib.types.str;
+        default = [ ];
+      };
+    };
+
   flake.modules.nixos.kopia-backup =
     {
       config,
+      lib,
       pkgs,
       ...
     }:
     let
+      hmDirs = lib.concatLists (
+        lib.mapAttrsToList (
+          _user: hm: map (d: "${hm.home.homeDirectory}/${d}") hm.backup.directories
+        ) config.home-manager.users
+      );
+      sources = lib.unique (config.backup.directories ++ hmDirs);
+
       kopiaEnv = {
         KOPIA_CONFIG_PATH = "/var/lib/kopia/repository.config";
         KOPIA_CACHE_DIRECTORY = "/var/cache/kopia";
@@ -16,13 +42,18 @@
       common = {
         Type = "oneshot";
         User = "root";
-        EnvironmentFile = config.services.onepassword-secrets.secretPaths.kopiaEnv;
       };
+      kopiaExec =
+        name: args:
+        pkgs.writeShellScript "kopia-${name}" ''
+          export KOPIA_PASSWORD="$(cat ${config.services.onepassword-secrets.secretPaths.kopiaPassword})"
+          exec ${pkgs.kopia}/bin/kopia ${args}
+        '';
     in
     {
-      services.onepassword-secrets.secrets.kopiaEnv = mkOpSecret {
-        service = "kopia";
-        field = "env";
+      services.onepassword-secrets.secrets.kopiaPassword = mkOpSecret {
+        service = "kopia-rwzfs";
+        field = "password";
         owner = "root";
         services = [
           "kopia-backup"
@@ -48,7 +79,7 @@
         wants = [ "network-online.target" ];
         environment = kopiaEnv;
         serviceConfig = common // {
-          ExecStart = "${pkgs.kopia}/bin/kopia snapshot create /home";
+          ExecStart = kopiaExec "backup" "snapshot create ${lib.escapeShellArgs sources}";
         };
       };
 
@@ -67,7 +98,7 @@
         wants = [ "network-online.target" ];
         environment = kopiaEnv;
         serviceConfig = common // {
-          ExecStart = "${pkgs.kopia}/bin/kopia maintenance run --full";
+          ExecStart = kopiaExec "maintenance" "maintenance run --full";
         };
       };
 

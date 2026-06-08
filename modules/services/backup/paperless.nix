@@ -18,5 +18,8 @@
       ephemeralRoot.persist.directories = [
         "/var/lib/paperless"
       ];
+      backup.directories = [
+        "/var/lib/paperless"
+      ];
     };
 }

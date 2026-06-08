@@ -12,5 +12,8 @@
         ".config/Signal"
         ".config/Slack"
       ];
+      backup.directories = [
+        ".config/Signal"
+      ];
     };
 }

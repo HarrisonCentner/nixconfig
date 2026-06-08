@@ -5,12 +5,9 @@
 
     services.onepassword-secrets = {
       enable = true;
-      tokenFile = "/etc/opnix-token";
+      tokenFile = "/var/lib/opnix/token";
     };
 
-    ephemeralRoot.persist = {
-      files = [ "/etc/opnix-token" ];
-      directories = [ "/var/lib/opnix" ];
-    };
+    ephemeralRoot.persist.directories = [ "/var/lib/opnix" ];
   };
 }

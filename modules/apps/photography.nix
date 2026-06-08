@@ -11,5 +11,8 @@
         ".config/darktable"
         ".config/GIMP"
       ];
+      backup.directories = [
+        ".config/darktable"
+      ];
     };
 }
