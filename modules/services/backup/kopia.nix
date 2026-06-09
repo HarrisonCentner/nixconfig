@@ -3,18 +3,30 @@
   flake.modules.nixos.base =
     { lib, ... }:
     {
-      options.backup.directories = lib.mkOption {
-        type = lib.types.listOf lib.types.str;
-        default = [ ];
+      options.backup = {
+        directories = lib.mkOption {
+          type = lib.types.listOf lib.types.str;
+          default = [ ];
+        };
+        exclude = lib.mkOption {
+          type = lib.types.listOf lib.types.str;
+          default = [ ];
+        };
       };
     };
 
   flake.modules.homeManager.base =
     { lib, ... }:
     {
-      options.backup.directories = lib.mkOption {
-        type = lib.types.listOf lib.types.str;
-        default = [ ];
+      options.backup = {
+        directories = lib.mkOption {
+          type = lib.types.listOf lib.types.str;
+          default = [ ];
+        };
+        exclude = lib.mkOption {
+          type = lib.types.listOf lib.types.str;
+          default = [ ];
+        };
       };
     };
 
@@ -33,6 +45,17 @@
       );
       sources = lib.unique (config.backup.directories ++ hmDirs);
 
+      excludes = lib.unique (
+        config.backup.exclude
+        ++ lib.concatLists (
+          lib.mapAttrsToList (
+            _user: hm: map (d: "${hm.home.homeDirectory}/${d}") hm.backup.exclude
+          ) config.home-manager.users
+        )
+      );
+      sourceIgnores =
+        source: map (lib.removePrefix source) (lib.filter (lib.hasPrefix "${source}/") excludes);
+
       kopiaEnv = {
         KOPIA_CONFIG_PATH = "/var/lib/kopia/repository.config";
         KOPIA_CACHE_DIRECTORY = "/var/cache/kopia";
@@ -49,6 +72,12 @@
           export KOPIA_PASSWORD="$(cat ${config.services.onepassword-secrets.secretPaths.kopiaPassword})"
           exec ${pkgs.kopia}/bin/kopia ${args}
         '';
+      ignoreSteps = map (
+        source:
+        kopiaExec "ignore-${baseNameOf source}" "policy set ${source} --clear-ignore ${
+          lib.concatMapStringsSep " " (p: "--add-ignore ${lib.escapeShellArg p}") (sourceIgnores source)
+        }"
+      ) (lib.filter (source: sourceIgnores source != [ ]) sources);
     in
     {
       services.onepassword-secrets.secrets.kopiaPassword = mkOpSecret {
@@ -79,6 +108,10 @@
         wants = [ "network-online.target" ];
         environment = kopiaEnv;
         serviceConfig = common // {
+          ExecStartPre = [
+            (kopiaExec "policy" "policy set --global --compression=zstd")
+          ]
+          ++ ignoreSteps;
           ExecStart = kopiaExec "backup" "snapshot create ${lib.escapeShellArgs sources}";
         };
       };

@@ -62,12 +62,17 @@ in
       };
       programs.home-manager.enable = true;
 
-      backup.directories = [
-        "Documents"
-        "Downloads"
-        "Pictures"
-        "software"
-      ];
+      backup = {
+        directories = [
+          "Documents"
+          "Downloads"
+          "Pictures"
+          "software"
+        ];
+        exclude = [
+          "software/rome"
+        ];
+      };
     };
 
   };

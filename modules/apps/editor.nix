@@ -17,6 +17,9 @@
           exec agent-jail "$@" -- gemini --yolo
         ''
       );
+      stateDirs = [
+        ".claude"
+      ];
     in
     {
       nixpkgs.config.allowUnfree = true;
@@ -27,8 +30,7 @@
         geminidius
         gh
       ];
-      ephemeralRoot.persist.directories = [
-        ".claude"
-      ];
+      ephemeralRoot.persist.directories = stateDirs;
+      backup.directories = stateDirs;
     };
 }
