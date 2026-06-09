@@ -1,14 +1,10 @@
 topLevel@{
-  inputs,
   ...
 }:
 let
   userName = "hcentner";
 
-  homeDirectory =
-    # if inputs.nixpkgs.stdenvNoCC.isDarwin
-    #  then "/Users/${userName}"
-    "/home/${userName}";
+  homeDirectory = "/home/${userName}";
 in
 {
   flake = {
@@ -45,22 +41,10 @@ in
         nix.settings.trusted-users = [ topLevel.config.flake.meta.users.${userName}.username ];
       };
 
-    modules.homeManager.base = {
-      home = {
-        # homeDirectory = homeDirectory;
-        stateVersion = "24.11";
-        sessionPath = [
-          "${homeDirectory}/nixconfig"
-        ];
-        sessionVariables = {
-          EDITOR = "vim";
-        };
-        file = {
-          ".vimrc".source = ../../modules/shell/editor/vimrc.txt;
-          ".vim/coc-settings.json".source = ../../modules/shell/editor/coc-settings.json;
-        };
-      };
-      programs.home-manager.enable = true;
+    modules.homeManager.${userName} = {
+      home.sessionPath = [
+        "${homeDirectory}/nixconfig"
+      ];
 
       backup = {
         directories = [

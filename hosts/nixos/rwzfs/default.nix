@@ -44,6 +44,9 @@
               noctalia-shell
               shell
 
+              # Users
+              hcentner
+
               # Languages
               dhall
               haskell

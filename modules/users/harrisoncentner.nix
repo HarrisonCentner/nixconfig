@@ -1,5 +1,4 @@
 topLevel@{
-  inputs,
   ...
 }:
 let
@@ -17,31 +16,18 @@ in
       };
     };
 
-    modules.darwin.${userName} =
-      { pkgs, ... }:
-      {
-        users.users.${userName} = {
-          description = topLevel.config.flake.meta.users.${userName}.name;
-          createHome = true;
-        };
-      };
-    modules.darwin.base = {
+    modules.darwin.${userName} = {
       system.primaryUser = userName;
-      users.users.${userName}.home = homeDirectory;
-    };
-    modules.homeManager.base = {
-      home = {
-        stateVersion = "24.11";
-        sessionPath = [
-          "${homeDirectory}/nixconfig"
-        ];
-        sessionVariables = {
-          EDITOR = "vim";
-        };
-        file.".vimrc".source = ../../modules/shell/editor/vimrc.txt;
-        file.".vim/coc-settings.json".source = ../../modules/shell/editor/coc-settings.json;
+      users.users.${userName} = {
+        description = topLevel.config.flake.meta.users.${userName}.name;
+        createHome = true;
+        home = homeDirectory;
       };
-      programs.home-manager.enable = true;
+    };
+    modules.homeManager.${userName} = {
+      home.sessionPath = [
+        "${homeDirectory}/nixconfig"
+      ];
     };
 
   };

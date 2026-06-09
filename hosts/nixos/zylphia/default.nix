@@ -33,6 +33,9 @@
               base
               shell
 
+              # Users
+              hcentner
+
               # Languages
               haskell
               nix

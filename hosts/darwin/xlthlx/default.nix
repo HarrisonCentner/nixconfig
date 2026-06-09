@@ -20,6 +20,9 @@
               # Modules
               base
               shell
+
+              # Users
+              harrisoncentner
             ];
           };
         }

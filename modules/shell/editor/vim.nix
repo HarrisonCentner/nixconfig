@@ -2,9 +2,16 @@
   flake.modules.homeManager.shell =
     { pkgs, ... }:
     {
-      home.packages = with pkgs; [
-        nodejs # required for coc-nvim
-      ];
+      home = {
+        packages = with pkgs; [
+          nodejs # required for coc-nvim
+        ];
+        sessionVariables.EDITOR = "vim";
+        file = {
+          ".vimrc".source = ./vimrc.txt;
+          ".vim/coc-settings.json".source = ./coc-settings.json;
+        };
+      };
       xdg = {
         desktopEntries = {
           vim = {
