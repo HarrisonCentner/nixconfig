@@ -1,6 +1,6 @@
 {
   flake.modules.homeManager.shell =
-    { pkgs, ... }:
+    { pkgs, lib, ... }:
     {
       home = {
         packages = with pkgs; [
@@ -12,7 +12,7 @@
           ".vim/coc-settings.json".source = ./coc-settings.json;
         };
       };
-      xdg = {
+      xdg = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
         desktopEntries = {
           vim = {
             name = "Vim";

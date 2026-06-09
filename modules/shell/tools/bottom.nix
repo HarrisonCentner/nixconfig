@@ -1,15 +1,19 @@
 {
   flake.modules = {
-    homeManager.shell = {
-      programs = {
-        bottom = {
-          enable = true;
+    homeManager.shell =
+      { pkgs, lib, ... }:
+      {
+        programs = {
+          bottom = {
+            enable = true;
+          };
+        };
+        xdg.desktopEntries = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
+          bottom = {
+            name = "bottom";
+            noDisplay = true;
+          };
         };
       };
-      xdg.desktopEntries.bottom = {
-        name = "bottom";
-        noDisplay = true;
-      };
-    };
   };
 }

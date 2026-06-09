@@ -1,6 +1,6 @@
 {
   flake.modules = {
-    homeManager.base =
+    homeManager.clojure =
       { pkgs, ... }:
       {
         home.packages = with pkgs; [

@@ -48,6 +48,7 @@
               hcentner
 
               # Languages
+              clojure
               dhall
               haskell
               nix
