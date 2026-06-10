@@ -13,6 +13,7 @@
         zylphia-disko
         zylphia-hardware
         intel-graphics
+        nix-mineral
         shell
 
         # Users

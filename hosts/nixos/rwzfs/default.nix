@@ -15,6 +15,7 @@
         rwzfs-hardware
         desktop-niri
         intel-graphics
+        nix-mineral
         shell
 
         # Users

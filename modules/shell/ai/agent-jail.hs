@@ -3,6 +3,7 @@
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE StrictData #-}
+{-# OPTIONS_GHC -Wall -Wincomplete-uni-patterns -Wincomplete-record-updates #-}
 
 {- | Run @sbox@ with extra binds wired up for AI agent workflows.
 
@@ -34,6 +35,7 @@ data BindMode
 data Arg
     = ArgBind BindMode FilePath
     | ArgNetwork String
+    | ArgKvm
     | ArgOther String
 
 -- Wrap each token in a sum so the alternatives are tried per-arg; this
@@ -68,16 +70,26 @@ argParser =
                     , Opt.completeWith ["isolated", "blocked", "host"]
                     ]
                 )
+        <|> Opt.flag' ArgKvm
+            ( mconcat
+                [ Opt.long "kvm"
+                , Opt.help "Binds /dev/kvm into the sandbox"
+                ]
+            )
         <|> ArgOther <$> Opt.strArgument (Opt.metavar "FWD...")
 
 -- Each branch yields (sbox-side, forwarded-side); mconcat over the
 -- tuple monoid stitches them together in argv order.
 contribute :: Arg -> IO ([String], [String])
-contribute (ArgBind mode dir) = do
-    bind <- bbwrapBind mode dir
-    pure (bind, [])
-contribute (ArgNetwork n) = pure (["--network", n], [])
-contribute (ArgOther s) = pure ([], [s])
+contribute  = \case
+  ArgBind mode dir -> do
+      bind <- bbwrapBind mode dir
+      pure (bind, [])
+  ArgNetwork n -> pure (["--network", n], [])
+  -- sbox --dev-bind-try takes a single PATH (mirrored to src and dest),
+  -- unlike the SRC DEST pairs of --bind/--ro-bind.
+  ArgKvm -> pure (["--dev-bind-try", "/dev/kvm"], [])
+  ArgOther s -> pure ([], [s])
 
 build :: [Arg] -> IO ([String], [String])
 build = fmap mconcat . traverse contribute
@@ -183,4 +195,10 @@ main = do
         gitCommonDir >>= \case
             Just dir -> bbwrapBind ReadWrite dir
             Nothing -> pure []
-    runSandbox (worktree <> sboxArgs <> rest <> forwarded)
+    runSandbox $
+        mconcat
+            [ worktree
+            , sboxArgs
+            , rest
+            , forwarded
+            ]
