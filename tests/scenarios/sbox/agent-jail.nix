@@ -98,6 +98,7 @@ in
           testScript = ''
             machine.wait_for_unit("multi-user.target")
             machine.wait_for_unit("test-setup.service")
+            machine.succeed("systemctl is-system-running --wait")
 
             # Default isolated mode: in-jail invariants hold.
             machine.succeed(

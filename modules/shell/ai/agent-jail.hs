@@ -16,7 +16,7 @@ worktree stays usable.
 -}
 module Main where
 
-import Control.Applicative ((<|>))
+import Data.Foldable (asum)
 import Data.List (isPrefixOf)
 import Data.Text qualified as T
 import Options.Applicative qualified as Opt
@@ -43,40 +43,36 @@ data Arg
 -- positional parser swallows recognised long options.
 argParser :: Opt.Parser Arg
 argParser =
-    ArgBind ReadOnly
-        <$> Opt.strOption
-            ( mconcat
-                [ Opt.long "readable"
-                , Opt.metavar "DIR"
-                , Opt.help "Bind DIR into the sandbox read-only"
-                , Opt.action "directory"
-                ]
-            )
-        <|> ArgBind ReadWrite
-            <$> Opt.strOption
+    let bindOption name access =
+            Opt.strOption
                 ( mconcat
-                    [ Opt.long "writeable"
+                    [ Opt.long name
                     , Opt.metavar "DIR"
-                    , Opt.help "Bind DIR into the sandbox read-write"
+                    , Opt.help ("Bind DIR into the sandbox " <> access)
                     , Opt.action "directory"
                     ]
                 )
-        <|> ArgNetwork
-            <$> Opt.strOption
+     in asum
+            [ ArgBind ReadOnly <$> bindOption "readable" "read-only"
+            , ArgBind ReadWrite <$> bindOption "writeable" "read-write"
+            , ArgNetwork
+                <$> Opt.strOption
+                    ( mconcat
+                        [ Opt.long "network"
+                        , Opt.metavar "MODE"
+                        , Opt.help "Network mode forwarded to sbox"
+                        , Opt.completeWith ["isolated", "blocked", "host"]
+                        ]
+                    )
+            , Opt.flag'
+                ArgKvm
                 ( mconcat
-                    [ Opt.long "network"
-                    , Opt.metavar "MODE"
-                    , Opt.help "Network mode forwarded to sbox"
-                    , Opt.completeWith ["isolated", "blocked", "host"]
+                    [ Opt.long "kvm"
+                    , Opt.help "Binds /dev/kvm into the sandbox"
                     ]
                 )
-        <|> Opt.flag' ArgKvm
-            ( mconcat
-                [ Opt.long "kvm"
-                , Opt.help "Binds /dev/kvm into the sandbox"
-                ]
-            )
-        <|> ArgOther <$> Opt.strArgument (Opt.metavar "FWD...")
+            , ArgOther <$> Opt.strArgument (Opt.metavar "FWD...")
+            ]
 
 -- Each branch yields (sbox-side, forwarded-side); mconcat over the
 -- tuple monoid stitches them together in argv order.
@@ -86,8 +82,6 @@ contribute  = \case
       bind <- bbwrapBind mode dir
       pure (bind, [])
   ArgNetwork n -> pure (["--network", n], [])
-  -- sbox --dev-bind-try takes a single PATH (mirrored to src and dest),
-  -- unlike the SRC DEST pairs of --bind/--ro-bind.
   ArgKvm -> pure (["--dev-bind-try", "/dev/kvm"], [])
   ArgOther s -> pure ([], [s])
 
