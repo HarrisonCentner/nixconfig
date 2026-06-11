@@ -16,6 +16,8 @@
           # rngd is killed by its own unit's seccomp filter
           # (jitterentropy-rngd#24); keep the in-kernel source instead
           entropy.jitterentropy = false;
+          # keep boot logs visible; recon benefit not worth lost diagnostics
+          debug.quiet-boot = false;
         };
         filesystems = {
           # bind mount breaks stage-2 on dedicated btrfs subvolumes (nix-mineral#11)
