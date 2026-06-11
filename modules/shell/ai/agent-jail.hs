@@ -77,13 +77,13 @@ argParser =
 -- Each branch yields (sbox-side, forwarded-side); mconcat over the
 -- tuple monoid stitches them together in argv order.
 contribute :: Arg -> IO ([String], [String])
-contribute  = \case
-  ArgBind mode dir -> do
-      bind <- bbwrapBind mode dir
-      pure (bind, [])
-  ArgNetwork n -> pure (["--network", n], [])
-  ArgKvm -> pure (["--dev-bind-try", "/dev/kvm"], [])
-  ArgOther s -> pure ([], [s])
+contribute = \case
+    ArgBind mode dir -> do
+        bind <- bbwrapBind mode dir
+        pure (bind, [])
+    ArgNetwork n -> pure (["--network", n], [])
+    ArgKvm -> pure (["--dev-bind-try", "/dev/kvm"], [])
+    ArgOther s -> pure ([], [s])
 
 build :: [Arg] -> IO ([String], [String])
 build = fmap mconcat . traverse contribute
