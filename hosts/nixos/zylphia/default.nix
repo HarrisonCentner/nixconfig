@@ -23,6 +23,7 @@
         immich
         nixflix
         secrets
+        syncthing
         tailscale
         paperless
       ]

@@ -13,6 +13,7 @@
         base
         rwzfs-disko
         rwzfs-hardware
+        rwzfs-syncthing
         desktop-niri
         intel-graphics
         nix-mineral
