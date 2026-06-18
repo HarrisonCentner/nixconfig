@@ -1,0 +1,55 @@
+name: build
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [master]
+  schedule:
+    - cron: '17 7 * * *'
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - host: rwzfs
+            os: ubuntu-latest
+            attr: nixosConfigurations.rwzfs.config.system.build.toplevel
+          - host: portable
+            os: ubuntu-latest
+            attr: nixosConfigurations.portable.config.system.build.toplevel
+          - host: zylphia
+            os: ubuntu-latest
+            attr: nixosConfigurations.zylphia.config.system.build.toplevel
+          - host: qwfwq_1
+            os: ubuntu-latest
+            attr: nixosConfigurations.qwfwq_1.config.system.build.toplevel
+          - host: qwfwq_2
+            os: ubuntu-latest
+            attr: nixosConfigurations.qwfwq_2.config.system.build.toplevel
+          - host: qwfwq_3
+            os: ubuntu-latest
+            attr: nixosConfigurations.qwfwq_3.config.system.build.toplevel
+          - host: xlthlx
+            os: macos-15-intel
+            attr: darwinConfigurations.xlthlx.config.system.build.toplevel
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: cachix/install-nix-action@v30
+
+      - uses: nix-community/cache-nix-action@v7
+        with:
+          primary-key: nix-${{ runner.os }}-${{ matrix.host }}-${{ hashFiles('**/*.nix', 'flake.lock') }}
+          restore-prefixes-first-match: nix-${{ runner.os }}-${{ matrix.host }}-
+          gc-max-store-size-linux: 8G
+          gc-max-store-size-macos: 8G
+          purge: true
+          purge-prefixes: nix-${{ runner.os }}-${{ matrix.host }}-
+          purge-created: 0
+          purge-primary-key: never
+          purge-last-accessed: 604800
+
+      - run: nix build --print-build-logs .#${{ matrix.attr }}
