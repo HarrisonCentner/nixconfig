@@ -5,3 +5,4 @@ CLAUDE.md
 scripts
 docs
 .direnv
+.envrc
