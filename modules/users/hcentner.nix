@@ -32,6 +32,7 @@ in
             "tty"
             "wheel"
             "docker"
+            "audio"
           ];
           shell = pkgs.zsh;
           openssh.authorizedKeys.keys = topLevel.config.flake.meta.users.${userName}.authorizedKeys;

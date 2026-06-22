@@ -31,6 +31,7 @@
         docker
         kopia-backup
         microvm-host
+        music
         secrets
         syncthing
         tailscale
@@ -70,6 +71,7 @@
               cloud
               docker
               kopia-backup
+              music
             ];
           };
         }
