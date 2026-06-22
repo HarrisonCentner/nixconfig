@@ -53,6 +53,9 @@
             localAnnounceEnabled = true;
             relaysEnabled = false;
             natEnabled = false;
+            urAccepted = -1;
+            crashReportingEnabled = false;
+            releasesURL = "";
           };
           devices = lib.mapAttrs (_: id: {
             inherit id;
