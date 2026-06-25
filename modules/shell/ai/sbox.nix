@@ -27,6 +27,7 @@
     {
       home.packages = [
         agent-jail
+        pkgs.cloud-hypervisor
       ];
 
       programs.sbox = {

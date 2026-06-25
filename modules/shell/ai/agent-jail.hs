@@ -36,6 +36,7 @@ data Arg
     = ArgBind BindMode FilePath
     | ArgNetwork String
     | ArgKvm
+    | ArgTun
     | ArgOther String
 
 -- Wrap each token in a sum so the alternatives are tried per-arg; this
@@ -71,6 +72,13 @@ argParser =
                     , Opt.help "Binds /dev/kvm into the sandbox"
                     ]
                 )
+            , Opt.flag'
+                ArgTun
+                ( mconcat
+                    [ Opt.long "tun"
+                    , Opt.help "Binds /dev/net/tun into the sandbox"
+                    ]
+                )
             , ArgOther <$> Opt.strArgument (Opt.metavar "FWD...")
             ]
 
@@ -83,6 +91,7 @@ contribute = \case
         pure (bind, [])
     ArgNetwork n -> pure (["--network", n], [])
     ArgKvm -> pure (["--dev-bind-try", "/dev/kvm"], [])
+    ArgTun -> pure (["--dev-bind-try", "/dev/net/tun"], [])
     ArgOther s -> pure ([], [s])
 
 build :: [Arg] -> IO ([String], [String])

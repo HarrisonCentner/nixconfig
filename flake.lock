@@ -494,11 +494,11 @@
     },
     "sbox": {
       "locked": {
-        "lastModified": 1780323502,
-        "narHash": "sha256-5gPHX6kmTfpn/C/sfHLlmGNCWoGYPFqfKObuhrdF1RU=",
+        "lastModified": 1782216405,
+        "narHash": "sha256-/i5R8ieFe6zPPOO1Oj13WrlnqYT5B0caLKaDqfGjii4=",
         "owner": "DavHau",
         "repo": "sbox",
-        "rev": "1071beb193c1448b252e3996e0722bb89350bd04",
+        "rev": "65e513cd686db61b39a0c1e951805a5bffa734bb",
         "type": "github"
       },
       "original": {
