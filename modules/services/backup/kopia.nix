@@ -119,7 +119,7 @@
       systemd.timers.kopia-backup = {
         wantedBy = [ "timers.target" ];
         timerConfig = {
-          OnCalendar = "weekly";
+          OnCalendar = "daily";
           Persistent = true;
           RandomizedDelaySec = "1h";
         };
@@ -138,7 +138,7 @@
       systemd.timers.kopia-maintenance = {
         wantedBy = [ "timers.target" ];
         timerConfig = {
-          OnCalendar = "monthly";
+          OnCalendar = "weekly";
           Persistent = true;
           RandomizedDelaySec = "2h";
         };
