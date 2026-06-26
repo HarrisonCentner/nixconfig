@@ -29,6 +29,7 @@
         # Services
         dns
         docker
+        eval-vm-net
         kopia-backup
         microvm-host
         music
