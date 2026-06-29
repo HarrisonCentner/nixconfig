@@ -316,14 +316,17 @@
               left = [
                 { id = "Network"; }
                 { id = "Bluetooth"; }
-                { id = "WallpaperSelector"; }
-                { id = "NoctaliaPerformance"; }
               ];
               right = [
                 { id = "Notifications"; }
                 { id = "PowerProfile"; }
-                { id = "KeepAwake"; }
                 { id = "NightLight"; }
+                {
+                  id = "CustomButton";
+                  icon = "lock";
+                  generalTooltipText = "Lock screen";
+                  onClicked = "noctalia-shell ipc call lockScreen lock";
+                }
               ];
             };
           };

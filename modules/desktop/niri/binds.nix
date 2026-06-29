@@ -12,6 +12,14 @@
           ];
           "Mod+Shift+Slash".action.show-hotkey-overlay = [ ];
 
+          "Mod+Z".action.spawn = [
+            "noctalia-shell"
+            "ipc"
+            "call"
+            "lockScreen"
+            "lock"
+          ];
+
           "Mod+Q".action.close-window = [ ];
           "Mod+F".action.maximize-column = [ ];
           "Mod+G".action.fullscreen-window = [ ];
