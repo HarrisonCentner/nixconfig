@@ -62,11 +62,21 @@
             # Taps have no carrier until a guest's virtio-net attaches; assign
             # the gateway address anyway so it's ready at guest boot/restore.
             ConfigureWithoutCarrier = true;
+            # The host is the router, never a client of the guest: take no
+            # address, RA, route or v6 LL FROM the guest.
+            DHCP = "no";
+            IPv6AcceptRA = false;
+            LinkLocalAddressing = "no";
+            DefaultRouteOnDevice = false;
           };
           # Don't block `systemd-networkd-wait-online` on these transient taps.
           linkConfig.RequiredForOnline = "no";
         };
       };
+
+      # NetworkManager owns the host NICs (wlp0s20f3); keep it off the eval taps
+      # so it can't pick up a guest-advertised default route either.
+      networking.networkmanager.unmanaged = [ "interface-name:tap-eval-*" ];
 
       # Masquerade the eval subnet out the external NIC. `internalIPs` (subnet)
       # rather than `internalInterfaces` because the clone tap names are dynamic.
