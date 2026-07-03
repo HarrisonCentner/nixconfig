@@ -41,9 +41,14 @@
           "$HOME/.gemini" = { };
           "$HOME/.claude.json" = { };
           "$HOME/.config/gh" = { };
+          "$HOME/.cache/cargo-target" = { };
+          "$HOME/.cache/sccache" = { };
           "$HOME/.infisical" = { };
           "$HOME/.local/share/nix" = { };
           "$XDG_RUNTIME_DIR/tmux-$(id -u)" = { };
+        };
+        bindReadOnly = {
+          "$HOME/.cargo/config.toml" = { };
         };
       };
     };

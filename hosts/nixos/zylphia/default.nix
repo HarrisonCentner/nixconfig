@@ -41,6 +41,7 @@
               # Languages
               haskell
               nix
+              rust
 
               # Apps
               editor

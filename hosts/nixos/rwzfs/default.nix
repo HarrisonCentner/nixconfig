@@ -56,6 +56,7 @@
               dhall
               haskell
               nix
+              rust
 
               # Apps
               browser
