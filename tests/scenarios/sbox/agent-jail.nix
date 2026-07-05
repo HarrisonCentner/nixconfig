@@ -124,18 +124,12 @@ in
                 "'cd ~/work/proj-wt && agent-jail -- test -e /home/alice/work/sibling'"
             )
 
-            # --kvm: /dev/kvm appears inside the jail as a device node. The
+            # sbox mounts /dev/kvm by default when the host has it. The
             # test VM has no nested virt, so create the node as a stand-in.
             machine.succeed("[ -c /dev/kvm ] || mknod -m 666 /dev/kvm c 10 232")
             machine.succeed(
                 "runuser -l alice -c "
-                "'cd ~/work/proj && agent-jail --kvm -- test -c /dev/kvm'"
-            )
-
-            # Without --kvm, bwrap's fresh /dev has no kvm node.
-            machine.fail(
-                "runuser -l alice -c "
-                "'cd ~/work/proj && agent-jail -- test -e /dev/kvm'"
+                "'cd ~/work/proj && agent-jail -- test -c /dev/kvm'"
             )
           '';
         };

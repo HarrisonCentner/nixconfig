@@ -35,7 +35,6 @@ data BindMode
 data Arg
     = ArgBind BindMode FilePath
     | ArgNetwork String
-    | ArgKvm
     | ArgTun
     | ArgOther String
 
@@ -66,13 +65,6 @@ argParser =
                         ]
                     )
             , Opt.flag'
-                ArgKvm
-                ( mconcat
-                    [ Opt.long "kvm"
-                    , Opt.help "Binds /dev/kvm into the sandbox"
-                    ]
-                )
-            , Opt.flag'
                 ArgTun
                 ( mconcat
                     [ Opt.long "tun"
@@ -90,7 +82,6 @@ contribute = \case
         bind <- bbwrapBind mode dir
         pure (bind, [])
     ArgNetwork n -> pure (["--network", n], [])
-    ArgKvm -> pure (["--dev-bind-try", "/dev/kvm"], [])
     ArgTun -> pure (["--dev-bind-try", "/dev/net/tun"], [])
     ArgOther s -> pure ([], [s])
 
