@@ -68,6 +68,7 @@
               office
               photography
               rss
+              tidal
 
               # Services
               cloud

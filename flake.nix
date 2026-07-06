@@ -1,8 +1,9 @@
 {
   description = "Configs for my nixos & nix-darwin systems using dendritic nix.";
 
-  # All inputs with a `nixpkgs` input follow ours; the rest (flake-parts,
-  # import-tree, systems, sbox) have no `nixpkgs` input to follow.
+  # All inputs with a `nixpkgs` input follow ours; the rest either have no
+  # `nixpkgs` input to follow (flake-parts, import-tree, systems, sbox) or
+  # are non-flake sources (superdirt, vowel, dirt-samples).
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nix-darwin = {
@@ -53,6 +54,18 @@
     nix-mineral = {
       url = "github:cynicsketch/nix-mineral";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    superdirt = {
+      url = "git+https://codeberg.org/musikinformatik/SuperDirt";
+      flake = false;
+    };
+    vowel = {
+      url = "github:supercollider-quarks/Vowel";
+      flake = false;
+    };
+    dirt-samples = {
+      url = "github:tidalcycles/Dirt-Samples";
+      flake = false;
     };
   };
 

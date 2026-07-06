@@ -21,6 +21,22 @@
         "type": "github"
       }
     },
+    "dirt-samples": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1742324136,
+        "narHash": "sha256-OzVvy/L6jfEgGx3dMdhe/PkfMAWVV0HQ9wGy500++fw=",
+        "owner": "tidalcycles",
+        "repo": "Dirt-Samples",
+        "rev": "c74fc80f8db8038f6a33648ffef5ac00a07ad402",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tidalcycles",
+        "repo": "Dirt-Samples",
+        "type": "github"
+      }
+    },
     "disko": {
       "inputs": {
         "nixpkgs": [
@@ -475,6 +491,7 @@
     "root": {
       "inputs": {
         "claude-code": "claude-code",
+        "dirt-samples": "dirt-samples",
         "disko": "disko",
         "flake-parts": "flake-parts",
         "home-manager": "home-manager",
@@ -489,7 +506,9 @@
         "noctalia": "noctalia",
         "opnix": "opnix",
         "sbox": "sbox",
-        "systems": "systems_4"
+        "superdirt": "superdirt",
+        "systems": "systems_4",
+        "vowel": "vowel"
       }
     },
     "sbox": {
@@ -521,6 +540,22 @@
       "original": {
         "type": "git",
         "url": "https://spectrum-os.org/git/spectrum"
+      }
+    },
+    "superdirt": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1780910408,
+        "narHash": "sha256-Yeuackq9Mvk8I/Td5o0T+WZPYI5JZ5BgGc5i7xTby5g=",
+        "ref": "refs/heads/develop",
+        "rev": "33f4040423967373c4cc9855b90c951ce93ca2e0",
+        "revCount": 977,
+        "type": "git",
+        "url": "https://codeberg.org/musikinformatik/SuperDirt"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://codeberg.org/musikinformatik/SuperDirt"
       }
     },
     "systems": {
@@ -623,6 +658,22 @@
       "original": {
         "owner": "numtide",
         "repo": "treefmt-nix",
+        "type": "github"
+      }
+    },
+    "vowel": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1641306144,
+        "narHash": "sha256-zfF6cvAGDNYWYsE8dOIo38b+dIymd17Pexg0HiPFbxM=",
+        "owner": "supercollider-quarks",
+        "repo": "Vowel",
+        "rev": "ab59caa870201ecf2604b3efdd2196e21a8b5446",
+        "type": "github"
+      },
+      "original": {
+        "owner": "supercollider-quarks",
+        "repo": "Vowel",
         "type": "github"
       }
     },
