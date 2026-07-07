@@ -18,6 +18,7 @@
           htop
           # nix stuff
           direnv
+          ncdu
           nix-direnv
           nix-output-monitor
           nix-tree
