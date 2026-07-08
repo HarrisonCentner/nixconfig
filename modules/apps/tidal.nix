@@ -38,6 +38,8 @@
     in
     {
       home.packages = [
+        pkgs.godot-mono
+        pkgs.dotnet-sdk_8
         supercollider
         superdirt
         tidal
