@@ -30,6 +30,7 @@
         dns
         docker
         eval-vm-net
+        gnupg
         kopia-backup
         microvm-host
         music
