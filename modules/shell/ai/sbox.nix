@@ -1,5 +1,10 @@
-{ writeHaskellBinCompleted, ... }:
+{ writeHaskellBinCompleted, mkOpSecret, ... }:
+let
+  ghTokenPath = "/var/lib/opnix/secrets/ghToken";
+in
 {
+  _module.args.ghTokenPath = ghTokenPath;
+
   flake.modules.nixos.ai-agents = {
     systemd.user.slices.ai-agents = {
       description = "Resource slice for AI agent sessions";
@@ -9,6 +14,14 @@
         CPUWeight = 50;
         IOWeight = 50;
       };
+    };
+
+    services.onepassword-secrets.secrets.ghToken = mkOpSecret {
+      service = "github-rwzfs";
+      field = "token";
+      owner = "hcentner";
+      group = "users";
+      services = [ ];
     };
   };
   flake.modules.homeManager.ai-agents =

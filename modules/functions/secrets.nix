@@ -4,12 +4,12 @@
       service,
       field,
       owner ? service,
+      group ? owner,
       services ? [ service ],
     }:
     {
       reference = "op://nixconfig/${service}/${field}";
-      inherit owner services;
-      group = owner;
+      inherit owner group services;
       mode = "0400";
     };
 }
