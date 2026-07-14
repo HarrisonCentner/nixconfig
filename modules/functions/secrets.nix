@@ -4,7 +4,7 @@
       service,
       field,
       owner ? service,
-      group ? owner,
+      group ? "users",
       services ? [ service ],
     }:
     {

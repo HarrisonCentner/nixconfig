@@ -20,7 +20,6 @@ in
       service = "github-rwzfs";
       field = "token";
       owner = "hcentner";
-      group = "users";
       services = [ ];
     };
   };
