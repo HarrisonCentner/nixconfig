@@ -25,10 +25,8 @@ in
           accelerationDevices = [ "/dev/dri/renderD128" ];
         };
 
-        ephemeralRoot.persist.directories = [
-          "/var/lib/immich"
-          "/var/lib/postgresql"
-        ];
+        ephemeralRoot.persist.directories = [ "/var/lib/immich" ];
+
         backup.directories = [
           "/var/lib/immich"
           "/var/lib/postgresql"

@@ -3,6 +3,7 @@
     { pkgs, disko, ... }:
     {
       fileSystems."/home".neededForBoot = true;
+      fileSystems."/persist".neededForBoot = true;
 
       disko.devices = {
         disk = {
@@ -53,6 +54,22 @@
                           mountpoint = "/nix";
                           mountOptions = [
                             "compress=zstd"
+                            "noatime"
+                          ];
+                        };
+                        # Survives the root rollback; backs environment.persistence."/persist".
+                        "/persist" = {
+                          mountpoint = "/persist";
+                          mountOptions = [
+                            "compress=zstd"
+                            "noatime"
+                          ];
+                        };
+                        # nodatacow: databases fragment badly under btrfs CoW.
+                        "/postgresql" = {
+                          mountpoint = "/var/lib/postgresql";
+                          mountOptions = [
+                            "nodatacow"
                             "noatime"
                           ];
                         };
