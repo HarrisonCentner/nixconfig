@@ -129,7 +129,7 @@
 
         touchpad = {
           natural-scroll = true;
-          tap = true;
+          tap = false;
         };
 
         mouse = {
