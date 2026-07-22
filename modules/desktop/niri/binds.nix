@@ -23,6 +23,7 @@
           "Mod+Q".action.close-window = [ ];
           "Mod+F".action.maximize-column = [ ];
           "Mod+G".action.fullscreen-window = [ ];
+          "Mod+Shift+G".action.toggle-windowed-fullscreen = [ ];
           "Mod+Shift+F".action.toggle-window-floating = [ ];
           "Mod+C".action.center-column = [ ];
 
