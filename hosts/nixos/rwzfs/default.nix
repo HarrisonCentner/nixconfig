@@ -67,6 +67,7 @@
               messaging
               notes
               office
+              password-manager
               photography
               rss
               tidal

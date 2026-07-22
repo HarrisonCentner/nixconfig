@@ -1,3 +1,4 @@
+{ blockOutFromScreencast, ... }:
 {
   flake.modules.homeManager.browser =
     { pkgs, ... }:
@@ -15,6 +16,12 @@
           "x-scheme-handler/https" = "chromium-browser.desktop";
         };
       };
+
+      # Proton Mail + Calendar PWAs (app-id: chrome-<webapp-id>-<profile>)
+      programs.niri.settings.window-rules = blockOutFromScreencast [
+        "^chrome-jnpecgipniidlgicjocehkhajgdnjekh-"
+        "^chrome-ojibjkjikcpjonjjngfkegflhmffeemk-"
+      ];
 
       ephemeralRoot.persist.directories = [
         ".config/chromium"

@@ -1,3 +1,4 @@
+{ blockOutFromScreencast, ... }:
 {
   flake.modules.homeManager.messaging =
     { pkgs, ... }:
@@ -7,6 +8,11 @@
         vesktop
         signal-desktop
         slack
+      ];
+
+      programs.niri.settings.window-rules = blockOutFromScreencast [
+        "(?i)^signal$"
+        "(?i)^vesktop$"
       ];
 
       ephemeralRoot.persist.directories = [

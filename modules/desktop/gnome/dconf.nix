@@ -83,7 +83,6 @@
 
         "app-folders/folders/8552c3fa-1d30-4582-80de-7a3023795af5" = {
           apps = [
-            "torbrowser.desktop"
             "firefox.desktop"
           ];
           name = "Internet";

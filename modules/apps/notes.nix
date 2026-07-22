@@ -1,3 +1,4 @@
+{ blockOutFromScreencast, ... }:
 {
   flake.modules.homeManager.notes =
     { pkgs, ... }:
@@ -10,6 +11,8 @@
           "text/markdown" = "obsidian.desktop";
         };
       };
+
+      programs.niri.settings.window-rules = blockOutFromScreencast [ "(?i)^obsidian$" ];
 
       ephemeralRoot.persist.directories = [
         ".config/obsidian"

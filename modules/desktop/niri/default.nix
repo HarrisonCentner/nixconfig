@@ -1,5 +1,6 @@
 {
   inputs,
+  blockOutFromScreencast,
   ...
 }:
 {
@@ -115,6 +116,8 @@
 
     programs.niri.settings = {
       prefer-no-csd = true;
+
+      window-rules = blockOutFromScreencast [ "(?i)^thunar$" ];
 
       input = {
         keyboard = {

@@ -1,3 +1,4 @@
+{ blockOutFromScreencast, ... }:
 {
   flake.modules.nixos.password-manager =
     { pkgs, ... }:
@@ -16,6 +17,8 @@
   flake.modules.homeManager.password-manager =
     { pkgs, ... }:
     {
+      programs.niri.settings.window-rules = blockOutFromScreencast [ "(?i)^1password$" ];
+
       ephemeralRoot.persist.directories = [
         ".config/1Password"
       ];
