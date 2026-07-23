@@ -3,7 +3,7 @@
 
   # All inputs with a `nixpkgs` input follow ours; the rest either have no
   # `nixpkgs` input to follow (flake-parts, import-tree, systems, sbox) or
-  # are non-flake sources (superdirt, vowel, dirt-samples).
+  # are non-flake sources (superdirt, vowel, dirt-samples, apple-color-emoji).
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nix-darwin = {
@@ -65,6 +65,11 @@
     };
     dirt-samples = {
       url = "github:tidalcycles/Dirt-Samples";
+      flake = false;
+    };
+    # Floats to the newest release; `nix flake update apple-color-emoji` bumps it.
+    apple-color-emoji = {
+      url = "file+https://github.com/samuelngs/apple-emoji-ttf/releases/latest/download/AppleColorEmoji-Linux.ttf";
       flake = false;
     };
   };

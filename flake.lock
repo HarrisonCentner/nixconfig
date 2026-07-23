@@ -1,5 +1,17 @@
 {
   "nodes": {
+    "apple-color-emoji": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-BQbhFq4y7qNAfkaJxP8qWRMEriYFNUhu1Z+48aWm12c=",
+        "type": "file",
+        "url": "https://github.com/samuelngs/apple-emoji-ttf/releases/latest/download/AppleColorEmoji-Linux.ttf"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://github.com/samuelngs/apple-emoji-ttf/releases/latest/download/AppleColorEmoji-Linux.ttf"
+      }
+    },
     "claude-code": {
       "inputs": {
         "flake-utils": "flake-utils",
@@ -490,6 +502,7 @@
     },
     "root": {
       "inputs": {
+        "apple-color-emoji": "apple-color-emoji",
         "claude-code": "claude-code",
         "dirt-samples": "dirt-samples",
         "disko": "disko",
