@@ -214,6 +214,7 @@
                   leftClickExec = lib.getExe net-privacy-status;
                   leftClickUpdateText = true;
                   parseJson = true;
+                  showExecTooltip = false;
                   textCommand = lib.getExe net-privacy-status;
                   textIntervalMs = 60000;
                 }
