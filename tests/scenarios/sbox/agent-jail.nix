@@ -37,7 +37,7 @@ in
               home-manager = {
                 useGlobalPkgs = true;
                 useUserPackages = true;
-                sharedModules = [ inputs.sbox.homeManagerModules.sbox ];
+                sharedModules = [ config.flake.modules.homeManager.sbox-patched ];
                 users.alice = {
                   imports = [ aiAgentsHm ];
                   home.stateVersion = "24.05";
@@ -105,6 +105,14 @@ in
                 "runuser -l alice -c "
                 "'cd ~/work/proj && agent-jail -- agent-jail-verify isolated'"
             )
+
+            # /tmp is the disk-backed per-session dir, not sbox's tmpfs: a
+            # write to /tmp inside the jail lands under /var/tmp/agents.
+            machine.succeed(
+                "runuser -l alice -c "
+                "'cd ~/work/proj && agent-jail -- sh -c \"echo scratch > /tmp/sentinel\"'"
+            )
+            machine.succeed("grep -q scratch /var/tmp/agents/session.*/sentinel")
 
             # Blocked network: only `lo` reachable inside the sandbox.
             machine.succeed(

@@ -13,6 +13,8 @@ in
         CPUQuota = "1000%";
         CPUWeight = 50;
         IOWeight = 50;
+        # Fork-bomb backstop; counts threads, so parallel builds need headroom.
+        TasksMax = 8192;
       };
     };
 

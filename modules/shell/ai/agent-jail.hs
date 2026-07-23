@@ -21,11 +21,12 @@ import Data.List (isPrefixOf)
 import Data.Text qualified as T
 import Options.Applicative qualified as Opt
 import Options.Applicative.Extra (helperWith)
-import System.Directory (canonicalizePath, doesDirectoryExist, getCurrentDirectory)
+import System.Directory (canonicalizePath, createDirectoryIfMissing, doesDirectoryExist, getCurrentDirectory)
 import System.Environment (getArgs, lookupEnv)
 import System.Exit (ExitCode (..))
 import System.Posix.Files (fileExist)
 import System.Posix.Process (executeFile, getProcessID)
+import System.Posix.Temp (mkdtemp)
 import Turtle qualified as Tu
 
 data BindMode
@@ -117,6 +118,16 @@ bbwrapBind mode dir = do
     resolved <- canonicalizePath dir
     pure [bbarg, resolved, resolved]
 
+{- | Bind a fresh disk-backed dir over sbox's memory-backed @--tmpfs /tmp@
+(later binds shadow it). Sessions are never cleaned up here; the
+ephemeral root reclaims @\/var\/tmp\/agents@ on reboot.
+-}
+tmpDirBind :: IO [String]
+tmpDirBind = do
+    createDirectoryIfMissing True "/var/tmp/agents"
+    dir <- mkdtemp "/var/tmp/agents/session."
+    pure ["--bind", dir, "/tmp"]
+
 {- | The main repo's @.git@ when the cwd is a linked worktree; 'Nothing'
 otherwise (plain repo, not a repo, or git missing).
 -}
@@ -189,9 +200,11 @@ main = do
         gitCommonDir >>= \case
             Just dir -> bbwrapBind ReadWrite dir
             Nothing -> pure []
+    tmpBind <- tmpDirBind
     runSandbox $
         mconcat
             [ worktree
+            , tmpBind
             , sboxArgs
             , rest
             , forwarded
