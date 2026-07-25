@@ -12,6 +12,17 @@ in
       ...
     }:
     lib.optionalAttrs (system == "x86_64-linux") {
+      # The jail's /tmp binds from /var/tmp/agents, so it must not inherit
+      # nix-mineral's noexec on /var/tmp. qemu test VMs override fileSystems
+      # entirely, so this can only be asserted against the real host config.
+      checks.agent-jail-tmp-exec =
+        let
+          options = config.flake.nixosConfigurations.rwzfs.config.fileSystems."/var/tmp/agents".options;
+        in
+        assert lib.elem "exec" options;
+        assert !(lib.elem "noexec" options);
+        pkgs.runCommand "agent-jail-tmp-exec" { } "touch $out";
+
       checks.agent-jail =
         let
           verify = writeTurtleBin "agent-jail-verify" {

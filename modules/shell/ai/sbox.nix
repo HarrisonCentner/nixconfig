@@ -18,6 +18,21 @@ in
       };
     };
 
+    # agent-jail binds a session dir from here over the jail's /tmp, and a
+    # bind inherits nix-mineral's noexec on /var/tmp. Sticky mode so users
+    # can create their own session dirs, as under /var/tmp itself.
+    fileSystems."/var/tmp/agents" = {
+      device = "/var/tmp/agents";
+      fsType = "none";
+      options = [
+        "bind"
+        "exec"
+        "nosuid"
+        "nodev"
+      ];
+    };
+    systemd.tmpfiles.rules = [ "d /var/tmp/agents 1777 root root -" ];
+
     services.onepassword-secrets.secrets.ghToken = mkOpSecret {
       service = "github-rwzfs";
       field = "token";
