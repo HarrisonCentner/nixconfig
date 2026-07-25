@@ -1,12 +1,34 @@
 { blockOutFromScreencast, ... }:
 {
   flake.modules.homeManager.browser =
-    { pkgs, ... }:
+    { pkgs, lib, ... }:
+    let
+      chromium-novpn = pkgs.writeShellScriptBin "chromium-novpn" ''
+        exec /run/wrappers/bin/mullvad-exclude \
+          ${lib.getExe pkgs.ungoogled-chromium} \
+          --user-data-dir="$HOME/.local/share/chromium-novpn" \
+          --class=chromium-novpn \
+          "$@"
+      '';
+    in
     {
       # programs.firefox.enable = true;
-      home.packages = with pkgs; [
-        ungoogled-chromium
+      home.packages = [
+        pkgs.ungoogled-chromium
+        chromium-novpn
       ];
+
+      xdg.desktopEntries.chromium-novpn = {
+        name = "Chromium (no VPN)";
+        genericName = "Web Browser";
+        exec = "${lib.getExe chromium-novpn} %U";
+        icon = "chromium";
+        categories = [
+          "Network"
+          "WebBrowser"
+        ];
+        settings.StartupWMClass = "chromium-novpn";
+      };
 
       xdg.mimeApps = {
         enable = true;
