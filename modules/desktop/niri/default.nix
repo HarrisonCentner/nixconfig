@@ -143,7 +143,7 @@
       switch-events.lid-close.action.spawn = [
         "sh"
         "-c"
-        "qs -c noctalia-shell ipc call lockScreen lock && systemctl suspend"
+        "noctalia msg session lock && systemctl suspend"
       ];
 
       layout = {
@@ -154,7 +154,7 @@
       };
 
       spawn-at-startup = [
-        { command = [ "noctalia-shell" ]; }
+        { command = [ "noctalia" ]; }
       ];
     };
 
@@ -163,7 +163,7 @@
       timeouts = [
         {
           timeout = 900;
-          command = "qs -c noctalia-shell ipc call lockScreen lock";
+          command = "noctalia msg session lock";
         }
         {
           timeout = 1800;

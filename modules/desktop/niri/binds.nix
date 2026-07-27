@@ -7,16 +7,17 @@
         binds = {
           "Mod+Return".action.spawn = "ghostty";
           "Mod+Slash".action.spawn = [
-            "noctalia-shell"
-            "--toggle-launcher"
+            "noctalia"
+            "msg"
+            "panel-toggle"
+            "launcher"
           ];
           "Mod+Shift+Slash".action.show-hotkey-overlay = [ ];
 
           "Mod+Z".action.spawn = [
-            "noctalia-shell"
-            "ipc"
-            "call"
-            "lockScreen"
+            "noctalia"
+            "msg"
+            "session"
             "lock"
           ];
 
