@@ -55,6 +55,10 @@
       url = "github:cynicsketch/nix-mineral";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    direnv-instant = {
+      url = "github:Mic92/direnv-instant";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     superdirt = {
       url = "git+https://codeberg.org/musikinformatik/SuperDirt";
       flake = false;
