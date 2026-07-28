@@ -58,6 +58,10 @@ in
             sharedModules = [
               config.flake.modules.homeManager.sbox-patched
             ];
+            # sbox refuses to bind host-PATH entries under $HOME, so home
+            # packages must land in /etc/profiles/per-user to be visible
+            # inside the sandbox.
+            useUserPackages = true;
           };
         }
       ];

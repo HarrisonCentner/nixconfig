@@ -23,6 +23,12 @@ in
         assert !(lib.elem "noexec" options);
         pkgs.runCommand "agent-jail-tmp-exec" { } "touch $out";
 
+      # The VM below sets useUserPackages, so it can't catch a host that
+      # leaves home packages in ~/.nix-profile — a path sbox never binds.
+      checks.agent-jail-user-packages =
+        assert config.flake.nixosConfigurations.rwzfs.config.home-manager.useUserPackages;
+        pkgs.runCommand "agent-jail-user-packages" { } "touch $out";
+
       checks.agent-jail =
         let
           verify = writeTurtleBin "agent-jail-verify" {
