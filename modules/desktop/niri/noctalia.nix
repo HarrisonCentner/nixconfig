@@ -211,6 +211,8 @@
             enabled = true;
             position = "bottom";
             auto_hide = true;
+            # v5 reserves an exclusive zone even while auto-hidden.
+            reserve_space = false;
             active_monitor_only = true;
             background_opacity = 1.0;
             show_dots = false;
@@ -249,6 +251,7 @@
           bar.main = {
             position = "top";
             background_opacity = 0.93;
+            capsule = true;
             radius = 12;
             margin_edge = 4;
             margin_ends = 4;
@@ -322,7 +325,9 @@
 
             battery = {
               display_mode = "graphic";
-              show_label = false;
+              # Without a label the charging bolt is drawn inside the body in
+              # the fill color, where it is invisible.
+              show_label = true;
             };
 
             volume = {
