@@ -203,7 +203,8 @@ main = do
     tmpBind <- tmpDirBind
     runSandbox $
         mconcat
-            [ worktree
+            [ ["--no-share"]
+            , worktree
             , tmpBind
             , sboxArgs
             , rest
