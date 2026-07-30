@@ -50,6 +50,7 @@ in
         inputs.disko.nixosModules.default
         inputs.niri.nixosModules.niri
         inputs.impermanence.nixosModules.impermanence
+        inputs.opnix.nixosModules.default
         {
           home-manager = {
             extraSpecialArgs = specialArgs // {

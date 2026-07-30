@@ -1,6 +1,6 @@
-{ mkOpSecret, ... }:
+{ mkOpSecret, opnixSecretsDir, ... }:
 let
-  sopsAgeKeyPath = "/var/lib/opnix/secrets/sopsAgeKey";
+  sopsAgeKeyPath = "${opnixSecretsDir}/sopsAgeKey";
 in
 {
   _module.args.sopsAgeKeyPath = sopsAgeKeyPath;

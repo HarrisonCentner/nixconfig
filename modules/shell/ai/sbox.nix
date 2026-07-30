@@ -1,6 +1,11 @@
-{ writeHaskellBinCompleted, mkOpSecret, ... }:
+{
+  writeHaskellBinCompleted,
+  mkOpSecret,
+  opnixSecretsDir,
+  ...
+}:
 let
-  ghTokenPath = "/var/lib/opnix/secrets/ghToken";
+  ghTokenPath = "${opnixSecretsDir}/ghToken";
 in
 {
   _module.args.ghTokenPath = ghTokenPath;

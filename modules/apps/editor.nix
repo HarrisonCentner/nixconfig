@@ -8,8 +8,15 @@
     }:
     let
       # sbox does not clear the environment, so GH_TOKEN exported here is
-      # inherited by the agent inside the sandbox.
-      loadGhToken = ''export GH_TOKEN="$(cat ${ghTokenPath})"'';
+      # inherited by the agent inside the sandbox. The token lives on tmpfs,
+      # so it is absent until opnix-secrets.service has run.
+      loadGhToken = ''
+        if [ -r ${ghTokenPath} ]; then
+          export GH_TOKEN="$(cat ${ghTokenPath})"
+        else
+          echo "warning: opnix secrets unavailable (${ghTokenPath}); GH_TOKEN unset" >&2
+        fi
+      '';
       claudius = mkCompletionAlias pkgs "agent-jail" (
         pkgs.writeShellScriptBin "claudius" ''
           ${loadGhToken}

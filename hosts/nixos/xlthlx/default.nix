@@ -21,6 +21,7 @@
 
         # Services
         openssh
+        secrets
         tailscale
       ]
       ++ [
