@@ -1,24 +1,17 @@
-{ inputs, ... }:
-{
+_: {
   flake.modules = {
     homeManager.shell = {
-      imports = [ inputs.direnv-instant.homeModules.direnv-instant ];
-
-      programs = {
-        direnv = {
-          enable = true;
-          config = {
-            global = {
-              hide_env_diff = true;
-            };
-            whitelist = {
-              prefix = [ "/home/hcentner/software/rome" ];
-            };
+      programs.direnv = {
+        enable = true;
+        config = {
+          global = {
+            hide_env_diff = true;
           };
-          nix-direnv.enable = true;
+          whitelist = {
+            prefix = [ "/home/hcentner/software/rome" ];
+          };
         };
-
-        direnv-instant.enable = true;
+        nix-direnv.enable = true;
       };
 
       ephemeralRoot.persist.directories = [
