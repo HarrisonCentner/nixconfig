@@ -7,7 +7,9 @@
 
 {- | Run @sbox@ with extra binds wired up for AI agent workflows.
 
-Recognises @--readable DIR@, @--writeable DIR@, and @--network MODE@.
+Recognises @--readable DIR@, @--writeable DIR@, @--network MODE@, and
+@--share@/@--no-share@ (defaulting to @--no-share@, so concurrent
+sessions in one directory get separate sandboxes).
 Anything else is appended to the inner program command (after the
 @--@), so e.g. @agent-jail --readable /foo --resume X -- claude@ reaches
 @claude@ as @claude --resume X@. When invoked inside a linked git
@@ -37,6 +39,7 @@ data Arg
     = ArgBind BindMode FilePath
     | ArgNetwork String
     | ArgTun
+    | ArgShare Bool
     | ArgOther String
 
 -- Wrap each token in a sum so the alternatives are tried per-arg; this
@@ -72,6 +75,20 @@ argParser =
                     , Opt.help "Binds /dev/net/tun into the sandbox"
                     ]
                 )
+            , Opt.flag'
+                (ArgShare True)
+                ( mconcat
+                    [ Opt.long "share"
+                    , Opt.help "Join an sbox already running in this directory"
+                    ]
+                )
+            , Opt.flag'
+                (ArgShare False)
+                ( mconcat
+                    [ Opt.long "no-share"
+                    , Opt.help "Start a separate sandbox (default)"
+                    ]
+                )
             , ArgOther <$> Opt.strArgument (Opt.metavar "FWD...")
             ]
 
@@ -84,10 +101,18 @@ contribute = \case
         pure (bind, [])
     ArgNetwork n -> pure (["--network", n], [])
     ArgTun -> pure (["--dev-bind-try", "/dev/net/tun"], [])
+    -- Emitted once by 'shareArg' so the default is not duplicated.
+    ArgShare _ -> pure ([], [])
     ArgOther s -> pure ([], [s])
 
 build :: [Arg] -> IO ([String], [String])
 build = fmap mconcat . traverse contribute
+
+-- | Always passed explicitly so sbox never prompts on a config mismatch.
+shareArg :: [Arg] -> [String]
+shareArg args =
+    let shares = [b | ArgShare b <- args]
+     in if last (False : shares) then ["--share"] else ["--no-share"]
 
 longHelper :: Opt.Parser (a -> a)
 longHelper =
@@ -203,7 +228,7 @@ main = do
     tmpBind <- tmpDirBind
     runSandbox $
         mconcat
-            [ ["--no-share"]
+            [ shareArg args
             , worktree
             , tmpBind
             , sboxArgs
