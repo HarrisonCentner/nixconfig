@@ -1,5 +1,6 @@
 {
   inputs,
+  opnixSecretsDir,
   ...
 }:
 {
@@ -11,6 +12,9 @@
       ...
     }:
     let
+      timeFormat = "%-I:%M %p";
+      dateFormat = "%a, %b %d";
+      clockFormat = "${timeFormat} ${dateFormat}";
       net-privacy-status =
         let
           unwrapped = pkgs.writers.writeHaskellBin "net-privacy-status" {
@@ -78,8 +82,8 @@
         settings = {
           shell = {
             font_family = "sans-serif";
-            time_format = "%-I:%M %p";
-            date_format = "%a, %b %d";
+            time_format = timeFormat;
+            date_format = dateFormat;
             avatar_path = "/home/hcentner/.face";
             telemetry_enabled = false;
             clipboard_enabled = false;
@@ -200,7 +204,18 @@
             effects = true;
           };
 
-          calendar.enabled = true;
+          calendar = {
+            enabled = true;
+            account.radicale = {
+              type = "caldav";
+              name = "Calendar";
+              provider = "custom";
+              server_url = "http://127.0.0.1:5232/";
+              username = "hcentner";
+              credential_source = "file";
+              password_file = "${opnixSecretsDir}/calendarPassword";
+            };
+          };
 
           system.monitor = {
             cpu_usage_critical_threshold = 90;
@@ -238,6 +253,8 @@
             calendar = {
               show_events_card = true;
               show_week_numbers = true;
+              event_date_format = "%A, %B %e";
+              event_time_format = timeFormat;
             };
             shortcuts = [
               { type = "wifi"; }
@@ -281,9 +298,9 @@
             launcher.glyph = "rocket";
 
             clock = {
-              format = "%-I:%M %p %a, %b %d";
+              format = clockFormat;
               vertical_format = "%-I\\n%M\\n%p";
-              tooltip_format = "%-I:%M %p %a, %b %d";
+              tooltip_format = clockFormat;
             };
 
             cpu_usage = {

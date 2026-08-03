@@ -34,6 +34,7 @@
         kopia-backup
         microvm-host
         music
+        calendar
         secrets
         syncthing
         tailscale
