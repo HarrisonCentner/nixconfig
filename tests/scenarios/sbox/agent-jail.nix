@@ -72,6 +72,11 @@ in
               environment.systemPackages = [
                 verify
                 pkgs.git
+                # Records the command line agent-jail built, in the jail's /tmp
+                # so the session dir it landed in is observable from the host.
+                (pkgs.writeShellScriptBin "claude" ''
+                  printf '%s\n' "$@" > /tmp/argv
+                '')
               ];
 
               systemd.services.test-setup = {
@@ -130,6 +135,81 @@ in
                 "'cd ~/work/proj && agent-jail -- sh -c \"echo scratch > /tmp/sentinel\"'"
             )
             machine.succeed("grep -q scratch /var/tmp/agents/session.*/sentinel")
+
+            # A --session-key reuses one dir, so a resumed session sees the
+            # scratch files the earlier run left in /tmp.
+            machine.succeed(
+                "runuser -l alice -c "
+                "'cd ~/work/proj && agent-jail --session-key k1 "
+                "-- sh -c \"echo resumed > /tmp/keyed\"'"
+            )
+            machine.succeed(
+                "runuser -l alice -c "
+                "'cd ~/work/proj && agent-jail --session-key k1 "
+                "-- grep -q resumed /tmp/keyed'"
+            )
+            machine.succeed("grep -q resumed /var/tmp/agents/session.k1/keyed")
+
+            machine.fail(
+                "runuser -l alice -c "
+                "'cd ~/work/proj && agent-jail --session-key k2 -- test -e /tmp/keyed'"
+            )
+
+            # Path separators would escape /var/tmp/agents.
+            machine.fail(
+                "runuser -l alice -c "
+                "'cd ~/work/proj && agent-jail --session-key ../escape -- true'"
+            )
+
+            # A predictable name pre-created by another user is refused.
+            machine.succeed("mkdir -p /var/tmp/agents/session.stolen")
+            machine.fail(
+                "runuser -l alice -c "
+                "'cd ~/work/proj && agent-jail --session-key stolen -- true'"
+            )
+
+            # A fresh claude is handed an id we pick, and that id names the
+            # session dir, so resuming it later lands on the same /tmp.
+            machine.succeed("runuser -l alice -c 'cd ~/work/proj && agent-jail -- claude'")
+            machine.succeed(
+                "f=$(echo /var/tmp/agents/session.*/argv); "
+                "id=$(grep -x -A1 -- --session-id $f | tail -1); "
+                "test \"$(dirname $f)\" = /var/tmp/agents/session.$id"
+            )
+
+            # An id given on the command line is reused as-is, not re-pinned.
+            machine.succeed("rm /var/tmp/agents/session.*/argv")
+            machine.succeed(
+                "runuser -l alice -c 'cd ~/work/proj && agent-jail -- claude "
+                "--resume 11111111-2222-3333-4444-555555555555'"
+            )
+            machine.succeed(
+                "test -f /var/tmp/agents/"
+                "session.11111111-2222-3333-4444-555555555555/argv"
+            )
+            machine.fail(
+                "grep -qx -- --session-id /var/tmp/agents/"
+                "session.11111111-2222-3333-4444-555555555555/argv"
+            )
+
+            # An id we cannot know up front leaves the dir unkeyed.
+            machine.succeed("rm /var/tmp/agents/session.*/argv")
+            machine.succeed(
+                "runuser -l alice -c 'cd ~/work/proj && agent-jail -- claude --continue'"
+            )
+            machine.succeed("test -f /var/tmp/agents/session.*/argv")
+            machine.fail("grep -qx -- --session-id /var/tmp/agents/session.*/argv")
+
+            # Only claude is read this way; another program's --resume is
+            # forwarded without keying the dir.
+            machine.succeed(
+                "runuser -l alice -c 'cd ~/work/proj && agent-jail -- "
+                "true --resume 99999999-9999-9999-9999-999999999999'"
+            )
+            machine.fail(
+                "test -d /var/tmp/agents/"
+                "session.99999999-9999-9999-9999-999999999999"
+            )
 
             # Blocked network: only `lo` reachable inside the sandbox.
             machine.succeed(

@@ -21,6 +21,18 @@ let
         value = builder specialArgs module;
       }
     ) (lib.filterAttrs (name: _: lib.hasPrefix prefix name) modules);
+
+  # opnix aborts on the first unresolvable reference, writing no secrets;
+  # patched to write every resolvable secret and still exit non-zero.
+  opnix-patched =
+    let
+      src = inputs.nixpkgs.legacyPackages.x86_64-linux.applyPatches {
+        name = "opnix-partial-failure";
+        src = inputs.opnix;
+        patches = [ ./opnix-partial-failure.patch ];
+      };
+    in
+    import "${src}/nix/module.nix";
 in
 {
   # slirp4netns's default 1500 MTU caps throughput below 1 Gbps and sbox
@@ -50,7 +62,7 @@ in
         inputs.disko.nixosModules.default
         inputs.niri.nixosModules.niri
         inputs.impermanence.nixosModules.impermanence
-        inputs.opnix.nixosModules.default
+        opnix-patched
         {
           home-manager = {
             extraSpecialArgs = specialArgs // {
