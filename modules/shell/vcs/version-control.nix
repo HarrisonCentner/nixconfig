@@ -7,6 +7,13 @@
       ];
 
       programs = {
+        gh = {
+          enable = true;
+          extensions = with pkgs; [
+            gh-stack
+          ];
+        };
+
         jujutsu = {
           enable = true;
           settings = {
