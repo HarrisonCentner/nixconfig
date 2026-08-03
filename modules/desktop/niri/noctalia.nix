@@ -195,7 +195,8 @@
 
           weather = {
             enabled = true;
-            unit = "fahrenheit";
+            # Only "imperial" is honored; example.toml's celsius/fahrenheit is stale.
+            unit = "imperial";
             effects = true;
           };
 
