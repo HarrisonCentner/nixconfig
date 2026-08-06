@@ -32,27 +32,11 @@ jobs:
           - host: qwfwq_3
             os: ubuntu-latest
             attr: nixosConfigurations.qwfwq_3.config.system.build.toplevel
-          - host: xlthlx
-            os: ubuntu-latest
-            attr: nixosConfigurations.xlthlx.config.system.build.toplevel
           - host: installer
             os: ubuntu-latest
             attr: nixosConfigurations.installer.config.system.build.isoImage
-          - host: installer-mac
-            os: ubuntu-latest
-            attr: nixosConfigurations.installer-mac.config.system.build.isoImage
     steps:
       - uses: actions/checkout@v4
-
-      # brcm-firmware (xlthlx, installer-mac) runs in a qemu VM
-      # (requiredSystemFeatures = [ "kvm" ]). /dev/kvm is root:kvm 0660 on hosted
-      # runners, so the nixbld users can't open it; must precede the nix install
-      # so the daemon sees it.
-      - name: Enable KVM group perms
-        run: |
-          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
-          sudo udevadm control --reload-rules
-          sudo udevadm trigger --name-match=kvm
 
       - uses: cachix/install-nix-action@v30
 
