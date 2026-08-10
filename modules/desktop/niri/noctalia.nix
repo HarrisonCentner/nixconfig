@@ -88,6 +88,7 @@
             avatar_path = "/home/hcentner/.face";
             telemetry_enabled = false;
             clipboard_enabled = false;
+            screen_time_enabled = true;
 
             screen_corners.enabled = false;
 
@@ -251,6 +252,11 @@
           };
 
           control_center = {
+            hidden_tabs = [
+              "monitor"
+              "notifications"
+              "power"
+            ];
             calendar = {
               show_events_card = true;
               show_week_numbers = true;
