@@ -3,12 +3,10 @@
   flake.modules.homeManager.notes =
     { pkgs, ... }:
     {
-      programs.obsidian.enable = true;
-
-      xdg.mimeApps = {
+      programs.obsidian = {
         enable = true;
-        defaultApplications = {
-          "text/markdown" = "obsidian.desktop";
+        package = pkgs.obsidian.override {
+          commandLineArgs = "--password-store=gnome-libsecret";
         };
       };
 

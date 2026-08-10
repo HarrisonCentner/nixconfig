@@ -104,6 +104,7 @@
           user = "greeter";
         };
       };
+      security.pam.services.greetd.enableGnomeKeyring = true;
     };
 
   flake.modules.homeManager.desktop-niri = {
