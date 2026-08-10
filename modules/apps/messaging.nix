@@ -50,6 +50,9 @@
       nixpkgs.config.allowUnfree = true;
       home.packages =
         (with pkgs; [
+          # make slack icon appear
+          hicolor-icon-theme
+          # discord
           vesktop
         ])
         ++ [
