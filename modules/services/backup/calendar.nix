@@ -21,6 +21,10 @@
 
       services.radicale = {
         enable = true;
+        package = pkgs.python3.withPackages (ps: [
+          ps.radicale-infcloud
+          (ps.toPythonModule pkgs.radicale)
+        ]);
         settings = {
           server.hosts = [ "127.0.0.1:5232" ];
           auth = {
@@ -28,6 +32,7 @@
             htpasswd_filename = htpasswdFile;
             htpasswd_encryption = "plain";
           };
+          web.type = "radicale_infcloud";
         };
       };
 
