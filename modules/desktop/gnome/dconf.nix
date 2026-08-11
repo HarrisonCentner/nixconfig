@@ -123,51 +123,12 @@
           translate = true;
         };
 
-        "app-folders/folders/c5d3e3d5-c8c1-488f-937b-7ddf3fee5b41" = {
-          apps = [
-            "calibre-ebook-viewer.desktop"
-            "calibre-lrfviewer.desktop"
-            "calibre-ebook-edit.desktop"
-          ];
-          name = "Calibre Tools";
-          translate = false;
-        };
-
-        "app-folders/folders/cf944c14-c8ec-4379-882d-a0766bfbe3b8" = {
-          apps = [
-            "calibre-ebook-edit.desktop"
-            "calibre-lrfviewer.desktop"
-            "calibre-ebook-viewer.desktop"
-          ];
-          name = "Office";
-        };
-
         "app-folders/folders/d0ded591-d3b6-4c3a-afb4-edaa99713959" = {
           apps = [
             "chrome-pacgdjiidkfdhilcljkeebfoklekebig-Profile_1.desktop"
             "chrome-ojibjkjikcpjonjjngfkegflhmffeemk-Default.desktop"
           ];
           name = "proton";
-          translate = false;
-        };
-
-        "app-folders/folders/dc4b4a1e-4672-4d77-9282-6184d35b3e6f" = {
-          apps = [
-            "calibre-ebook-edit.desktop"
-            "calibre-lrfviewer.desktop"
-            "calibre-ebook-viewer.desktop"
-          ];
-          name = "Office";
-        };
-
-        "app-folders/folders/f59196c8-dbd4-4d08-a457-0653c948e4b1" = {
-          apps = [
-            "calibre-ebook-viewer.desktop"
-            "calibre-lrfviewer.desktop"
-            "calibre-ebook-edit.desktop"
-            "calibre-gui.desktop"
-          ];
-          name = "ebook";
           translate = false;
         };
 
