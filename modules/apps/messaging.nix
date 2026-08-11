@@ -45,6 +45,7 @@
           asar pack $TMPDIR/signal $out/share/signal-desktop/app.asar --unpack "*.node"
         '';
       });
+      zoom-us = pkgs.zoom-us.override { gnomeXdgDesktopPortalSupport = true; };
     in
     {
       nixpkgs.config.allowUnfree = true;
@@ -58,6 +59,7 @@
         ++ [
           slack
           signal-desktop
+          zoom-us
         ];
 
       programs.niri.settings.window-rules = blockOutFromScreencast [

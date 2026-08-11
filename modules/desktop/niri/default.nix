@@ -107,70 +107,76 @@
       security.pam.services.greetd.enableGnomeKeyring = true;
     };
 
-  flake.modules.homeManager.desktop-niri = {
-    programs.ghostty.settings.command = "sh -c 'tmux has-session -t main 2>/dev/null && exec tmux new-session -t main \\; new-window || exec tmux new-session -s main'";
+  flake.modules.homeManager.desktop-niri =
+    { pkgs, ... }:
+    {
+      programs.ghostty.settings.command = "sh -c 'tmux has-session -t main 2>/dev/null && exec tmux new-session -t main \\; new-window || exec tmux new-session -s main'";
 
-    xdg.mimeApps = {
-      enable = true;
-      defaultApplications."inode/directory" = "thunar.desktop";
-    };
+      xdg.mimeApps = {
+        enable = true;
+        defaultApplications."inode/directory" = "thunar.desktop";
+      };
 
-    programs.niri.settings = {
-      prefer-no-csd = true;
+      programs.niri.settings = {
+        prefer-no-csd = true;
 
-      window-rules = blockOutFromScreencast [ "(?i)^thunar$" ];
+        xwayland-satellite.path = "${
+          inputs.niri.packages.${pkgs.stdenv.hostPlatform.system}.xwayland-satellite-stable
+        }/bin/xwayland-satellite";
 
-      input = {
-        keyboard = {
-          xkb = {
-            layout = "us";
-            variant = "altgr-intl";
-            options = "caps:swapescape,lv3:rwin_switch";
+        window-rules = blockOutFromScreencast [ "(?i)^thunar$" ];
+
+        input = {
+          keyboard = {
+            xkb = {
+              layout = "us";
+              variant = "altgr-intl";
+              options = "caps:swapescape,lv3:rwin_switch";
+            };
+            repeat-rate = 40;
+            repeat-delay = 250;
           };
-          repeat-rate = 40;
-          repeat-delay = 250;
+
+          touchpad = {
+            natural-scroll = true;
+            tap = false;
+          };
+
+          mouse = {
+            accel-profile = "flat";
+          };
         };
 
-        touchpad = {
-          natural-scroll = true;
-          tap = false;
+        switch-events.lid-close.action.spawn = [
+          "sh"
+          "-c"
+          "noctalia msg session lock && systemctl suspend"
+        ];
+
+        layout = {
+          gaps = 5;
+          focus-ring = {
+            width = 2;
+          };
         };
 
-        mouse = {
-          accel-profile = "flat";
-        };
+        spawn-at-startup = [
+          { command = [ "noctalia" ]; }
+        ];
       };
 
-      switch-events.lid-close.action.spawn = [
-        "sh"
-        "-c"
-        "noctalia msg session lock && systemctl suspend"
-      ];
-
-      layout = {
-        gaps = 5;
-        focus-ring = {
-          width = 2;
-        };
+      services.swayidle = {
+        enable = true;
+        timeouts = [
+          {
+            timeout = 900;
+            command = "noctalia msg session lock";
+          }
+          {
+            timeout = 1800;
+            command = "systemctl suspend";
+          }
+        ];
       };
-
-      spawn-at-startup = [
-        { command = [ "noctalia" ]; }
-      ];
     };
-
-    services.swayidle = {
-      enable = true;
-      timeouts = [
-        {
-          timeout = 900;
-          command = "noctalia msg session lock";
-        }
-        {
-          timeout = 1800;
-          command = "systemctl suspend";
-        }
-      ];
-    };
-  };
 }
