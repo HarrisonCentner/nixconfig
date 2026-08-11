@@ -33,6 +33,19 @@ let
     };
 in
 {
-  flake.modules.nixos.base = common;
+  flake.modules.nixos.base = {
+    imports = [ common ];
+    nix.settings = {
+      experimental-features = [
+        "auto-allocate-uids"
+        "cgroups"
+      ];
+      auto-allocate-uids = true;
+      # NixOS pins system-features in nix.conf, so uid-range is not implied
+      system-features = [ "uid-range" ];
+      # closes the UID-reuse hole that auto-allocate-uids opens
+      use-cgroups = true;
+    };
+  };
   flake.modules.darwin.base = common;
 }
