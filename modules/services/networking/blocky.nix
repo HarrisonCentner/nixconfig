@@ -1,9 +1,4 @@
 {
-  # Stable key so NixOS module dedup recognises this as the same module
-  # when imported via two paths (dns → blocky AND dns → dns-onion → blocky
-  # in the dns-onion specialisation). Without an explicit key, inline
-  # flake-parts modules get a positional fallback key per import site,
-  # so dedup misses and the module body runs twice.
   flake.modules.nixos.blocky = {
     key = "nixconfig.modules.services.networking.blocky";
     imports = [

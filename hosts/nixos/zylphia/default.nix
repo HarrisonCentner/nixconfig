@@ -9,6 +9,7 @@
       with config.flake.nixosModules;
       [
         # Modules
+        ai-agents
         base
         zylphia-disko
         zylphia-hardware
@@ -19,19 +20,23 @@
         # Users
         hcentner
 
+        # Apps
+        password-manager
+
         # Services
         immich
-        nixflix
         secrets
         syncthing
         tailscale
         paperless
+        tailscale
       ]
       ++ [
         {
           home-manager.users.hcentner = {
             imports = with config.flake.modules.homeManager; [
               # Modules
+              ai-agents
               base
               shell
 
@@ -45,6 +50,7 @@
 
               # Apps
               editor
+              kopia-backup
             ];
           };
         }

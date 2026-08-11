@@ -1,85 +1,35 @@
 {
   inputs,
   opnixSecretsDir,
-  writeHaskellBinWrapped,
   ...
 }:
 {
   flake.modules.homeManager.noctalia-shell =
     {
       pkgs,
-      lib,
-      config,
       ...
     }:
     let
       timeFormat = "%-I:%M %p";
       dateFormat = "%a, %b %d";
       clockFormat = "${timeFormat} ${dateFormat}";
-      net-privacy-status =
-        let
-          unwrapped = pkgs.writers.writeHaskellBin "net-privacy-status" {
-            libraries = with pkgs.haskellPackages; [
-              aeson
-              bytestring
-              text
-              turtle
-            ];
-          } (builtins.readFile ./net-privacy-status.hs);
-        in
-        # Plugins run commands via `sh -c`; curl/dig must come from the
-        # closure, not the session PATH.
-        pkgs.runCommand "net-privacy-status"
-          {
-            nativeBuildInputs = [ pkgs.makeBinaryWrapper ];
-            meta.mainProgram = "net-privacy-status";
-          }
-          ''
-            makeWrapper ${unwrapped}/bin/net-privacy-status $out/bin/net-privacy-status \
-              --prefix PATH : ${
-                lib.makeBinPath (
-                  with pkgs;
-                  [
-                    curl
-                    dnsutils
-                  ]
-                )
-              }
-          '';
-
-      net-privacy-plugin =
-        pkgs.runCommand "noctalia-plugin-net-privacy"
-          {
-            nativeBuildInputs = [ config.programs.noctalia.package ];
-          }
-          ''
-            mkdir -p $out/net-privacy
-            cat > $out/net-privacy/plugin.toml <<'EOF'
-            id = "hcentner/net-privacy"
-            name = "Net Privacy"
-            # Must sit inside the shell's supported range or the plugin is
-            # silently skipped; 14 also loads under nixpkgs' 5.0.0-beta.5.
-            plugin_api = 14
-
-            [[widget]]
-            id = "status"
-            entry = "status.luau"
-            EOF
-            cp ${
-              pkgs.replaceVars ./net-privacy.luau {
-                statusCommand = lib.getExe net-privacy-status;
-              }
-            } $out/net-privacy/status.luau
-            noctalia plugins lint $out
-          '';
     in
     {
       imports = [ inputs.noctalia.homeModules.default ];
 
-      home.packages = [ net-privacy-status ];
 
       programs.noctalia = {
         enable = true;
+        # screen-time: upstream keeps crediting the focused window while the
+        # session is locked. calendar: a timed event ending exactly at midnight
+        # is listed on the next day too (exclusive DTEND only handled for
+        # all-day). Drop each patch once fixed upstream.
+        package = inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default.overrideAttrs (old: {
+          patches = (old.patches or [ ]) ++ [
+            ./screen-time-pause-on-lock.patch
+            ./calendar-midnight-end-day-spill.patch
+          ];
+        });
         settings = {
           shell = {
             font_family = "sans-serif";
@@ -238,19 +188,6 @@
 
           desktop_widgets.enabled = false;
 
-          plugins = {
-            auto_update = false;
-            enabled = [ "hcentner/net-privacy" ];
-            source = [
-              {
-                name = "nixconfig";
-                kind = "path";
-                location = "${net-privacy-plugin}";
-                enabled = true;
-              }
-            ];
-          };
-
           control_center = {
             hidden_tabs = [
               "monitor"
@@ -345,8 +282,6 @@
             tray.drawer = true;
 
             notifications.hide_when_no_unread = false;
-
-            net_privacy.type = "hcentner/net-privacy:status";
 
             battery = {
               display_mode = "graphic";

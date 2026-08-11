@@ -28,7 +28,6 @@
 
         # Services
         cloud-media
-        dns
         docker
         gnupg
         kopia-backup
