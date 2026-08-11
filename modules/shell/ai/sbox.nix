@@ -78,10 +78,13 @@ in
           "$HOME/.cache/sccache" = { };
           "$HOME/.infisical" = { };
           "$HOME/.local/share/nix" = { };
+          "$HOME/.local/share/gh" = { };
           "$XDG_RUNTIME_DIR/tmux-$(id -u)" = { };
         };
         bindReadOnly = {
           "$HOME/.cargo/config.toml" = { };
+          # home-manager puts gh extensions here, not under .config/gh.
+          "$HOME/.local/share/gh" = { };
         };
       };
     };
