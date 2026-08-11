@@ -1,0 +1,27 @@
+--- a/radicale_infcloud/__init__.py	2026-08-12 17:07:42.210080342 +0000
++++ b/radicale_infcloud/__init__.py	2026-08-12 17:07:59.131330294 +0000
+@@ -30,14 +30,14 @@
+     def __init__(self, configuration):
+         super().__init__(configuration.copy(PLUGIN_CONFIG_SCHEMA))
+ 
+-    def get(self, environ, base_prefix, path, user):
++    def get(self, environ, base_prefix, path, user, request_info=None):
+         if path == "/.web/infcloud/" or path.startswith("/.web/infcloud"):
+-            status, headers, answer = httputils.serve_resource(
++            status, headers, answer, *rest = httputils.serve_resource(
+                 "radicale_infcloud", "web", base_prefix, path,
+                 "/.web/infcloud")
+         else:
+-            status, headers, answer = super().get(
+-                environ, base_prefix, path, user)
++            status, headers, answer, *rest = super().get(
++                environ, base_prefix, path, user, request_info)
+         if status == client.OK and path in ("/.web/", "/.web/index.html"):
+             if version("radicale") >="3.2.0":
+                 answer = answer.replace(b"""title="Refresh">Refresh</a>""",
+@@ -52,4 +52,4 @@
+         <li><a href="infcloud">InfCloud</a></li>""")
+         if status == client.OK and path == "/.web/infcloud/config.js":
+             answer += self.configuration.get("web", "infcloud_config").encode()
+-        return status, headers, answer
++        return (status, headers, answer, *rest)

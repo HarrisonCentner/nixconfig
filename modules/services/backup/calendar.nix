@@ -22,7 +22,10 @@
       services.radicale = {
         enable = true;
         package = pkgs.python3.withPackages (ps: [
-          ps.radicale-infcloud
+          # radicale >=3.5 web plugin API: request_info arg, 4-tuple response
+          (ps.radicale-infcloud.overridePythonAttrs (old: {
+            patches = (old.patches or [ ]) ++ [ ./radicale-infcloud-web-plugin-api.patch ];
+          }))
           (ps.toPythonModule pkgs.radicale)
         ]);
         settings = {

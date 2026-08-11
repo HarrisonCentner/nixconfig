@@ -1,0 +1,28 @@
+--- a/src/shell/control_center/tabs/calendar_tab.cpp	2026-08-12 17:30:28.511175283 +0000
++++ b/src/shell/control_center/tabs/calendar_tab.cpp	2026-08-12 17:34:21.937472335 +0000
+@@ -113,13 +113,23 @@
+ 
+   int dateKey(int year, int month0, int day) { return year * 10000 + (month0 + 1) * 100 + day; }
+ 
+-  // First and last (inclusive) local day an event covers. All-day events carry an exclusive end, so
+-  // the final midnight is pulled back a day.
++  bool isLocalMidnight(std::chrono::system_clock::time_point tp) {
++    const std::time_t raw = std::chrono::system_clock::to_time_t(tp);
++    std::tm tm{};
++    localtime_r(&raw, &tm);
++    return tm.tm_hour == 0 && tm.tm_min == 0 && tm.tm_sec == 0;
++  }
++
++  // First and last (inclusive) local day an event covers. Ends are exclusive, so all-day ends pull
++  // back a whole day, and a timed end lying exactly on midnight belongs wholly to the preceding
++  // day rather than spilling onto the next.
+   std::pair<int, int> eventDayRange(const CalendarEvent& event) {
+     const int startKey = localDateKey(event.start);
+     std::chrono::system_clock::time_point endTp = event.end;
+     if (event.allDay && event.end > event.start) {
+       endTp = event.end - std::chrono::hours{24};
++    } else if (event.end > event.start && isLocalMidnight(event.end)) {
++      endTp = event.end - std::chrono::seconds{1};
+     }
+     int endKey = localDateKey(endTp);
+     endKey = std::max(endKey, startKey);

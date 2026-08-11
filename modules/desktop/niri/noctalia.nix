@@ -17,7 +17,6 @@
     {
       imports = [ inputs.noctalia.homeModules.default ];
 
-
       programs.noctalia = {
         enable = true;
         # screen-time: upstream keeps crediting the focused window while the
