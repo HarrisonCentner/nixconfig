@@ -10,7 +10,20 @@
     { pkgs, ... }:
     {
       home.packages = with pkgs; [
+        koreader
         zotero
       ];
+
+      xdg.mimeApps = {
+        enable = true;
+        defaultApplications = {
+          "application/epub+zip" = "rocks.koreader.koreader.desktop";
+        };
+        # koreader's desktop entry claims generic containers, not just ebooks
+        associations.removed = {
+          "application/zip" = "rocks.koreader.koreader.desktop";
+          "application/x-tar" = "rocks.koreader.koreader.desktop";
+        };
+      };
     };
 }

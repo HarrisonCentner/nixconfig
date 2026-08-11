@@ -50,7 +50,6 @@ in
       backup = {
         directories = [
           "Documents"
-          "Downloads"
           "Pictures"
           "software"
         ];

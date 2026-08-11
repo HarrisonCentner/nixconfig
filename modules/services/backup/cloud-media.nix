@@ -2,8 +2,6 @@
 let
   user = "hcentner";
   bucket = "harrison-media-library";
-  region = "us-east-005";
-  prefix = "media";
 
   mountPoint = "/home/${user}/cloud-media";
   cacheDir = "/home/${user}/.cache/rclone-cloud-media";
@@ -26,9 +24,7 @@ in
           text
         ];
         env = {
-          CLOUD_MEDIA_BUCKET_PATH = "${bucket}/${prefix}";
-          CLOUD_MEDIA_ENDPOINT = "s3.${region}.backblazeb2.com";
-          CLOUD_MEDIA_REGION = region;
+          CLOUD_MEDIA_BUCKET_PATH = bucket;
           CLOUD_MEDIA_KEY_ID_FILE = secretPaths.cloudMediaKeyId;
           CLOUD_MEDIA_APP_KEY_FILE = secretPaths.cloudMediaAppKey;
           CLOUD_MEDIA_PASSWORD_FILE = secretPaths.cloudMediaPassword;
