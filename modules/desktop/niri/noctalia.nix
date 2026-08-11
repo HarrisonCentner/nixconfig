@@ -19,13 +19,10 @@
 
       programs.noctalia = {
         enable = true;
-        # screen-time: upstream keeps crediting the focused window while the
-        # session is locked. calendar: a timed event ending exactly at midnight
-        # is listed on the next day too (exclusive DTEND only handled for
-        # all-day). Drop each patch once fixed upstream.
+        # A timed event ending exactly at midnight is listed on the next day too
+        # (exclusive DTEND only handled for all-day). Drop once fixed upstream.
         package = inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default.overrideAttrs (old: {
           patches = (old.patches or [ ]) ++ [
-            ./screen-time-pause-on-lock.patch
             ./calendar-midnight-end-day-spill.patch
           ];
         });
