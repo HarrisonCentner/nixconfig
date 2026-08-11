@@ -4,6 +4,7 @@
     let
       untrusted = [
         "~/Downloads/untrusted"
+        "~/cloud-media"
       ];
 
       plugins = {

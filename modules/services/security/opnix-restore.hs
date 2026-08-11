@@ -32,6 +32,7 @@ import Data.List (nub)
 import Data.Text qualified as T
 import GHC.Generics (Generic)
 import Numeric (readOct)
+import Options.Applicative qualified as Opt
 import System.Directory (createDirectoryIfMissing)
 import System.Environment (lookupEnv)
 import System.Exit (ExitCode (..), die)
@@ -86,8 +87,20 @@ restore user Secret{..} = do
 needEnv :: String -> String -> IO String
 needEnv var msg = lookupEnv var >>= maybe (die (var ++ " not set; " ++ msg)) pure
 
+parserInfo :: Opt.ParserInfo ()
+parserInfo =
+    Opt.info
+        (pure () Opt.<**> Opt.helper)
+        ( mconcat
+            [ Opt.fullDesc
+            , Opt.progDesc "Repopulate opnix's secrets directory from the 1Password desktop app"
+            ]
+        )
+
 main :: IO ()
 main = do
+    -- parsed first so --help and completion requests answer without root
+    Opt.execParser parserInfo
     euid <- getEffectiveUserID
     when (euid /= 0) (die "needs root: sudo opnix-restore")
     user <- needEnv "SUDO_USER" "invoke via sudo, not from a root shell"

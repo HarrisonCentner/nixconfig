@@ -1,5 +1,5 @@
 {
-  writeHaskellBinCompleted,
+  writeHaskellBinWrapped,
   mkOpSecret,
   opnixSecretsDir,
   ...
@@ -48,10 +48,9 @@ in
   flake.modules.homeManager.ai-agents =
     { pkgs, ... }:
     let
-      agent-jail = writeHaskellBinCompleted pkgs "agent-jail" {
+      agent-jail = writeHaskellBinWrapped pkgs "agent-jail" {
         libraries = with pkgs.haskellPackages; [
           turtle
-          optparse-applicative
           directory
           unix
           text

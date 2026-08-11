@@ -27,6 +27,7 @@
         password-manager
 
         # Services
+        cloud-media
         dns
         docker
         eval-vm-net
