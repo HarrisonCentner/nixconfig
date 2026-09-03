@@ -40,7 +40,7 @@
       };
 
       # Proton Mail + Calendar PWAs (app-id: chrome-<webapp-id>-<profile>)
-      programs.niri.settings.window-rules = blockOutFromScreencast [
+      wayland.windowManager.niri.settings._children = blockOutFromScreencast [
         "^chrome-jnpecgipniidlgicjocehkhajgdnjekh-"
         "^chrome-ojibjkjikcpjonjjngfkegflhmffeemk-"
       ];

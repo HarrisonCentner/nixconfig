@@ -10,6 +10,7 @@
           "performance"
           "compatibility"
         ];
+        kernel-modules.enable = true;
         settings = {
           # docker, microvm NAT, and tailscale need forwarding
           network.ip-forwarding = true;

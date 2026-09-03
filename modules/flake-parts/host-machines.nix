@@ -44,7 +44,6 @@ in
         module
         inputs.home-manager.nixosModules.home-manager
         inputs.disko.nixosModules.default
-        inputs.niri.nixosModules.niri
         inputs.impermanence.nixosModules.impermanence
         opnix-patched
         {

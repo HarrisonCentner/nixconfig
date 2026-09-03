@@ -8,7 +8,7 @@
         spotify
       ];
 
-      programs.niri.settings.window-rules = blockOutFromScreencast [ "(?i)^spotify$" ];
+      wayland.windowManager.niri.settings._children = blockOutFromScreencast [ "(?i)^spotify$" ];
 
       ephemeralRoot.persist.directories = [
         ".config/spotify"

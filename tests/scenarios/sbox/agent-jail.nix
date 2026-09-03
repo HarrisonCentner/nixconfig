@@ -54,7 +54,7 @@ in
               home-manager = {
                 useGlobalPkgs = true;
                 useUserPackages = true;
-                sharedModules = [ config.flake.modules.homeManager.sbox-patched ];
+                sharedModules = [ inputs.sbox.homeManagerModules.sbox ];
                 users.alice = {
                   imports = [ aiAgentsHm ];
                   home.stateVersion = "24.05";

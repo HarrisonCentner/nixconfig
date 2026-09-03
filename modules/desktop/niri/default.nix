@@ -8,8 +8,7 @@
     {
       programs.niri = {
         enable = true;
-        # niri-flake's niri-stable is uninstantiable until sodiboo/niri-flake#1851
-        package = pkgs.niri;
+        useNautilus = false;
       };
 
       environment.sessionVariables.NIXOS_OZONE_WL = "1";
@@ -69,21 +68,9 @@
         tumbler.enable = true;
       };
 
-      # Portal for file picker, screen sharing, etc.
-      xdg.portal = {
-        enable = true;
-        extraPortals = with pkgs; [
-          xdg-desktop-portal-gtk
-          xdg-desktop-portal-gnome
-        ];
-        config.niri = {
-          default = [
-            "gtk"
-            "gnome"
-          ];
-          "org.freedesktop.impl.portal.FileChooser" = [ "gtk" ];
-        };
-      };
+      # programs.niri configures the portals; the gtk portal backs the
+      # gnome one for interfaces it does not implement
+      xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
 
       # Pipewire for audio
       security.rtkit.enable = true;
@@ -115,50 +102,49 @@
         defaultApplications."inode/directory" = "thunar.desktop";
       };
 
-      programs.niri.settings = {
-        prefer-no-csd = true;
+      wayland.windowManager.niri = {
+        enable = true;
+        # units and portals come from the system-level programs.niri
+        systemd.enable = false;
+        portalPackage = null;
+        settings = {
+          prefer-no-csd = { };
 
-        xwayland-satellite.path = "${pkgs.xwayland-satellite}/bin/xwayland-satellite";
+          _children = blockOutFromScreencast [ "(?i)^thunar$" ];
 
-        window-rules = blockOutFromScreencast [ "(?i)^thunar$" ];
-
-        input = {
-          keyboard = {
-            xkb = {
-              layout = "us";
-              variant = "altgr-intl";
-              options = "caps:swapescape,lv3:rwin_switch";
+          input = {
+            keyboard = {
+              xkb = {
+                layout = "us";
+                variant = "altgr-intl";
+                options = "caps:swapescape,lv3:rwin_switch";
+              };
+              repeat-rate = 40;
+              repeat-delay = 250;
             };
-            repeat-rate = 40;
-            repeat-delay = 250;
+
+            touchpad.natural-scroll = { };
+
+            mouse = {
+              accel-profile = "flat";
+            };
           };
 
-          touchpad = {
-            natural-scroll = true;
-            tap = false;
+          switch-events.lid-close.spawn = [
+            "sh"
+            "-c"
+            "noctalia msg session lock && systemctl suspend"
+          ];
+
+          layout = {
+            gaps = 5;
+            focus-ring = {
+              width = 2;
+            };
           };
 
-          mouse = {
-            accel-profile = "flat";
-          };
+          spawn-at-startup = "noctalia";
         };
-
-        switch-events.lid-close.action.spawn = [
-          "sh"
-          "-c"
-          "noctalia msg session lock && systemctl suspend"
-        ];
-
-        layout = {
-          gaps = 5;
-          focus-ring = {
-            width = 2;
-          };
-        };
-
-        spawn-at-startup = [
-          { command = [ "noctalia" ]; }
-        ];
       };
 
       services.swayidle = {

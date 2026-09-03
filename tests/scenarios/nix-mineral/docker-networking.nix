@@ -101,6 +101,12 @@ in
             machine.succeed("[ \"$(sysctl -n kernel.yama.ptrace_scope)\" = 1 ]")
             machine.succeed("findmnt -no OPTIONS /dev/shm | grep noexec")
             machine.fail("modprobe cifs")
+            machine.fail("modprobe firewire-core")
+            # daily drivers that hardening must never block: bluetooth
+            # (desktop), usb-storage/uas (kindle over USB)
+            machine.succeed("modprobe bluetooth")
+            machine.succeed("modprobe usb-storage")
+            machine.succeed("modprobe uas")
 
             # End to end: container -> docker0 -> NAT via eth1 -> other node.
             # Exercises ip_forward and masquerade under nix-mineral's network

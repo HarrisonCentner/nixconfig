@@ -31,8 +31,8 @@
             --unpack "*-entry-point.bundle.js"
         '';
       });
-      # Repack the cached upstream build instead of overrideAttrs: signal is
-      # built from source, so touching postInstall forces a local rebuild.
+      # signal is built from source; repacking the cached output avoids
+      # rebuilding it locally
       signal-desktop =
         pkgs.runCommand "signal-desktop-${pkgs.signal-desktop.version}"
           {
@@ -70,7 +70,7 @@
           zoom-us
         ];
 
-      programs.niri.settings.window-rules = blockOutFromScreencast [
+      wayland.windowManager.niri.settings._children = blockOutFromScreencast [
         "(?i)^signal$"
         "(?i)^vesktop$"
       ];

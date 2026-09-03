@@ -1,8 +1,9 @@
 {
   _module.args.blockOutFromScreencast = appIds: [
     {
-      matches = map (appId: { app-id = appId; }) appIds;
-      block-out-from = "screencast";
+      window-rule._children = (map (appId: { match._props.app-id = appId; }) appIds) ++ [
+        { block-out-from = "screencast"; }
+      ];
     }
   ];
 }

@@ -10,7 +10,7 @@
         };
       };
 
-      programs.niri.settings.window-rules = blockOutFromScreencast [ "(?i)^obsidian$" ];
+      wayland.windowManager.niri.settings._children = blockOutFromScreencast [ "(?i)^obsidian$" ];
 
       ephemeralRoot.persist.directories = [
         ".config/obsidian"

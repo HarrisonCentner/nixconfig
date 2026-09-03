@@ -17,7 +17,7 @@
   flake.modules.homeManager.password-manager =
     { pkgs, ... }:
     {
-      programs.niri.settings.window-rules = blockOutFromScreencast [ "(?i)^1password$" ];
+      wayland.windowManager.niri.settings._children = blockOutFromScreencast [ "(?i)^1password$" ];
 
       ephemeralRoot.persist.directories = [
         ".config/1Password"

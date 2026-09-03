@@ -4,6 +4,8 @@ NixOS and nix-darwin system configurations using
 [flake-parts](https://github.com/hercules-ci/flake-parts) and
 [import-tree](https://github.com/vic/import-tree).
 
+I don't run nix-darwin anymore since I only have intel Macs. So I just put NixOS on them. Take a look at the git history to see how I set up my nix-darwin config.
+
 ## Architecture
 
 ### Flake-parts modules
