@@ -29,4 +29,24 @@
       };
       boot.kernelModules = [ "jitterentropy_rng" ];
     };
+
+  # microvm guests: no desktop hardware to preserve, access survives
+  # lock-root via microvm-agent (wheel)
+  flake.modules.nixos.nix-mineral-strict = {
+    imports = [ inputs.nix-mineral.nixosModules.nix-mineral ];
+    nix-mineral = {
+      enable = true;
+      preset = [ "maximum" ];
+      # guests boot direct-kernel with no /boot mount to harden
+      filesystems.normal."/boot".enable = false;
+      settings = {
+        # rngd is killed by its own unit's seccomp filter
+        # (jitterentropy-rngd#24); keep the in-kernel source instead
+        entropy.jitterentropy = false;
+        # the guest console is the only diagnostics channel
+        debug.quiet-boot = false;
+      };
+    };
+    boot.kernelModules = [ "jitterentropy_rng" ];
+  };
 }

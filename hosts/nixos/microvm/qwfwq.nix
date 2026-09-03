@@ -16,6 +16,7 @@ in
       nixosModules = with config.flake.modules.nixos; [
         desktop-niri
         microvm-guest-qemu
+        nix-mineral-strict
         openssh
       ];
       homeManagerModules = with config.flake.modules.homeManager; [
@@ -27,12 +28,14 @@ in
     (mkQwfwq 2 {
       nixosModules = with config.flake.modules.nixos; [
         microvm-guest-firecracker
+        nix-mineral-strict
       ];
       shareStore = false;
     })
     (mkQwfwq 3 {
       nixosModules = with config.flake.modules.nixos; [
         microvm-guest-cloud-hypervisor
+        nix-mineral-strict
         {
           microvm = {
             balloon = true;
