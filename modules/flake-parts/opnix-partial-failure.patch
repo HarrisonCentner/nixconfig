@@ -1,7 +1,6 @@
-diff -ruN a/internal/onepass/client.go b/internal/onepass/client.go
---- a/internal/onepass/client.go	2026-08-06 14:22:59.102618333 +0000
-+++ b/internal/onepass/client.go	2026-08-06 14:23:25.106922741 +0000
-@@ -147,7 +147,7 @@
+--- a/internal/onepass/client.go	2026-09-03 14:34:32.639533687 +0000
++++ b/internal/onepass/client.go	2026-09-03 14:34:41.208546635 +0000
+@@ -176,7 +176,7 @@
  	}
  
  	if len(failures) > 0 {
@@ -10,26 +9,49 @@ diff -ruN a/internal/onepass/client.go b/internal/onepass/client.go
  	}
  
  	return resolved, nil
-diff -ruN a/internal/secrets/processor.go b/internal/secrets/processor.go
---- a/internal/secrets/processor.go	2026-08-06 14:22:59.102696054 +0000
-+++ b/internal/secrets/processor.go	2026-08-06 14:23:17.633096058 +0000
-@@ -70,10 +70,10 @@
+@@ -263,7 +263,7 @@
  	}
  
- 	references := uniqueReferences(cfg.Secrets)
--	resolvedSecrets, err := p.client.ResolveSecrets(references)
--	if err != nil {
-+	resolvedSecrets, resolveErr := p.client.ResolveSecrets(references)
-+	if resolveErr != nil && len(resolvedSecrets) == 0 {
- 		return nil, errors.WrapWithSuggestions(
--			err,
-+			resolveErr,
- 			"Resolving 1Password references",
- 			"secret processing",
- 			[]string{
-@@ -88,11 +88,8 @@
- 		secretName := fmt.Sprintf("secret[%d]:%s", i, secret.Path)
- 		value, ok := resolvedSecrets[secret.Reference]
+ 	if len(failures) > 0 {
+-		return nil, &errors.ProviderResolutionError{Failures: failures}
++		return resolved, &errors.ProviderResolutionError{Failures: failures}
+ 	}
+ 	return resolved, nil
+ }
+--- a/internal/secrets/processor.go	2026-09-03 14:34:32.640533687 +0000
++++ b/internal/secrets/processor.go	2026-09-03 14:40:18.524433228 +0000
+@@ -63,20 +63,18 @@
+ 
+ 	fieldReferences, fileReferences := uniqueReferencesByKind(cfg.Secrets)
+ 	resolvedSecrets := make(map[string]string, len(fieldReferences))
++	var fieldErr error
+ 	if len(fieldReferences) > 0 {
+-		var err error
+-		resolvedSecrets, err = p.client.ResolveSecrets(fieldReferences)
+-		if err != nil {
+-			return nil, wrapResolutionError(err)
+-		}
++		resolvedSecrets, fieldErr = p.client.ResolveSecrets(fieldReferences)
+ 	}
+ 	resolvedFiles := make(map[string][]byte, len(fileReferences))
++	var fileErr error
+ 	if len(fileReferences) > 0 {
+-		var err error
+-		resolvedFiles, err = p.client.ResolveFiles(fileReferences)
+-		if err != nil {
+-			return nil, wrapResolutionError(err)
+-		}
++		resolvedFiles, fileErr = p.client.ResolveFiles(fileReferences)
++	}
++	resolveErr := mergeResolveErrors(fieldErr, fileErr)
++	if resolveErr != nil && len(resolvedSecrets) == 0 && len(resolvedFiles) == 0 {
++		return nil, wrapResolutionError(resolveErr)
+ 	}
+ 	if err := os.MkdirAll(p.outputDir, 0755); err != nil {
+ 		return nil, errors.FileOperationError(
+@@ -99,11 +97,8 @@
+ 			value = []byte(fieldValue)
+ 		}
  		if !ok {
 -			return nil, errors.OnePasswordError(
 -				fmt.Sprintf("Resolving secret %s", secretName),
@@ -41,23 +63,52 @@ diff -ruN a/internal/secrets/processor.go b/internal/secrets/processor.go
  		}
  
  		outputPath, err := p.processSecret(secret, secretName, value)
-@@ -113,6 +110,19 @@
+@@ -124,6 +119,11 @@
  		result.ProcessedCount++
  	}
  
 +	if resolveErr != nil {
-+		return nil, errors.WrapWithSuggestions(
-+			resolveErr,
-+			fmt.Sprintf("Resolving 1Password references (wrote %d resolvable secrets)", result.ProcessedCount),
-+			"secret processing",
-+			[]string{
-+				"Check the failed 1Password references listed above",
-+				"Create any missing vaults, items, or fields before restarting opnix-secrets.service",
-+				"If rate-limited, wait for the 1Password reset window before retrying",
-+			},
-+		)
++		fmt.Fprintf(os.Stderr, "WARNING: wrote %d resolvable secrets; unresolved references remain\n", result.ProcessedCount)
++		return nil, wrapResolutionError(resolveErr)
 +	}
 +
  	return result, nil
+ }
+ 
+@@ -222,6 +222,23 @@
+ 	return fields, files
+ }
+ 
++// errors.Join would hide the exit code: ExitCode only walks single-error
++// Unwrap chains, so merge failure lists into one ProviderResolutionError.
++func mergeResolveErrors(fieldErr, fileErr error) error {
++	if fieldErr == nil {
++		return fileErr
++	}
++	if fileErr == nil {
++		return fieldErr
++	}
++	var fieldRes, fileRes *errors.ProviderResolutionError
++	if stderrors.As(fieldErr, &fieldRes) && stderrors.As(fileErr, &fileRes) {
++		failures := append([]*errors.ProviderError{}, fieldRes.Failures...)
++		return &errors.ProviderResolutionError{Failures: append(failures, fileRes.Failures...)}
++	}
++	return fieldErr
++}
++
+ func wrapResolutionError(err error) error {
+ 	suggestions := []string{
+ 		"Check the failed 1Password references listed above",
+--- a/internal/secrets/processor_test.go	2026-09-03 14:40:27.587990296 +0000
++++ b/internal/secrets/processor_test.go	2026-09-03 14:40:34.061392204 +0000
+@@ -223,8 +223,8 @@
+ 	if readErr != nil {
+ 		t.Fatalf("Failed to read existing secret: %v", readErr)
+ 	}
+-	if string(content) != "existing-password" {
+-		t.Fatalf("Field was updated before file resolution completed: %q", content)
++	if string(content) != "new-password" {
++		t.Fatalf("Expected resolvable secret to be written despite file failure: %q", content)
+ 	}
  }
  

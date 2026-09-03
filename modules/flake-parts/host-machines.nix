@@ -35,22 +35,6 @@ let
     import "${src}/nix/module.nix";
 in
 {
-  # slirp4netns's default 1500 MTU caps throughput below 1 Gbps and sbox
-  # hardcodes its flags; rebuild the module from a patched source. Defined
-  # here so flakes importing only this file still get it.
-  flake.modules.homeManager.sbox-patched =
-    let
-      src = inputs.nixpkgs.legacyPackages.x86_64-linux.applyPatches {
-        name = "sbox-slirp-mtu";
-        src = inputs.sbox;
-        postPatch = ''
-          substituteInPlace sbox.nix \
-            --replace-fail "slirp4netns --disable-host-loopback" "slirp4netns --mtu 65520 --disable-host-loopback"
-        '';
-      };
-    in
-    (import "${src}/nilla.nix").flakeOutputs.homeManagerModules.sbox;
-
   flake.nixosConfigurations = mkHosts "hosts/nixos/" config.flake.modules.nixos (
     specialArgs: module:
     inputs.nixpkgs.lib.nixosSystem {
@@ -69,7 +53,7 @@ in
               claude-code = inputs.claude-code.packages."x86_64-linux".claude-code;
             };
             sharedModules = [
-              config.flake.modules.homeManager.sbox-patched
+              inputs.sbox.homeManagerModules.sbox
             ];
             # sbox refuses to bind host-PATH entries under $HOME, so home
             # packages must land in /etc/profiles/per-user to be visible

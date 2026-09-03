@@ -31,20 +31,28 @@
             --unpack "*-entry-point.bundle.js"
         '';
       });
-      signal-desktop = pkgs.signal-desktop.overrideAttrs (old: {
-        nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.asar ];
-        postInstall = (old.postInstall or "") + ''
-          asar extract $out/share/signal-desktop/app.asar $TMPDIR/signal
-          substituteInPlace $TMPDIR/signal/stylesheets/manifest.css \
-            --replace-fail "file://${pkgs.noto-fonts-color-emoji}/share/fonts/noto/NotoColorEmoji.ttf" "file://${appleEmojiTtf}"
-          substituteInPlace $TMPDIR/signal/stylesheets/manifest.css $TMPDIR/signal/sticker-creator/dist/assets/*.css \
-            --replace-fail "asset:///optional-fonts/emoji-large.woff2" "file://${appleEmojiTtf}"
-          substituteInPlace $TMPDIR/signal/bundles/main.js \
-            --replace-fail "${pkgs.noto-fonts-color-emoji}" "${appleColorEmoji pkgs}"
-          rm -r $out/share/signal-desktop/app.asar $out/share/signal-desktop/app.asar.unpacked
-          asar pack $TMPDIR/signal $out/share/signal-desktop/app.asar --unpack "*.node"
-        '';
-      });
+      # Repack the cached upstream build instead of overrideAttrs: signal is
+      # built from source, so touching postInstall forces a local rebuild.
+      signal-desktop =
+        pkgs.runCommand "signal-desktop-${pkgs.signal-desktop.version}"
+          {
+            nativeBuildInputs = [ pkgs.asar ];
+            inherit (pkgs.signal-desktop) meta;
+          }
+          ''
+            cp -r ${pkgs.signal-desktop} $out
+            chmod -R u+w $out
+            asar extract $out/share/signal-desktop/app.asar $TMPDIR/signal
+            substituteInPlace $TMPDIR/signal/stylesheets/manifest.css \
+              --replace-fail "file://${pkgs.noto-fonts-color-emoji}/share/fonts/noto/NotoColorEmoji.ttf" "file://${appleEmojiTtf}"
+            substituteInPlace $TMPDIR/signal/stylesheets/manifest.css $TMPDIR/signal/sticker-creator/dist/assets/*.css \
+              --replace-fail "asset:///optional-fonts/emoji-large.woff2" "file://${appleEmojiTtf}"
+            substituteInPlace $TMPDIR/signal/bundles/main.js \
+              --replace-fail "${pkgs.noto-fonts-color-emoji}" "${appleColorEmoji pkgs}"
+            rm -r $out/share/signal-desktop/app.asar $out/share/signal-desktop/app.asar.unpacked
+            asar pack $TMPDIR/signal $out/share/signal-desktop/app.asar --unpack "*.node"
+            grep -rlI "${pkgs.signal-desktop}" $out | xargs -r sed -i "s|${pkgs.signal-desktop}|$out|g"
+          '';
       zoom-us = pkgs.zoom-us.override { gnomeXdgDesktopPortalSupport = true; };
     in
     {

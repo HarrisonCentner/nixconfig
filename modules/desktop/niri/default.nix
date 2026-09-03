@@ -1,5 +1,4 @@
 {
-  inputs,
   blockOutFromScreencast,
   ...
 }:
@@ -9,9 +8,8 @@
     {
       programs.niri = {
         enable = true;
-        package = inputs.niri.packages.${pkgs.stdenv.hostPlatform.system}.niri-stable.overrideAttrs {
-          doCheck = false;
-        };
+        # niri-flake's niri-stable is uninstantiable until sodiboo/niri-flake#1851
+        package = pkgs.niri;
       };
 
       environment.sessionVariables.NIXOS_OZONE_WL = "1";
@@ -120,9 +118,7 @@
       programs.niri.settings = {
         prefer-no-csd = true;
 
-        xwayland-satellite.path = "${
-          inputs.niri.packages.${pkgs.stdenv.hostPlatform.system}.xwayland-satellite-stable
-        }/bin/xwayland-satellite";
+        xwayland-satellite.path = "${pkgs.xwayland-satellite}/bin/xwayland-satellite";
 
         window-rules = blockOutFromScreencast [ "(?i)^thunar$" ];
 
