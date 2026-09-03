@@ -42,6 +42,15 @@
         outputDir = opnixSecretsDir;
       };
 
+      systemd.services.opnix-secrets = {
+        serviceConfig.RestartSec = lib.mkForce "30s";
+        unitConfig = {
+          # window must exceed 4 restarts at 30s spacing or the limit never trips
+          StartLimitIntervalSec = lib.mkForce "10min";
+          StartLimitBurst = lib.mkForce 4;
+        };
+      };
+
       environment.systemPackages = [ opnix-restore ];
 
       ephemeralRoot.persist.directories = [ "/var/lib/opnix" ];
