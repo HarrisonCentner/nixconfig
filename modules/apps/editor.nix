@@ -3,6 +3,7 @@
   flake.modules.homeManager.editor =
     {
       pkgs,
+      lib,
       claude-code,
       ...
     }:
@@ -17,29 +18,56 @@
           echo "warning: opnix secrets unavailable (${ghTokenPath}); GH_TOKEN unset" >&2
         fi
       '';
-      claudius = mkCompletionAlias pkgs "agent-jail" (
-        pkgs.writeShellScriptBin "claudius" ''
-          ${loadGhToken}
-          exec agent-jail "$@" -- claude --dangerously-skip-permissions
-        ''
-      );
-      geminidius = mkCompletionAlias pkgs "agent-jail" (
-        pkgs.writeShellScriptBin "gemini-jail" ''
-          ${loadGhToken}
-          exec agent-jail "$@" -- gemini --yolo
-        ''
-      );
+      # bwrap refuses a missing bind source, so state is seeded on the host.
+      mkJail =
+        {
+          name,
+          dirs ? [ ],
+          files ? [ ],
+          command,
+        }:
+        let
+          writeable = lib.concatMapStringsSep " " (p: ''--writeable "$HOME/${p}"'') (dirs ++ files);
+        in
+        mkCompletionAlias pkgs "agent-jail" (
+          pkgs.writeShellScriptBin name ''
+            ${loadGhToken}
+            ${lib.concatMapStringsSep "\n" (d: ''mkdir -p "$HOME/${d}"'') dirs}
+            ${lib.concatMapStringsSep "\n" (f: ''[ -e "$HOME/${f}" ] || echo '{}' > "$HOME/${f}"'') files}
+            exec agent-jail ${writeable} "$@" -- ${command}
+          ''
+        );
+      claudius = mkJail {
+        name = "claudius";
+        dirs = [ ".claude" ];
+        files = [ ".claude.json" ];
+        command = "claude --dangerously-skip-permissions";
+      };
+      antigravity-jail = mkJail {
+        name = "agy-jail";
+        dirs = [ ".gemini" ];
+        command = "agy --dangerously-skip-permissions";
+      };
+      codex-jail = mkJail {
+        name = "codex-jail";
+        dirs = [ ".codex" ];
+        command = "codex --dangerously-bypass-approvals-and-sandbox";
+      };
       stateDirs = [
         ".claude"
+        ".codex"
+        ".gemini"
       ];
     in
     {
       nixpkgs.config.allowUnfree = true;
       home.packages = with pkgs; [
+        antigravity-cli
+        antigravity-jail
         claude-code
         claudius
-        gemini-cli
-        geminidius
+        codex
+        codex-jail
         gh
       ];
       ephemeralRoot.persist.directories = stateDirs;

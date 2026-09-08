@@ -70,9 +70,6 @@ in
         shareKnownHosts = false;
         allowAudio = false;
         bind = {
-          "$HOME/.claude" = { };
-          "$HOME/.gemini" = { };
-          "$HOME/.claude.json" = { };
           "$HOME/.config/gh" = { };
           "$HOME/.cache/cargo-target" = { };
           "$HOME/.cache/sccache" = { };

@@ -13,10 +13,10 @@ Recognises @--readable DIR@, @--writeable DIR@, @--network MODE@,
 sandboxes).
 Anything else is appended to the inner program command (after the
 @--@), so e.g. @agent-jail --readable /foo --resume X -- claude@ reaches
-@claude@ as @claude --resume X@. When the inner program is @claude@, its
-session id doubles as the session key (see 'claudeSession'). When invoked
-inside a linked git worktree, the main repo's common @.git@ directory is
-bind-mounted so the worktree stays usable.
+@claude@ as @claude --resume X@. When the inner program is @claude@ or
+@codex@, its session id doubles as the session key (see 'agentSession').
+When invoked inside a linked git worktree, the main repo's common @.git@
+directory is bind-mounted so the worktree stays usable.
 -}
 module Main where
 
@@ -216,28 +216,44 @@ givenSessionId inner =
         | prev `elem` ["-r", "--resume", "--session-id"] = Just cur
         | otherwise = asum [stripPrefix p cur | p <- ["--resume=", "--session-id="]]
 
-{- | Claude invents a session id unless handed one, but a resumed session
-must land on the same @\/tmp@ as the run that created it. Pinning the id
+{- | A resumed session must land on the same @\/tmp@ as the run that
+created it, so a program's session id doubles as the session key when it
+can be known before the program starts. Yields the key and any arguments
+to add to the inner command line.
+-}
+agentSession :: [String] -> IO (Maybe String, [String])
+agentSession inner = case inner of
+    prog : rest -> case takeFileName prog of
+        "claude" -> claudeSession rest
+        "codex" -> pure (codexSession rest, [])
+        _ -> pure (Nothing, [])
+    [] -> pure (Nothing, [])
+
+{- | Claude invents a session id unless handed one; pinning the id
 ourselves makes it — and so the session dir — known before claude starts.
-Yields the session key and any arguments to add to claude's command line.
 An id we cannot know up front (@--resume@ with no id, @--continue@) leaves
 the dir unkeyed, as for any other program.
 -}
 claudeSession :: [String] -> IO (Maybe String, [String])
-claudeSession inner = case inner of
-    prog : rest
-        | takeFileName prog == "claude" -> case givenSessionId rest of
-            Just sid -> pure (Just sid, [])
-            Nothing
-                | any picksLater rest -> pure (Nothing, [])
-                | otherwise -> do
-                    sid <- newSessionId
-                    pure (Just sid, ["--session-id", sid])
-    _ -> pure (Nothing, [])
+claudeSession rest = case givenSessionId rest of
+    Just sid -> pure (Just sid, [])
+    Nothing
+        | any picksLater rest -> pure (Nothing, [])
+        | otherwise -> do
+            sid <- newSessionId
+            pure (Just sid, ["--session-id", sid])
   where
     picksLater a =
         a `elem` ["-c", "--continue", "-r", "--resume", "--session-id", "--fork-session"]
             || any (`isPrefixOf` a) ["--resume=", "--session-id="]
+
+{- | Codex cannot be told which id to use, so only @codex resume ID@ keys
+the dir; a fresh session (or a picker, @--last@, @fork@) stays unkeyed.
+-}
+codexSession :: [String] -> Maybe String
+codexSession rest = case break (== "resume") rest of
+    (_, _ : more) -> listToMaybe (filter isSessionId more)
+    _ -> Nothing
 
 -- | The kernel's generator, so agent-jail needs no uuid dependency.
 newSessionId :: IO String
@@ -324,13 +340,13 @@ main = do
         gitCommonDir >>= \case
             Just dir -> bbwrapBind ReadWrite dir
             Nothing -> pure []
-    (claudeKey, claudeArgs) <- claudeSession (drop 1 rest <> forwarded)
-    tmpBind <- tmpDirBind (sessionKey args <|> claudeKey)
+    (sessionKeyFromProg, sessionArgs) <- agentSession (drop 1 rest <> forwarded)
+    tmpBind <- tmpDirBind (sessionKey args <|> sessionKeyFromProg)
     runSandbox $
         mconcat
             [ shareArg args
             , worktree
             , tmpBind
             , sboxArgs
-            , innerCommand rest forwarded claudeArgs
+            , innerCommand rest forwarded sessionArgs
             ]
