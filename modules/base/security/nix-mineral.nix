@@ -27,6 +27,12 @@
           special."/proc".options."hidepid" = lib.mkForce false;
         };
       };
+      # impermanence binds into these; the self-bind mounts must exist in initrd
+      fileSystems = {
+        "/etc".neededForBoot = true;
+        "/var".neededForBoot = true;
+        "/var/lib".neededForBoot = true;
+      };
       boot.kernelModules = [ "jitterentropy_rng" ];
     };
 

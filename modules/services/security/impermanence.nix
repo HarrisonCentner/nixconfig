@@ -59,13 +59,7 @@
             "/var/lib/nixos"
             "/var/lib/systemd"
           ];
-          files = [
-            "/etc/machine-id"
-            "/etc/shadow"
-            "/etc/passwd"
-            "/etc/group"
-            "/etc/gshadow"
-          ];
+          files = [ "/etc/machine-id" ];
         };
       };
 

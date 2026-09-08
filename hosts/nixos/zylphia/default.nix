@@ -29,7 +29,8 @@
         syncthing
         tailscale
         paperless
-        tailscale
+
+        ephemeral-root
       ]
       ++ [
         {
@@ -51,6 +52,8 @@
               # Apps
               editor
               kopia-backup
+
+              ephemeral-root
             ];
           };
         }
