@@ -38,23 +38,11 @@
       ...
     }:
     let
-      hmDirs = lib.concatLists (
-        lib.mapAttrsToList (
-          _user: hm: map (d: "${hm.home.homeDirectory}/${d}") hm.backup.directories
-        ) config.home-manager.users
-      );
-      sources = lib.unique (config.backup.directories ++ hmDirs);
+      inherit (config.pathReport.backup) exclude;
+      sources = config.pathReport.backup.directories;
 
-      excludes = lib.unique (
-        config.backup.exclude
-        ++ lib.concatLists (
-          lib.mapAttrsToList (
-            _user: hm: map (d: "${hm.home.homeDirectory}/${d}") hm.backup.exclude
-          ) config.home-manager.users
-        )
-      );
       sourceIgnores =
-        source: map (lib.removePrefix source) (lib.filter (lib.hasPrefix "${source}/") excludes);
+        source: map (lib.removePrefix source) (lib.filter (lib.hasPrefix "${source}/") exclude);
 
       kopiaEnv = {
         KOPIA_CONFIG_PATH = "/var/lib/kopia/repository.config";
