@@ -3,7 +3,6 @@ let
 in
 {
   flake.modules.nixos.immich =
-    { pkgs, ... }:
     {
       config = {
         users.users.immich.extraGroups = [
@@ -27,10 +26,13 @@ in
 
         ephemeralRoot.persist.directories = [ "/var/lib/immich" ];
 
-        backup.directories = [
-          "/var/lib/immich"
-          "/var/lib/postgresql"
-        ];
+        backup = {
+          directories = [ "/var/lib/immich" ];
+          exclude = [
+            "/var/lib/immich/thumbs"
+            "/var/lib/immich/encoded-video"
+          ];
+        };
       };
     };
 }

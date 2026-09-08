@@ -25,6 +25,7 @@
 
         # Services
         immich
+        kopia-backup
         secrets
         syncthing
         tailscale
