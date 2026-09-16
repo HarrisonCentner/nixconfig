@@ -5,6 +5,7 @@
       home.packages = with pkgs; [
         darktable
         gimp
+        snapshot
       ];
 
       ephemeralRoot.persist.directories = [
