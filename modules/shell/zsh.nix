@@ -15,7 +15,7 @@
             enable = true;
             shellAliases = {
               nsp = "nix-shell -p $@ --command zsh";
-              open = lib.mkIf pkgs.stdenv.isLinux "xdg-open";
+              open = lib.mkIf pkgs.stdenv.hostPlatform.isLinux "xdg-open";
               q = "exit";
             };
             oh-my-zsh = {

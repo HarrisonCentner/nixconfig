@@ -33,10 +33,8 @@
       url = "github:sadjow/claude-code-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    noctalia = {
-      url = "github:noctalia-dev/noctalia-shell";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # no follows so we hit the noctalia-shell cachix
+    noctalia.url = "github:noctalia-dev/noctalia-shell";
     sbox.url = "github:DavHau/sbox";
     impermanence = {
       url = "github:nix-community/impermanence";

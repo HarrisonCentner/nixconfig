@@ -5,10 +5,7 @@
 }:
 {
   flake.modules.homeManager.noctalia-shell =
-    {
-      pkgs,
-      ...
-    }:
+    { ... }:
     let
       timeFormat = "%-I:%M %p";
       dateFormat = "%a, %b %d";
@@ -19,13 +16,6 @@
 
       programs.noctalia = {
         enable = true;
-        # A timed event ending exactly at midnight is listed on the next day too
-        # (exclusive DTEND only handled for all-day). Drop once fixed upstream.
-        package = inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default.overrideAttrs (old: {
-          patches = (old.patches or [ ]) ++ [
-            ./calendar-midnight-end-day-spill.patch
-          ];
-        });
         settings = {
           shell = {
             font_family = "sans-serif";
