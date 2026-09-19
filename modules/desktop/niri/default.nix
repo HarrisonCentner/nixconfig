@@ -72,15 +72,6 @@
       # gnome one for interfaces it does not implement
       xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
 
-      # Pipewire for audio
-      security.rtkit.enable = true;
-      services.pipewire = {
-        enable = true;
-        pulse.enable = true;
-        alsa.enable = true;
-        jack.enable = true;
-      };
-
       # Login manager
       services.greetd = {
         enable = true;
@@ -93,7 +84,7 @@
     };
 
   flake.modules.homeManager.desktop-niri =
-    { pkgs, ... }:
+    { ... }:
     {
       programs.ghostty.settings.command = "sh -c 'tmux has-session -t main 2>/dev/null && exec tmux new-session -t main \\; new-window || exec tmux new-session -s main'";
 
