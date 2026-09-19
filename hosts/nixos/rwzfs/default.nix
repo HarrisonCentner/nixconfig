@@ -65,6 +65,7 @@
               everyday
               library
               messaging
+              movies
               notes
               office
               password-manager
