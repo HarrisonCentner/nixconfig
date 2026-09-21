@@ -17,9 +17,6 @@ jobs:
           - host: rwzfs
             os: ubuntu-latest
             attr: nixosConfigurations.rwzfs.config.system.build.toplevel
-          - host: portable
-            os: ubuntu-latest
-            attr: nixosConfigurations.portable.config.system.build.toplevel
           - host: zylphia
             os: ubuntu-latest
             attr: nixosConfigurations.zylphia.config.system.build.toplevel
