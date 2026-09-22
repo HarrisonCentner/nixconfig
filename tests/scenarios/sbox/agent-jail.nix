@@ -29,12 +29,25 @@ in
         assert config.flake.nixosConfigurations.rwzfs.config.home-manager.useUserPackages;
         pkgs.runCommand "agent-jail-user-packages" { } "touch $out";
 
+      checks.agent-jail-untrusted =
+        assert config.flake.nixosConfigurations.rwzfs.config.nix.settings.trusted-users == [ "root" ];
+        assert config.flake.nixosConfigurations.zylphia.config.nix.settings.trusted-users == [ "root" ];
+        pkgs.runCommand "agent-jail-untrusted" { } "touch $out";
+
       checks.agent-jail =
         let
           verify = writeTurtleBin "agent-jail-verify" {
             src = ./agent-jail-verify.hs;
             extraLibraries = with pkgs.haskellPackages; [ directory ];
           };
+          buildExpression = pkgs.writeText "agent-jail-build.nix" ''
+            derivation {
+              name = "agent-jail-untrusted-build";
+              system = "${system}";
+              builder = (builtins.storePath ${pkgs.busybox}) + "/bin/sh";
+              args = [ "-c" "echo sandbox-build-ok > $out" ];
+            }
+          '';
         in
         pkgs.testers.runNixOSTest {
           name = "agent-jail";
@@ -51,6 +64,15 @@ in
                 shell = pkgs.bashInteractive;
               };
 
+              nix.settings = {
+                experimental-features = [
+                  "nix-command"
+                  "flakes"
+                ];
+                trusted-users = lib.mkForce [ "root" ];
+                sandbox = true;
+              };
+
               home-manager = {
                 useGlobalPkgs = true;
                 useUserPackages = true;
@@ -60,8 +82,7 @@ in
                   home.stateVersion = "24.05";
                   # Override the production bind set with literal paths the
                   # verifier knows about. The production config uses $HOME and
-                  # $XDG_RUNTIME_DIR expansions plus paths that don't exist in
-                  # a fresh VM (tmux socket).
+                  # optional paths that don't exist in a fresh VM.
                   programs.sbox.bind = lib.mkForce {
                     "/home/alice/.claude" = { };
                     "/home/alice/.gemini" = { };
@@ -72,6 +93,12 @@ in
               environment.systemPackages = [
                 verify
                 pkgs.git
+                (pkgs.writeShellScriptBin "agent-jail-build-test" ''
+                  set -eu
+                  result=$(${pkgs.nix}/bin/nix build --impure --no-link \
+                    --print-out-paths --file ${buildExpression})
+                  test "$(cat "$result")" = sandbox-build-ok
+                '')
                 # Records the command line agent-jail built, in the jail's /tmp
                 # so the session dir it landed in is observable from the host.
                 (pkgs.writeShellScriptBin "claude" ''
@@ -126,6 +153,18 @@ in
             machine.succeed(
                 "runuser -l alice -c "
                 "'cd ~/work/proj && agent-jail -- agent-jail-verify isolated'"
+            )
+
+            # The daemon treats the jailed user as untrusted but still builds.
+            info = machine.succeed(
+                "runuser -l alice -c "
+                "'cd ~/work/proj && agent-jail --network blocked -- "
+                "nix store info --json'"
+            )
+            assert '"trusted":false' in info.replace(" ", ""), info
+            machine.succeed(
+                "runuser -l alice -c "
+                "'cd ~/work/proj && agent-jail --network blocked -- agent-jail-build-test'"
             )
 
             # /tmp is the disk-backed per-session dir, not sbox's tmpfs: a

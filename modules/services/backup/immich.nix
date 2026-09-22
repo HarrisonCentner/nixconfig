@@ -11,15 +11,14 @@ in
       services.tailscale.serve = {
         enable = true;
         services.immich.endpoints = {
-          "tcp:${toString defaultPort}" = "http://localhost:${toString defaultPort}";
+          "tcp:${toString defaultPort}" = "http://127.0.0.1:${toString defaultPort}";
         };
       };
       services.immich = {
         enable = true;
         port = defaultPort;
-        host = "0.0.0.0";
+        host = "127.0.0.1";
         mediaLocation = "/var/lib/immich";
-        openFirewall = true;
         accelerationDevices = [ "/dev/dri/renderD128" ];
       };
 

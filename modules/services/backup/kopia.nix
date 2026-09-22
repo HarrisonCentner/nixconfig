@@ -105,16 +105,22 @@ in
       # make kopia declarative by clearing policy before each run
       ignoreSteps = map (
         source:
+        let
+          ignores = sourceIgnores source;
+        in
         pkgs.writeShellScript "kopia-ignore-${baseNameOf source}" ''
           set -euo pipefail
+          [ -e ${lib.escapeShellArg source} ] || exit 0
           export KOPIA_PASSWORD="$(cat ${secretPaths.kopiaPassword})"
           kopia=${pkgs.kopia}/bin/kopia
           "$kopia" policy set ${lib.escapeShellArg source} --clear-ignore
-          exec "$kopia" policy set ${lib.escapeShellArg source} ${
-            lib.concatMapStringsSep " " (p: "--add-ignore ${lib.escapeShellArg p}") (sourceIgnores source)
-          }
+          ${lib.optionalString (ignores != [ ]) ''
+            "$kopia" policy set ${lib.escapeShellArg source} ${
+              lib.concatMapStringsSep " " (p: "--add-ignore ${lib.escapeShellArg p}") ignores
+            }
+          ''}
         ''
-      ) (lib.filter (source: sourceIgnores source != [ ]) sources);
+      ) sources;
     in
     {
       services.onepassword-secrets.secrets =

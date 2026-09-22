@@ -21,15 +21,15 @@
         extraModulePackages = with config.boot.kernelPackages; [ ];
       };
 
+      services.syncthing.openDefaultPorts = false;
+
       networking = {
         firewall = {
           enable = true;
-          allowedTCPPorts = [
-            80
-            443
-            2283 # immich
-            28981 # paperless
-          ];
+          interfaces.tailscale0 = {
+            allowedTCPPorts = [ 22000 ];
+            allowedUDPPorts = [ 22000 ];
+          };
         };
         nameservers = [ "1.1.1.1" ];
         networkmanager.enable = true;

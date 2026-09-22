@@ -38,8 +38,6 @@ in
           openssh.authorizedKeys.keys = topLevel.config.flake.meta.users.${userName}.authorizedKeys;
           initialPassword = "hkc";
         };
-
-        nix.settings.trusted-users = [ topLevel.config.flake.meta.users.${userName}.username ];
       };
 
     modules.homeManager.${userName} = {

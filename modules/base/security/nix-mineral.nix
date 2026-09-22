@@ -12,6 +12,10 @@
         ];
         kernel-modules.enable = true;
         settings = {
+          kernel = {
+            iommu-passthrough = false;
+            busmaster-bit = false;
+          };
           # docker, microvm NAT, and tailscale need forwarding
           network.ip-forwarding = true;
           # rngd is killed by its own unit's seccomp filter

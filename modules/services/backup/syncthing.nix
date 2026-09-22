@@ -44,7 +44,7 @@
         user = "hcentner";
         group = "users";
         dataDir = "/home/hcentner";
-        openDefaultPorts = true;
+        openDefaultPorts = lib.mkDefault true;
         overrideDevices = true;
         overrideFolders = true;
         settings = {
