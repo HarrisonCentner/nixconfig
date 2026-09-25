@@ -37,6 +37,7 @@
         ]
         ++ lib.optionals stdenv.hostPlatform.isLinux [
           e2fsprogs
+          nftables
           parted
           util-linux
           usbutils
