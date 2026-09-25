@@ -5,7 +5,7 @@
   # `nixpkgs` input to follow (flake-parts, import-tree, systems, sbox) or
   # are non-flake sources (superdirt, vowel, dirt-samples, apple-color-emoji).
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "https://channels.nixos.org/nixpkgs-unstable/nixexprs.tar.zst";
     nix-darwin = {
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
