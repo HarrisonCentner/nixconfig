@@ -22,11 +22,13 @@ let
             "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
             "miso-haskell.cachix.org-1:6N2DooyFlZOHUfJtAx1Q09H0P5XXYzoxxQYiwn6W1e8="
             "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
+            "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
           ];
           substituters = [
             "https://cache.iog.io"
             "https://miso-haskell.cachix.org"
             "https://noctalia.cachix.org"
+            "https://devenv.cachix.org"
           ];
           download-buffer-size = 524288000;
           allow-import-from-derivation = true;
