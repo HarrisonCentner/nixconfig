@@ -16,6 +16,7 @@
         intel-graphics
         nix-mineral
         shell
+        shell-host
 
         # Users
         hcentner
@@ -41,6 +42,7 @@
               ai-agents
               base
               shell
+              shell-host
 
               # Users
               hcentner

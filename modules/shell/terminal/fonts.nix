@@ -1,6 +1,6 @@
 { appleColorEmoji, ... }:
 {
-  flake.modules.nixos.shell =
+  flake.modules.nixos.desktop =
     { pkgs, ... }:
     {
       fonts = {
@@ -22,7 +22,7 @@
       };
     };
 
-  flake.modules.homeManager.shell =
+  flake.modules.homeManager.desktop =
     { pkgs, ... }:
     {
       home.packages = with pkgs; [

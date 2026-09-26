@@ -1,4 +1,18 @@
 {
+  flake.modules.homeManager.shell-host =
+    { pkgs, lib, ... }:
+    {
+      home.packages = lib.optionals pkgs.stdenv.hostPlatform.isLinux (
+        with pkgs;
+        [
+          e2fsprogs
+          nftables
+          parted
+          usbutils
+        ]
+      );
+    };
+
   flake.modules.homeManager.shell =
     { pkgs, lib, ... }:
     {
@@ -36,11 +50,7 @@
           xz
         ]
         ++ lib.optionals stdenv.hostPlatform.isLinux [
-          e2fsprogs
-          nftables
-          parted
           util-linux
-          usbutils
         ];
     };
 }

@@ -7,7 +7,7 @@ in
 
   flake.modules = {
 
-    nixos.shell = {
+    nixos.shell-host = {
       services.onepassword-secrets.secrets.sopsAgeKey = mkOpSecret {
         service = "romeai-harrison.age";
         field = "credential";
@@ -16,7 +16,7 @@ in
       };
     };
 
-    homeManager.shell =
+    homeManager.shell-host =
       { pkgs, ... }:
       {
         home = {

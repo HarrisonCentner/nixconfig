@@ -11,6 +11,7 @@
         # Modules
         base
         shell
+        shell-host
         xlthlx-disko
         xlthlx-hardware
         desktop-niri
@@ -31,6 +32,7 @@
               # Modules
               base
               shell
+              shell-host
               desktop-niri
               noctalia-shell
 

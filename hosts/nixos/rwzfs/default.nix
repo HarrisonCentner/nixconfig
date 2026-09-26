@@ -18,6 +18,7 @@
         intel-graphics
         nix-mineral
         shell
+        shell-host
 
         # Users
         hcentner
@@ -48,6 +49,7 @@
               desktop-niri
               noctalia-shell
               shell
+              shell-host
 
               # Users
               hcentner

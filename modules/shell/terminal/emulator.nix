@@ -1,12 +1,17 @@
 {
-  flake.modules.homeManager.shell =
-    { pkgs, ... }:
-    {
+  flake.modules = {
+    nixos.shell =
+      { pkgs, ... }:
+      {
+        environment.systemPackages = [ pkgs.ghostty.terminfo ];
+      };
+
+    homeManager.desktop = {
       programs.ghostty = {
         enable = true;
         enableZshIntegration = true;
-        package = if pkgs.stdenv.hostPlatform.isDarwin then pkgs.ghostty-bin else pkgs.ghostty;
         settings.confirm-close-surface = false;
       };
     };
+  };
 }
