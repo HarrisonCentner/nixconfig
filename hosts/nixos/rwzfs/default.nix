@@ -38,6 +38,7 @@
         secrets
         syncthing
         tailscale
+        tetragon
       ]
       ++ [
         {
