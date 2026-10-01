@@ -5,7 +5,10 @@
     {
       nixpkgs.config.allowUnfree = true;
       programs = {
-        _1password-gui.enable = true;
+        _1password-gui = {
+          enable = true;
+          polkitPolicyOwners = [ "hcentner" ];
+        };
         _1password.enable = true;
       };
 
