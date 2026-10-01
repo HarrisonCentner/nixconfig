@@ -23,14 +23,8 @@
           "$@"
       '';
 
-      proton-mail = mkChromiumApp "proton-mail" "https://mail.proton.me/";
       tailscale-ui = mkChromiumApp "tailscale-ui" "https://login.tailscale.com/admin/machines";
 
-      proton-mail-icon = pkgs.fetchurl {
-        name = "proton-mail.svg";
-        url = "https://raw.githubusercontent.com/ProtonMail/WebClients/a7c568e1de4e872644789385130aef59c6936a10/applications/mail/src/favicon.svg";
-        hash = "sha256-ks+X7lCceeS0YQrY0eD9+1N+T26eB8IzLo+Pv0uV1ME=";
-      };
       tailscale-icon = pkgs.fetchurl {
         name = "tailscale.svg";
         url = "https://raw.githubusercontent.com/tailscale/tailscale/53a0d659afa51835dd7a9283873cca44261454f8/client/systray/tailscale.svg";
@@ -42,7 +36,6 @@
       home.packages = [
         pkgs.ungoogled-chromium
         chromium-novpn
-        proton-mail
         tailscale-ui
       ];
 
@@ -61,17 +54,6 @@
 
         # chromium derives native Wayland app IDs from the URL and profile;
         # matching the desktop filename gives deterministic icon association
-        "chrome-mail.proton.me__-Default" = {
-          name = "Proton Mail";
-          genericName = "Email Client";
-          exec = lib.getExe proton-mail;
-          icon = proton-mail-icon;
-          categories = [
-            "Network"
-            "Email"
-          ];
-        };
-
         "chrome-login.tailscale.com__-Default" = {
           name = "Tailscale";
           genericName = "Tailscale Admin Console";

@@ -1,6 +1,7 @@
 {
   blockOutFromScreencast,
   appleColorEmoji,
+  repackElectronApp,
   ...
 }:
 {
@@ -19,40 +20,53 @@
           );
         });
       '';
-      slack = pkgs.slack.overrideAttrs (old: {
-        nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.asar ];
-        postInstall = (old.postInstall or "") + ''
-          asar extract $out/lib/slack/resources/app.asar $TMPDIR/app
-          echo >> $TMPDIR/app/dist/boot.bundle.cjs
-          cat ${appleEmojiRedirect} >> $TMPDIR/app/dist/boot.bundle.cjs
-          rm -r $out/lib/slack/resources/app.asar $out/lib/slack/resources/app.asar.unpacked
-          asar pack $TMPDIR/app $out/lib/slack/resources/app.asar \
-            --unpack-dir "{node_modules,dist/resources}" \
-            --unpack "*-entry-point.bundle.js"
+      slack = repackElectronApp pkgs {
+        package = pkgs.slack;
+        asar = "lib/slack/resources/app.asar";
+        packFlags = [
+          "--unpack-dir"
+          "{node_modules,dist/resources}"
+          "--unpack"
+          "*-entry-point.bundle.js"
+        ];
+        extraPatch = ''
+          echo >> dist/boot.bundle.cjs
+          cat ${appleEmojiRedirect} >> dist/boot.bundle.cjs
         '';
-      });
-      # signal is built from source; repacking the cached output avoids
-      # rebuilding it locally
-      signal-desktop =
-        pkgs.runCommand "signal-desktop-${pkgs.signal-desktop.version}"
-          {
-            nativeBuildInputs = [ pkgs.asar ];
-            inherit (pkgs.signal-desktop) meta;
-          }
-          ''
-            cp -r ${pkgs.signal-desktop} $out
-            chmod -R u+w $out
-            asar extract $out/share/signal-desktop/app.asar $TMPDIR/signal
-            substituteInPlace $TMPDIR/signal/stylesheets/manifest.css \
-              --replace-fail "file://${pkgs.noto-fonts-color-emoji}/share/fonts/noto/NotoColorEmoji.ttf" "file://${appleEmojiTtf}"
-            substituteInPlace $TMPDIR/signal/stylesheets/manifest.css $TMPDIR/signal/sticker-creator/dist/assets/*.css \
-              --replace-fail "asset:///optional-fonts/emoji-large.woff2" "file://${appleEmojiTtf}"
-            substituteInPlace $TMPDIR/signal/bundles/main.js \
-              --replace-fail "${pkgs.noto-fonts-color-emoji}" "${appleColorEmoji pkgs}"
-            rm -r $out/share/signal-desktop/app.asar $out/share/signal-desktop/app.asar.unpacked
-            asar pack $TMPDIR/signal $out/share/signal-desktop/app.asar --unpack "*.node"
-            grep -rlI "${pkgs.signal-desktop}" $out | xargs -r sed -i "s|${pkgs.signal-desktop}|$out|g"
-          '';
+      };
+      signal-desktop = repackElectronApp pkgs {
+        package = pkgs.signal-desktop;
+        asar = "share/signal-desktop/app.asar";
+        packFlags = [
+          "--unpack"
+          "*.node"
+        ];
+        extraPatch = ''
+          substituteInPlace stylesheets/manifest.css \
+            --replace-fail "file://${pkgs.noto-fonts-color-emoji}/share/fonts/noto/NotoColorEmoji.ttf" "file://${appleEmojiTtf}"
+          substituteInPlace stylesheets/manifest.css sticker-creator/dist/assets/*.css \
+            --replace-fail "asset:///optional-fonts/emoji-large.woff2" "file://${appleEmojiTtf}"
+          substituteInPlace bundles/main.js \
+            --replace-fail "${pkgs.noto-fonts-color-emoji}" "${appleColorEmoji pkgs}"
+        '';
+      };
+      vesktop = repackElectronApp pkgs {
+        package = pkgs.vesktop;
+        asar = "opt/Vesktop/resources/app.asar";
+        packFlags = [
+          "--unpack"
+          "*.node"
+        ];
+      };
+      protonmail-desktop = repackElectronApp pkgs {
+        package = pkgs.protonmail-desktop;
+        asar = "share/proton-mail/app.asar";
+      };
+      protonmail-icon = pkgs.fetchurl {
+        name = "proton-mail.svg";
+        url = "https://raw.githubusercontent.com/ProtonMail/WebClients/a7c568e1de4e872644789385130aef59c6936a10/applications/mail/src/favicon.svg";
+        hash = "sha256-ks+X7lCceeS0YQrY0eD9+1N+T26eB8IzLo+Pv0uV1ME=";
+      };
       zoom-us = pkgs.zoom-us.override { gnomeXdgDesktopPortalSupport = true; };
     in
     {
@@ -61,14 +75,27 @@
         (with pkgs; [
           # make slack icon appear
           hicolor-icon-theme
-          # discord
-          vesktop
         ])
         ++ [
+          protonmail-desktop
           slack
           signal-desktop
+          vesktop
           zoom-us
         ];
+
+      # Shadows the package's entry, whose icon carries a Linux badge.
+      xdg.desktopEntries.proton-mail = {
+        name = "Proton Mail";
+        genericName = "Email Client";
+        exec = "proton-mail %U";
+        icon = protonmail-icon;
+        categories = [
+          "Network"
+          "Email"
+        ];
+        mimeType = [ "x-scheme-handler/mailto" ];
+      };
 
       wayland.windowManager.niri.settings._children = blockOutFromScreencast [
         "(?i)^signal$"
@@ -76,6 +103,7 @@
       ];
 
       ephemeralRoot.persist.directories = [
+        ".config/Proton Mail"
         ".config/Signal"
         ".config/Slack"
       ];
