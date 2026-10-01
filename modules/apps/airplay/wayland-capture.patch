@@ -1,0 +1,111 @@
+diff --git a/internal/airplay/audio.go b/internal/airplay/audio.go
+index a848686..8916917 100644
+--- a/internal/airplay/audio.go
++++ b/internal/airplay/audio.go
+@@ -197,7 +197,12 @@ func StartAudioCapture(ctx context.Context, testTone bool, codec AudioCodec) (*A
+ 			cancel()
+ 			return nil, fmt.Errorf("no PulseAudio monitor source found")
+ 		}
+-		srcArgs = []string{"pulsesrc", fmt.Sprintf("device=%s", monitor)}
++		// The default 200ms PulseAudio buffer exceeds AirPlay's 85ms audio
++		// playout lead, making every captured frame stale before it is read.
++		// Use the system clock for ONVIF timestamps instead of the delayed
++		// PulseAudio device clock, as in the video capture pipeline.
++		srcArgs = []string{"pulsesrc", fmt.Sprintf("device=%s", monitor),
++			"buffer-time=20000", "latency-time=10000", "provide-clock=false"}
+ 		dbg("[AUDIO] using pulsesrc device=%s", monitor)
+ 	} else if exec.Command("gst-inspect-1.0", "pipewiresrc").Run() == nil {
+ 		srcArgs = []string{"pipewiresrc"}
+diff --git a/internal/airplay/capture.go b/internal/airplay/capture.go
+index 5aaf46b..e81d2ef 100644
+--- a/internal/airplay/capture.go
++++ b/internal/airplay/capture.go
+@@ -725,18 +725,25 @@ func frameIntervalMillis(fps int) int {
+ 	return max(1, 1000/fps)
+ }
+ 
+-func pipeWireVideoSourceStage(fd int, nodeID uint32, fps int) gstStage {
++func pipeWireVideoSourceStage(fd int, nodeID uint32, fps int, importDMABuf, hasCompositor bool) gstStage {
++	keepalive := frameIntervalMillis(fps)
++	if hasCompositor {
++		keepalive = 0
++	}
+ 	return gstStage{
+ 		"pipewiresrc",
+ 		fmt.Sprintf("fd=%d", fd),
+ 		fmt.Sprintf("path=%d", nodeID),
+ 		"do-timestamp=true",
+-		fmt.Sprintf("keepalive-time=%d", frameIntervalMillis(fps)),
+-		// The compositor and pipewiresrc's keepalive path both retain the latest
+-		// GstBuffer. With a small portal pool that can keep every PipeWire buffer
+-		// checked out and freeze screencopy. Copying here returns the portal buffer
+-		// as soon as pipewiresrc pulls it while downstream retains only the copy.
+-		"always-copy=true",
++		// Use GStreamer's system clock for both buffer timestamps and the ONVIF
++		// wall-clock mapping. The PipeWire graph clock can change its origin.
++		"provide-clock=false",
++		"min-buffers=8",
++		"max-buffers=8",
++		fmt.Sprintf("keepalive-time=%d", keepalive),
++		// DMA-BUF memory cannot necessarily be CPU-mapped. GL and VA imports
++		// release those portal buffers; only the software path copies here.
++		fmt.Sprintf("always-copy=%t", !importDMABuf),
+ 	}
+ }
+ 
+@@ -853,13 +860,30 @@ func startPreparedWaylandCapture(ctx context.Context, cfg CaptureConfig, encoder
+ 	// The encoded dimensions are capped to the receiver's advertised display size
+ 	// when available. The actual result is read back from the codec SPS downstream.
+ 	const pwFdNum = 3
+-	source := pipeWireVideoSourceStage(pwFdNum, nodeID, fps)
+-
+ 	hasCompositor := streamSize[0] > 0 && streamSize[1] > 0 && hasGstElement("compositor")
++	useGL := hasGstElement("glupload")
++	useVA := !useGL && hasGstElement("vapostproc")
++	source := pipeWireVideoSourceStage(pwFdNum, nodeID, fps, useGL || useVA, hasCompositor)
+ 
+ 	var beforeConvert []gstStage
+-	if hasGstElement("vapostproc") {
+-		beforeConvert = append(beforeConvert, gstStage{"vapostproc"})
++	if useGL {
++		// niri offers only XR24 DMA-BUFs, which iHD vapostproc cannot import.
++		// EGL rejects the Gen12 CCS modifiers niri prefers, so pin Y-tiling.
++		beforeConvert = append(beforeConvert,
++			gstStage{"video/x-raw(memory:DMABuf),format=DMA_DRM,drm-format=XR24:0x0100000000000002"},
++			gstStage{"glupload"},
++			gstStage{"glcolorconvert"},
++			gstStage{"video/x-raw(memory:GLMemory),format=NV12"},
++			gstStage{"gldownload"},
++			gstStage{"video/x-raw,format=NV12,pixel-aspect-ratio=1/1"},
++		)
++	} else if useVA {
++		// Force a separate output buffer before the compositor retains a frame.
++		beforeConvert = append(beforeConvert,
++			gstStage{"video/x-raw(ANY),pixel-aspect-ratio=1/1"},
++			gstStage{"vapostproc", "disable-passthrough=true"},
++			gstStage{"video/x-raw,format=NV12,pixel-aspect-ratio=1/1"},
++		)
+ 	} else {
+ 		log.Printf("[CAPTURE] vapostproc unavailable, using software conversion")
+ 	}
+diff --git a/internal/airplay/capture_test.go b/internal/airplay/capture_test.go
+index 7f3ac73..a7a2483 100644
+--- a/internal/airplay/capture_test.go
++++ b/internal/airplay/capture_test.go
+@@ -362,12 +362,15 @@ func TestFrameIntervalMillis(t *testing.T) {
+ }
+ 
+ func TestPipeWireVideoSourceCopiesPortalBuffers(t *testing.T) {
+-	got := pipeWireVideoSourceStage(3, 42, 30)
++	got := pipeWireVideoSourceStage(3, 42, 30, false, false)
+ 	want := gstStage{
+ 		"pipewiresrc",
+ 		"fd=3",
+ 		"path=42",
+ 		"do-timestamp=true",
++		"provide-clock=false",
++		"min-buffers=8",
++		"max-buffers=8",
+ 		"keepalive-time=33",
+ 		"always-copy=true",
+ 	}

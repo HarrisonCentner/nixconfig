@@ -62,6 +62,7 @@
               rust
 
               # Apps
+              airplay
               browser
               editor
               everyday
