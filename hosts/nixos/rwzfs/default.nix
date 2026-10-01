@@ -11,6 +11,7 @@
         # Modules
         ai-agents
         base
+        biometrics
         rwzfs-disko
         rwzfs-hardware
         rwzfs-syncthing
