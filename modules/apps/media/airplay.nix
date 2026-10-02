@@ -3,14 +3,17 @@
     { pkgs, lib, ... }:
     let
       gst = pkgs.gst_all_1;
-      gstPlugins = [
-        gst.gst-plugins-base
-        gst.gst-plugins-good
-        gst.gst-plugins-bad
-        gst.gst-plugins-ugly
-        gst.gst-libav
-        pkgs.pipewire
-      ];
+      gstPlugins =
+        with gst;
+        with pkgs;
+        [
+          gst-plugins-base
+          gst-plugins-good
+          gst-plugins-bad
+          gst-plugins-ugly
+          gst-libav
+          pipewire
+        ];
       doubletake = pkgs.buildGoModule {
         pname = "doubletake";
         version = "0.4.0-unstable-2026-08-24";
@@ -21,7 +24,7 @@
           hash = "sha256-VbB4fue5xROFhxFaZ5frjB+NLpundGQtKK3/GvWkhQg=";
         };
         vendorHash = "sha256-cgvY9MVGe8I3g3Ni2sGucTY6YCyPJ2YnoxxUaYfl1E4=";
-        patches = [ ./wayland-capture.patch ];
+        patches = [ ./niri-capture.patch ];
         subPackages = [
           "cmd/doubletake"
           "cmd/doubletake-ctl"
