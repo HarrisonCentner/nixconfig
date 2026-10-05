@@ -46,7 +46,12 @@ in
     };
   };
   flake.modules.homeManager.ai-agents =
-    { pkgs, ... }:
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
     let
       agent-jail = writeHaskellBinWrapped pkgs "agent-jail" {
         libraries = with pkgs.haskellPackages; [
@@ -63,6 +68,11 @@ in
         pkgs.cloud-hypervisor
       ];
 
+      # Go's read-only module cache in session state breaks sbox's rm -rf prune
+      home.activation.goModCache = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        run mkdir -p ${config.home.homeDirectory}/go/pkg/mod
+      '';
+
       programs.sbox = {
         enable = true;
         network = "isolated";
@@ -73,6 +83,7 @@ in
           "$HOME/.config/gh" = { };
           "$HOME/.cache/cargo-target" = { };
           "$HOME/.cache/sccache" = { };
+          "$HOME/go/pkg/mod" = { };
           "$HOME/.infisical" = { };
           "$HOME/.local/share/nix" = { };
           "$HOME/.local/share/gh" = { };
