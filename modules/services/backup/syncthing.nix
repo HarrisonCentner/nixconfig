@@ -4,7 +4,17 @@
     {
       options.syncthing = {
         devices = lib.mkOption {
-          type = lib.types.attrsOf lib.types.str;
+          type = lib.types.attrsOf (
+            lib.types.submodule {
+              options = {
+                id = lib.mkOption { type = lib.types.str; };
+                addresses = lib.mkOption {
+                  type = lib.types.listOf lib.types.str;
+                  default = [ "dynamic" ];
+                };
+              };
+            }
+          );
           default = { };
         };
         folders = lib.mkOption {
@@ -35,8 +45,20 @@
     { config, lib, ... }:
     {
       syncthing.devices = {
-        rwzfs = "5WMJI7P-BZMFSZM-FCZCDIH-WXZQT3X-R65EOTV-GTT2B5E-2KBYRUE-UUI4NA7";
-        iphone-13-pro = "V4DFG35-C3ID5OQ-2TBE7EP-DPOYCAT-4PSLG32-AH4FPPV-MFHBWIA-UQZNMQ2";
+        rwzfs = {
+          id = "5WMJI7P-BZMFSZM-FCZCDIH-WXZQT3X-R65EOTV-GTT2B5E-2KBYRUE-UUI4NA7";
+          addresses = [
+            "tcp://100.93.141.99:22000"
+            "dynamic"
+          ];
+        };
+        iphone-13-pro = {
+          id = "V4DFG35-C3ID5OQ-2TBE7EP-DPOYCAT-4PSLG32-AH4FPPV-MFHBWIA-UQZNMQ2";
+          addresses = [
+            "tcp://100.74.70.83:22000"
+            "dynamic"
+          ];
+        };
       };
 
       services.syncthing = {
@@ -57,10 +79,7 @@
             crashReportingEnabled = false;
             releasesURL = "";
           };
-          devices = lib.mapAttrs (_: id: {
-            inherit id;
-            addresses = [ "dynamic" ];
-          }) config.syncthing.devices;
+          devices = lib.mapAttrs (_: d: { inherit (d) id addresses; }) config.syncthing.devices;
           folders = lib.mapAttrs (_: f: { inherit (f) id path devices; }) config.syncthing.folders;
         };
       };

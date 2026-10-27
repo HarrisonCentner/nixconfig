@@ -15,6 +15,7 @@
         zylphia-hardware
         intel-graphics
         nix-mineral
+        security
         shell
         shell-host
 
