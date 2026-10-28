@@ -16,6 +16,7 @@
         xlthlx-hardware
         desktop-niri
         intel-graphics
+        security
 
         # Users
         hcentner
@@ -35,6 +36,7 @@
               shell-host
               desktop-niri
               noctalia-shell
+              security
 
               # Users
               hcentner

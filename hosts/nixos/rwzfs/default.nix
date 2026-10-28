@@ -49,6 +49,7 @@
               base
               desktop-niri
               noctalia-shell
+              security
               shell
               shell-host
 
