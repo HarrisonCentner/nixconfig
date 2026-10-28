@@ -16,7 +16,6 @@
         rwzfs-syncthing
         desktop-niri
         intel-graphics
-        nix-mineral
         security
         shell
         shell-host

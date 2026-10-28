@@ -1,44 +1,52 @@
-{ inputs, ... }:
+{ config, inputs, ... }:
 {
-  flake.modules.nixos.nix-mineral =
-    { lib, ... }:
-    {
-      imports = [ inputs.nix-mineral.nixosModules.nix-mineral ];
-      nix-mineral = {
-        enable = true;
-        preset = [
-          "performance"
-          "compatibility"
-        ];
-        kernel-modules.enable = true;
-        settings = {
-          kernel = {
-            iommu-passthrough = false;
-            busmaster-bit = false;
+  flake.modules.nixos.security.imports = [ config.flake.modules.nixos.nix-mineral ];
+
+  flake.modules.nixos.nix-mineral = {
+    key = "nixconfig.modules.base.security.nix-mineral";
+    imports = [
+      inputs.nix-mineral.nixosModules.nix-mineral
+      (
+        { lib, ... }:
+        {
+          nix-mineral = {
+            enable = true;
+            preset = [
+              "performance"
+              "compatibility"
+            ];
+            kernel-modules.enable = true;
+            settings = {
+              kernel = {
+                iommu-passthrough = false;
+                busmaster-bit = false;
+              };
+              # docker, microvm NAT, and tailscale need forwarding
+              network.ip-forwarding = true;
+              # rngd is killed by its own unit's seccomp filter
+              # (jitterentropy-rngd#24); keep the in-kernel source instead
+              entropy.jitterentropy = false;
+              # keep boot logs visible; recon benefit not worth lost diagnostics
+              debug.quiet-boot = false;
+            };
+            filesystems = {
+              # bind mount breaks stage-2 on dedicated btrfs subvolumes (nix-mineral#11)
+              normal."/home".options."bind" = false;
+              # compatibility preset sets this but loses to the plain-priority default
+              special."/proc".options."hidepid" = lib.mkForce false;
+            };
           };
-          # docker, microvm NAT, and tailscale need forwarding
-          network.ip-forwarding = true;
-          # rngd is killed by its own unit's seccomp filter
-          # (jitterentropy-rngd#24); keep the in-kernel source instead
-          entropy.jitterentropy = false;
-          # keep boot logs visible; recon benefit not worth lost diagnostics
-          debug.quiet-boot = false;
-        };
-        filesystems = {
-          # bind mount breaks stage-2 on dedicated btrfs subvolumes (nix-mineral#11)
-          normal."/home".options."bind" = false;
-          # compatibility preset sets this but loses to the plain-priority default
-          special."/proc".options."hidepid" = lib.mkForce false;
-        };
-      };
-      # impermanence binds into these; the self-bind mounts must exist in initrd
-      fileSystems = {
-        "/etc".neededForBoot = true;
-        "/var".neededForBoot = true;
-        "/var/lib".neededForBoot = true;
-      };
-      boot.kernelModules = [ "jitterentropy_rng" ];
-    };
+          # impermanence binds into these; the self-bind mounts must exist in initrd
+          fileSystems = {
+            "/etc".neededForBoot = true;
+            "/var".neededForBoot = true;
+            "/var/lib".neededForBoot = true;
+          };
+          boot.kernelModules = [ "jitterentropy_rng" ];
+        }
+      )
+    ];
+  };
 
   # microvm guests: no desktop hardware to preserve, access survives
   # lock-root via microvm-agent (wheel)
