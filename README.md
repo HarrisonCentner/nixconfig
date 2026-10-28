@@ -1,10 +1,14 @@
 # NixConfig
+ 
+This is my public-facing nixconfig. My real config takes this repo as a flake input and combines with work + security configurations. 
+
+# Explanation
 
 NixOS and nix-darwin system configurations using
 [flake-parts](https://github.com/hercules-ci/flake-parts) and
 [import-tree](https://github.com/vic/import-tree).
 
-I don't run nix-darwin anymore since I only have intel Macs. So I just put NixOS on them. Take a look at the git history to see how I set up my nix-darwin config.
+I don't run nix-darwin anymore since I only have intel Macs. So I just put NixOS on them. If you are curious how I previously configured nix darwin hosts you can inspect the git history. 
 
 ## Architecture
 

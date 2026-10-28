@@ -6,6 +6,7 @@
       home.packages = with pkgs; [
         sioyek
         libreoffice
+        xournalpp
         hledger
         hledger-web
         hledger-iadd
@@ -22,6 +23,7 @@
       ephemeralRoot.persist.directories = [
         ".config/libreoffice"
         ".config/sioyek"
+        ".config/xournalpp"
       ];
     };
 }
