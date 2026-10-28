@@ -275,7 +275,21 @@
 
           config = lib.mkMerge [
             {
-              services.tetragon.enable = lib.mkDefault true;
+              services.tetragon = {
+                enable = lib.mkDefault true;
+                # 1.7.1's cilium/ebpf rejects the 7.1+ BTF header (cilium/ebpf#2041); drop at 1.7.2
+                package = lib.mkDefault (
+                  pkgs.tetragon.overrideAttrs (old: {
+                    version = "1.7.1-unstable-2026-09-29";
+                    src = pkgs.fetchFromGitHub {
+                      owner = "cilium";
+                      repo = "tetragon";
+                      rev = "b5a57836843a39b2452deebd0775ab49cd942070";
+                      hash = "sha256-CGIck5/2Q3YmLRFC4CD/9Tl3FOIHQyI6z5Js96ZYmgo=";
+                    };
+                  })
+                );
+              };
             }
             (lib.mkIf cfg.enable {
               environment = {

@@ -48,6 +48,7 @@ in
               }
             ];
 
+            boot.kernelPackages = pkgs.linuxPackages_latest;
             virtualisation.memorySize = 2048;
             services.tetragon.enable = true;
             environment.systemPackages = [
