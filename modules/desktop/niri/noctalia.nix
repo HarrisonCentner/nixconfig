@@ -5,14 +5,109 @@
 }:
 {
   flake.modules.homeManager.noctalia-shell =
-    { ... }:
+    {
+      pkgs,
+      lib,
+      config,
+      ...
+    }:
     let
       timeFormat = "%-I:%M %p";
       dateFormat = "%a, %b %d";
       clockFormat = "${timeFormat} ${dateFormat}";
+      net-privacy-status =
+        let
+          unwrapped = pkgs.writers.writeHaskellBin "net-privacy-status" {
+            libraries = with pkgs.haskellPackages; [
+              aeson
+              bytestring
+              text
+              turtle
+            ];
+          } (builtins.readFile ./net-privacy-status.hs);
+        in
+        # Plugins run commands via `sh -c`; curl/dig must come from the
+        # closure, not the session PATH.
+        pkgs.runCommand "net-privacy-status"
+          {
+            nativeBuildInputs = [ pkgs.makeBinaryWrapper ];
+            meta.mainProgram = "net-privacy-status";
+          }
+          ''
+            makeWrapper ${unwrapped}/bin/net-privacy-status $out/bin/net-privacy-status \
+              --prefix PATH : ${
+                lib.makeBinPath (
+                  with pkgs;
+                  [
+                    curl
+                    dnsutils
+                  ]
+                )
+              }
+          '';
+
+      net-privacy-widget = pkgs.writeText "net-privacy-status.luau" ''
+        local checking = false
+
+        local function show(status)
+          barWidget.setGlyph(status.icon)
+          barWidget.setGlyphColor(status.iconColor)
+          barWidget.setColor(status.iconColor)
+          barWidget.setText(status.text)
+          barWidget.setTooltip(status.tooltip)
+        end
+
+        local function refresh()
+          if checking then
+            return
+          end
+          checking = noctalia.runAsync("${lib.getExe net-privacy-status}", function(result)
+            checking = false
+            local status = result.exitCode == 0 and noctalia.json.decode(result.stdout) or nil
+            show(status or {
+              icon = "question-mark",
+              iconColor = "secondary",
+              text = "?",
+              tooltip = "status check failed",
+            })
+          end, ${toString statusTimeoutMs})
+        end
+
+        function update()
+          noctalia.setUpdateInterval(${toString statusIntervalMs})
+          refresh()
+        end
+
+        function onClick()
+          refresh()
+        end
+      '';
+
+      net-privacy-plugin =
+        pkgs.runCommand "noctalia-plugin-net-privacy"
+          {
+            nativeBuildInputs = [ config.programs.noctalia.package ];
+          }
+          ''
+            mkdir -p $out/net-privacy
+            cat > $out/net-privacy/plugin.toml <<'EOF'
+            id = "hcentner/net-privacy"
+            name = "Net Privacy"
+            version = "1.0.0"
+            plugin_api = 14
+
+            [[widget]]
+            id = "status"
+            entry = "status.luau"
+            EOF
+            cp ${net-privacy-widget} $out/net-privacy/status.luau
+            noctalia plugins lint $out
+          '';
     in
     {
       imports = [ inputs.noctalia.homeModules.default ];
+
+      home.packages = [ net-privacy-status ];
 
       programs.noctalia = {
         enable = true;
@@ -174,6 +269,19 @@
 
           desktop_widgets.enabled = false;
 
+          plugins = {
+            auto_update = "none";
+            enabled = [ "hcentner/net-privacy" ];
+            source = [
+              {
+                name = "nixconfig";
+                kind = "path";
+                location = "${net-privacy-plugin}";
+                enabled = true;
+              }
+            ];
+          };
+
           control_center = {
             hidden_tabs = [
               "monitor"
@@ -268,6 +376,8 @@
             tray.drawer = true;
 
             notifications.hide_when_no_unread = false;
+
+            net_privacy.type = "hcentner/net-privacy:status";
 
             battery = {
               display_mode = "graphic";
