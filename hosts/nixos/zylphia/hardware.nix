@@ -1,24 +1,19 @@
 {
   flake.nixosModules.zylphia-hardware =
-    {
-      lib,
-      config,
-      ...
-    }:
+    { lib, ... }:
     {
 
       nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
-      boot = {
-        initrd = {
-          availableKernelModules = [ "usb_storage" ];
-          kernelModules = [ ];
-        };
-        kernelModules = [
-          "iwlwifi"
-          "8812au"
-        ];
-        extraModulePackages = with config.boot.kernelPackages; [ ];
+      boot.initrd = {
+        availableKernelModules = [ "usb_storage" ];
+        kernelModules = [ ];
+      };
+
+      # intel_cpufreq passive: powersave pins min freq
+      powerManagement = {
+        cpuFreqGovernor = "schedutil";
+        powertop.enable = true;
       };
 
       services.syncthing.openDefaultPorts = false;
