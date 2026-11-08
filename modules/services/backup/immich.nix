@@ -8,12 +8,7 @@ in
         "video"
         "render"
       ];
-      services.tailscale.serve = {
-        enable = true;
-        services.immich.endpoints = {
-          "tcp:${toString defaultPort}" = "http://127.0.0.1:${toString defaultPort}";
-        };
-      };
+      tailscaleServices.immich = defaultPort;
       services.immich = {
         enable = true;
         port = defaultPort;

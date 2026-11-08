@@ -36,6 +36,7 @@
         music
         calendar
         secrets
+        sparkyfitness
         syncthing
         tailscale
       ]

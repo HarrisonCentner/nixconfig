@@ -53,6 +53,10 @@
       url = "github:cynicsketch/nix-mineral";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    sparkyfitness = {
+      url = "github:CodeWithCJ/SparkyFitness/v1.11.0";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     superdirt = {
       url = "git+https://codeberg.org/musikinformatik/SuperDirt";
       flake = false;

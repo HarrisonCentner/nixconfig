@@ -137,6 +137,24 @@
         "type": "github"
       }
     },
+    "flake-utils_2": {
+      "inputs": {
+        "systems": "systems_3"
+      },
+      "locked": {
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -431,8 +449,9 @@
         "noctalia": "noctalia",
         "opnix": "opnix",
         "sbox": "sbox",
+        "sparkyfitness": "sparkyfitness",
         "superdirt": "superdirt",
-        "systems": "systems_3",
+        "systems": "systems_4",
         "vowel": "vowel"
       }
     },
@@ -448,6 +467,28 @@
       "original": {
         "owner": "DavHau",
         "repo": "sbox",
+        "type": "github"
+      }
+    },
+    "sparkyfitness": {
+      "inputs": {
+        "flake-utils": "flake-utils_2",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1793386871,
+        "narHash": "sha256-gk+ngSrEBwSBcqMe1itITAiBkAIxbv8o2VFOXF5cgx4=",
+        "owner": "CodeWithCJ",
+        "repo": "SparkyFitness",
+        "rev": "0d8525e88ea7b116a92cd3aa35f622f7682201e2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "CodeWithCJ",
+        "ref": "v1.11.0",
+        "repo": "SparkyFitness",
         "type": "github"
       }
     },
@@ -514,6 +555,21 @@
       }
     },
     "systems_3": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "systems_4": {
       "locked": {
         "lastModified": 1791244623,
         "narHash": "sha256-uuanbkFk8a313Zfrxdcz8Us/yQtaxNnKJtX8v0ZPpd8=",
