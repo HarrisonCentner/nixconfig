@@ -37,19 +37,27 @@ let
     };
 in
 {
-  flake.modules.nixos.base = {
-    imports = [ common ];
-    nix.settings = {
-      experimental-features = [
-        "auto-allocate-uids"
-        "cgroups"
-      ];
-      auto-allocate-uids = true;
-      # NixOS pins system-features in nix.conf, so uid-range is not implied
-      system-features = [ "uid-range" ];
-      # closes the UID-reuse hole that auto-allocate-uids opens
-      use-cgroups = true;
+  flake.modules.nixos.base =
+    { lib, ... }:
+    {
+      imports = [ common ];
+      nix.settings = {
+        experimental-features = [
+          "auto-allocate-uids"
+          "cgroups"
+        ];
+        auto-allocate-uids = true;
+        # NixOS pins system-features in nix.conf, so uid-range is not implied;
+        # no big-parallel: uncached chromium/kernel/llvm fail instead of building locally
+        system-features = lib.mkForce [
+          "nixos-test"
+          "benchmark"
+          "kvm"
+          "uid-range"
+        ];
+        # closes the UID-reuse hole that auto-allocate-uids opens
+        use-cgroups = true;
+      };
     };
-  };
   flake.modules.darwin.base = common;
 }
