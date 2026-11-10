@@ -1,4 +1,9 @@
 {
+  flake.modules.nixos.tailscale-exit-node.services.tailscale = {
+    useRoutingFeatures = "server";
+    extraSetFlags = [ "--advertise-exit-node" ];
+  };
+
   flake.modules.nixos.tailscale =
     { config, lib, ... }:
     let
