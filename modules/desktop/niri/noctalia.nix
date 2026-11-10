@@ -15,6 +15,9 @@
       timeFormat = "%-I:%M %p";
       dateFormat = "%a, %b %d";
       clockFormat = "${timeFormat} ${dateFormat}";
+      statusIntervalMs = 60000;
+      # worst case: two 10s curls, two 5s digs, and the probe's 1s settle delay
+      statusTimeoutMs = 35000;
       net-privacy-status =
         let
           unwrapped = pkgs.writers.writeHaskellBin "net-privacy-status" {
