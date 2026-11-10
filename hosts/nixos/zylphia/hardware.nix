@@ -10,12 +10,6 @@
         kernelModules = [ ];
       };
 
-      # intel_cpufreq passive: powersave pins min freq
-      powerManagement = {
-        cpuFreqGovernor = "schedutil";
-        powertop.enable = true;
-      };
-
       services.syncthing.openDefaultPorts = false;
 
       networking = {

@@ -14,6 +14,7 @@
         zylphia-disko
         zylphia-hardware
         intel-graphics
+        power-saving
         security
         shell
         shell-host
@@ -31,6 +32,8 @@
         syncthing
         tailscale
         paperless
+        node-exporter
+        victoriametrics
 
         ephemeral-root
       ]
