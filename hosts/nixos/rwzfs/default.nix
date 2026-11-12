@@ -36,12 +36,13 @@
         music
         calendar
         secrets
-        sparkyfitness
         syncthing
         tailscale
       ]
       ++ [
         {
+          time.timeZone = "Europe/Stockholm";
+
           home-manager.users.hcentner = {
             imports = with config.flake.modules.homeManager; [
               # Modules
