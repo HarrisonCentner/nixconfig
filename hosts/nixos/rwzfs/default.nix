@@ -77,7 +77,6 @@
               office
               password-manager
               photography
-              rss
               tidal
 
               # Services
