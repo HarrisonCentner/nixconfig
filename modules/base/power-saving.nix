@@ -9,8 +9,9 @@
         scsiLinkPolicy = "med_power_with_dipm";
       };
 
+      # ethernet (class 0x0200) stays awake: runtime PM can drop the PCIe link under load
       services.udev.extraRules = ''
-        ACTION=="add", SUBSYSTEM=="pci", TEST=="power/control", ATTR{power/control}="auto"
+        ACTION=="add", SUBSYSTEM=="pci", ATTR{class}!="0x0200*", TEST=="power/control", ATTR{power/control}="auto"
         ACTION=="add", SUBSYSTEM=="usb", TEST=="power/control", ATTR{power/control}="auto"
       '';
 

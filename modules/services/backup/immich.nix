@@ -1,3 +1,4 @@
+{ mkOpSecret, ... }:
 let
   defaultPort = 2283;
   apiMetricsPort = 8081;
@@ -32,6 +33,11 @@ in
               targetResolution = "1080";
             };
             image.fullsize.enabled = true;
+            job = {
+              thumbnailGeneration.concurrency = 2;
+              smartSearch.concurrency = 1;
+              faceDetection.concurrency = 1;
+            };
             machineLearning.clip.modelName = "ViT-B-16-SigLIP2__webli";
             backup.database = {
               cronExpression = "0 13 * * *";
@@ -53,6 +59,32 @@ in
             ];
           }
         ];
+      };
+
+      # bulk imports must not starve tailscaled/sshd or thrash swap
+      systemd.services = {
+        immich-server.serviceConfig = {
+          CPUQuota = "300%";
+          MemoryHigh = "25%";
+          MemoryMax = "35%";
+          MemorySwapMax = "2G";
+        };
+        immich-machine-learning.serviceConfig = {
+          CPUQuota = "200%";
+          MemoryHigh = "20%";
+          MemoryMax = "30%";
+          MemorySwapMax = "2G";
+        };
+        postgresql.serviceConfig = {
+          CPUQuota = "200%";
+          MemoryHigh = "20%";
+          MemoryMax = "30%";
+        };
+        redis-immich.serviceConfig = {
+          CPUQuota = "50%";
+          MemoryHigh = "3%";
+          MemoryMax = "5%";
+        };
       };
 
       ephemeralRoot.persist.directories = [ "/var/lib/immich" ];

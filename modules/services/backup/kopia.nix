@@ -61,6 +61,16 @@ in
         Type = "oneshot";
         User = "root";
       };
+      # yield to interactive services; a runaway snapshot is killed, not swapped
+      batch = {
+        Nice = 19;
+        IOSchedulingClass = "idle";
+        CPUQuota = "100%";
+        IOWeight = 20;
+        MemoryHigh = "15%";
+        MemoryMax = "25%";
+        MemorySwapMax = "1G";
+      };
       kopiaExec =
         name: args:
         pkgs.writeShellScript "kopia-${name}" ''
@@ -176,19 +186,23 @@ in
         wants = [ "network-online.target" ];
         requires = [ "kopia-init.service" ];
         environment = kopiaEnv;
-        serviceConfig = common // {
-          ExecStartPre = [
-            (kopiaExec "policy" "policy set --global --compression=zstd")
-          ]
-          ++ ignoreSteps;
-          ExecStart = backupScript;
-        };
+        serviceConfig =
+          common
+          // batch
+          // {
+            ExecStartPre = [
+              (kopiaExec "policy" "policy set --global --compression=zstd")
+            ]
+            ++ ignoreSteps;
+            ExecStart = backupScript;
+          };
       };
 
       systemd.timers.kopia-backup = {
         wantedBy = [ "timers.target" ];
         timerConfig = {
-          OnCalendar = "daily";
+          # clear of immich's midnight nightly tasks
+          OnCalendar = "*-*-* 04:00:00";
           Persistent = true;
           RandomizedDelaySec = "1h";
         };
@@ -203,9 +217,12 @@ in
         wants = [ "network-online.target" ];
         requires = [ "kopia-init.service" ];
         environment = kopiaEnv;
-        serviceConfig = common // {
-          ExecStart = kopiaExec "maintenance" "maintenance run --full";
-        };
+        serviceConfig =
+          common
+          // batch
+          // {
+            ExecStart = kopiaExec "maintenance" "maintenance run --full";
+          };
       };
 
       systemd.timers.kopia-maintenance = {

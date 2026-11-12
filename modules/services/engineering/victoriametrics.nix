@@ -28,6 +28,9 @@ in
         DynamicUser = lib.mkForce false;
         User = "victoriametrics";
         Group = "victoriametrics";
+        CPUQuota = "100%";
+        MemoryHigh = "6%";
+        MemoryMax = "10%";
       };
       users = {
         users.victoriametrics = {
@@ -52,13 +55,16 @@ in
       };
 
       # RAPL energy counters are root-only since PLATYPUS
-      systemd.services.prometheus-node-exporter.serviceConfig.ExecStartPre =
-        "+${pkgs.writeShellScript "rapl-node-exporter-access" ''
+      systemd.services.prometheus-node-exporter.serviceConfig = {
+        CPUQuota = "25%";
+        MemoryMax = "256M";
+        ExecStartPre = "+${pkgs.writeShellScript "rapl-node-exporter-access" ''
           for f in /sys/class/powercap/*/energy_uj; do
             [ -e "$f" ] || continue
             chgrp node-exporter "$f"
             chmod 0440 "$f"
           done
         ''}";
+      };
     };
 }

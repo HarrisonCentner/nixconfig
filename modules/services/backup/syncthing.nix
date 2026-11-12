@@ -61,6 +61,12 @@
         };
       };
 
+      systemd.services.syncthing.serviceConfig = {
+        CPUQuota = "100%";
+        MemoryHigh = "6%";
+        MemoryMax = "10%";
+      };
+
       services.syncthing = {
         enable = true;
         user = "hcentner";
