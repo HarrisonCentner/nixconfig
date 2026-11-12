@@ -210,6 +210,7 @@
             enabled = true;
             blur_intensity = 0.0;
             tint_intensity = 0.0;
+            transition = [ "honeycomb" ];
           };
 
           notification = {
