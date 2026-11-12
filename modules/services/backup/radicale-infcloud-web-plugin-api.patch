@@ -5,7 +5,7 @@
          super().__init__(configuration.copy(PLUGIN_CONFIG_SCHEMA))
  
 -    def get(self, environ, base_prefix, path, user):
-+    def get(self, environ, base_prefix, path, user, request_info=None):
++    def get(self, environ, base_prefix, path, user, *args):
          if path == "/.web/infcloud/" or path.startswith("/.web/infcloud"):
 -            status, headers, answer = httputils.serve_resource(
 +            status, headers, answer, *rest = httputils.serve_resource(
@@ -15,7 +15,7 @@
 -            status, headers, answer = super().get(
 -                environ, base_prefix, path, user)
 +            status, headers, answer, *rest = super().get(
-+                environ, base_prefix, path, user, request_info)
++                environ, base_prefix, path, user, *args)
          if status == client.OK and path in ("/.web/", "/.web/index.html"):
              if version("radicale") >="3.2.0":
                  answer = answer.replace(b"""title="Refresh">Refresh</a>""",

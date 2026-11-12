@@ -1,5 +1,5 @@
---- a/internal/onepass/client.go	2026-09-03 14:34:32.639533687 +0000
-+++ b/internal/onepass/client.go	2026-09-03 14:34:41.208546635 +0000
+--- a/internal/onepass/client.go
++++ b/internal/onepass/client.go
 @@ -176,7 +176,7 @@
  	}
  
@@ -9,7 +9,7 @@
  	}
  
  	return resolved, nil
-@@ -263,7 +263,7 @@
+@@ -271,7 +271,7 @@
  	}
  
  	if len(failures) > 0 {
@@ -18,9 +18,9 @@
  	}
  	return resolved, nil
  }
---- a/internal/secrets/processor.go	2026-09-03 14:34:32.640533687 +0000
-+++ b/internal/secrets/processor.go	2026-09-03 14:40:18.524433228 +0000
-@@ -63,20 +63,18 @@
+--- a/internal/secrets/processor.go
++++ b/internal/secrets/processor.go
+@@ -80,29 +80,30 @@
  
  	fieldReferences, fileReferences := uniqueReferencesByKind(cfg.Secrets)
  	resolvedSecrets := make(map[string]string, len(fieldReferences))
@@ -29,9 +29,14 @@
 -		var err error
 -		resolvedSecrets, err = p.client.ResolveSecrets(fieldReferences)
 -		if err != nil {
+-			if len(cfg.Templates) > 0 {
+-				return nil, fmt.Errorf("failed to resolve template sources")
+-			}
 -			return nil, wrapResolutionError(err)
--		}
 +		resolvedSecrets, fieldErr = p.client.ResolveSecrets(fieldReferences)
++		if fieldErr != nil && len(cfg.Templates) > 0 {
++			return nil, fmt.Errorf("failed to resolve template sources")
+ 		}
  	}
  	resolvedFiles := make(map[string][]byte, len(fileReferences))
 +	var fileErr error
@@ -39,17 +44,28 @@
 -		var err error
 -		resolvedFiles, err = p.client.ResolveFiles(fileReferences)
 -		if err != nil {
+-			if len(cfg.Templates) > 0 {
+-				return nil, fmt.Errorf("failed to resolve secret sources")
+-			}
 -			return nil, wrapResolutionError(err)
--		}
 +		resolvedFiles, fileErr = p.client.ResolveFiles(fileReferences)
-+	}
++		if fileErr != nil && len(cfg.Templates) > 0 {
++			return nil, fmt.Errorf("failed to resolve secret sources")
+ 		}
+ 	}
 +	resolveErr := mergeResolveErrors(fieldErr, fileErr)
 +	if resolveErr != nil && len(resolvedSecrets) == 0 && len(resolvedFiles) == 0 {
 +		return nil, wrapResolutionError(resolveErr)
- 	}
- 	if err := os.MkdirAll(p.outputDir, 0755); err != nil {
- 		return nil, errors.FileOperationError(
-@@ -99,11 +97,8 @@
++	}
+ 	values := make(map[string]string)
+ 	for _, secret := range cfg.Secrets {
++		if resolveErr != nil {
++			break
++		}
+ 		if secret.Kind == config.SecretKindFile {
+ 			if _, ok := resolvedFiles[secret.Reference]; !ok {
+ 				return nil, fmt.Errorf("missing resolved file source")
+@@ -145,11 +146,8 @@
  			value = []byte(fieldValue)
  		}
  		if !ok {
@@ -63,8 +79,8 @@
  		}
  
  		outputPath, err := p.processSecret(secret, secretName, value)
-@@ -124,6 +119,11 @@
- 		result.ProcessedCount++
+@@ -176,6 +174,11 @@
+ 		result.Templates = append(result.Templates, TemplateResult{Name: template.Name, Path: prepared[i].path, Services: template.Services})
  	}
  
 +	if resolveErr != nil {
@@ -75,7 +91,7 @@
  	return result, nil
  }
  
-@@ -222,6 +222,23 @@
+@@ -274,6 +277,23 @@
  	return fields, files
  }
  
@@ -99,8 +115,8 @@
  func wrapResolutionError(err error) error {
  	suggestions := []string{
  		"Check the failed 1Password references listed above",
---- a/internal/secrets/processor_test.go	2026-09-03 14:40:27.587990296 +0000
-+++ b/internal/secrets/processor_test.go	2026-09-03 14:40:34.061392204 +0000
+--- a/internal/secrets/processor_test.go
++++ b/internal/secrets/processor_test.go
 @@ -223,8 +223,8 @@
  	if readErr != nil {
  		t.Fatalf("Failed to read existing secret: %v", readErr)
