@@ -9,7 +9,6 @@ let
           log-lines = 50
           min-free = 128000000
           max-free = 1000000000
-          fallback = true
         '';
         optimise.automatic = true;
         settings = {
@@ -47,11 +46,11 @@ in
           "cgroups"
         ];
         auto-allocate-uids = true;
-        # NixOS pins system-features in nix.conf, so uid-range is not implied;
-        # no big-parallel: uncached chromium/kernel/llvm fail instead of building locally
+        # NixOS pins system-features in nix.conf, so uid-range is not implied
         system-features = lib.mkForce [
           "nixos-test"
           "benchmark"
+          "big-parallel"
           "kvm"
           "uid-range"
         ];
