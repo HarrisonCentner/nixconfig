@@ -90,9 +90,21 @@
     {
       programs.ghostty.settings.command = "sh -c 'tmux has-session -t main 2>/dev/null && exec tmux new-session -t main \\; new-window || exec tmux new-session -s main'";
 
-      xdg.mimeApps = {
-        enable = true;
-        defaultApplications."inode/directory" = "thunar.desktop";
+      xdg = {
+        mimeApps = {
+          enable = true;
+          defaultApplications."inode/directory" = "thunar.desktop";
+        };
+        desktopEntries = {
+          thunar-settings = {
+            name = "Thunar Preferences";
+            noDisplay = true;
+          };
+          thunar-bulk-rename = {
+            name = "Bulk Rename";
+            noDisplay = true;
+          };
+        };
       };
 
       wayland.windowManager.niri = {
