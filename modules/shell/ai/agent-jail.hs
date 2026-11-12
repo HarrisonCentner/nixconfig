@@ -8,7 +8,7 @@
 {- | Run @sbox@ with extra binds wired up for AI agent workflows.
 
 Recognises @--readable DIR@, @--writeable DIR@, @--network MODE@,
-@--session-key KEY@, and @--share@/@--no-share@ (defaulting to
+@--session-key KEY@, @--tun@, @--gpu@, and @--share@/@--no-share@ (defaulting to
 @--no-share@, so concurrent sessions in one directory get separate
 sandboxes).
 Anything else is appended to the inner program command (after the
@@ -47,6 +47,7 @@ data Arg
     = ArgBind BindMode FilePath
     | ArgNetwork String
     | ArgTun
+    | ArgGpu
     | ArgShare Bool
     | ArgSessionKey String
     | ArgOther String
@@ -85,6 +86,13 @@ argParser =
                     ]
                 )
             , Opt.flag'
+                ArgGpu
+                ( mconcat
+                    [ Opt.long "gpu"
+                    , Opt.help "Binds the sysfs paths Mesa needs to find the GPU"
+                    ]
+                )
+            , Opt.flag'
                 (ArgShare True)
                 ( mconcat
                     [ Opt.long "share"
@@ -118,6 +126,9 @@ contribute = \case
         pure (bind, [])
     ArgNetwork n -> pure (["--network", n], [])
     ArgTun -> pure (["--dev-bind-try", "/dev/net/tun"], [])
+    -- sbox binds the device nodes itself, but without sysfs Mesa cannot
+    -- match them to a driver and falls back to llvmpipe.
+    ArgGpu -> pure (foldMap (\d -> ["--ro-bind", d, d]) ["/sys/dev/char", "/sys/devices"], [])
     ArgShare _ -> pure mempty
     ArgSessionKey _ -> pure mempty
     ArgOther s -> pure ([], [s])
