@@ -3,7 +3,22 @@
     key = "nixconfig.modules.services.networking.blocky";
     imports = [
       (
-        { lib, ... }:
+        { lib, pkgs, ... }:
+        let
+          dropIn = "/run/systemd/resolved.conf.d/90-dns-bypass.conf";
+          bypass = pkgs.writeShellScript "dns-bypass-apply" ''
+            if [ "$1" = on ]; then
+              ${pkgs.coreutils}/bin/install -Dm644 ${pkgs.writeText "dns-bypass.conf" ''
+                [Resolve]
+                DNS=
+                Domains=
+              ''} ${dropIn}
+            else
+              ${pkgs.coreutils}/bin/rm -f ${dropIn}
+            fi
+            ${pkgs.systemd}/bin/systemctl restart systemd-resolved.service
+          '';
+        in
         {
           services.blocky = {
             enable = true;
@@ -48,6 +63,27 @@
             nameservers = lib.mkForce [ "127.0.0.1" ];
             networkmanager.dns = "systemd-resolved";
           };
+
+          # Captive portals need the DHCP-provided resolver; reverts itself.
+          systemd.services.dns-bypass = {
+            description = "Temporarily resolve via link DNS instead of blocky";
+            serviceConfig = {
+              ExecStartPre = "${bypass} on";
+              ExecStart = "${pkgs.coreutils}/bin/sleep 15m";
+              ExecStopPost = "${bypass} off";
+            };
+          };
+
+          environment.systemPackages = [
+            (pkgs.writeShellScriptBin "dns-bypass" ''
+              case "''${1:-on}" in
+                on) systemctl restart dns-bypass.service && echo "blocky bypassed for 15m; run 'dns-bypass off' to restore" ;;
+                off) systemctl stop dns-bypass.service ;;
+                status) systemctl is-active --quiet dns-bypass.service && echo bypassed || echo blocky ;;
+                *) echo "usage: dns-bypass [on|off|status]" >&2; exit 1 ;;
+              esac
+            '')
+          ];
 
           services.resolved = {
             enable = true;
