@@ -28,7 +28,7 @@ in
           settings = {
             newVersionCheck.enabled = false;
             ffmpeg = {
-              accel = "qsv";
+              accel = "vaapi";
               preset = "medium";
               targetResolution = "1080";
             };
