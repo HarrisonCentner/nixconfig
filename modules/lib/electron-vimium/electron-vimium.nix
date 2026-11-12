@@ -91,7 +91,7 @@ in
           printf '\nrequire("%s");\n' ${inject} >> "$TMPDIR/app/$main"
           rm -rf $out/${asar} $out/${asar}.unpacked
           asar pack $TMPDIR/app $out/${asar} ${pkgs.lib.escapeShellArgs packFlags}
-          grep -rlI ${package} $out | xargs -r sed -i "s|${package}|$out|g"
+          { grep -rlI ${package} $out || true; } | xargs -r sed -i "s|${package}|$out|g"
 
           cd $TMPDIR
           asar extract-file $out/${asar} "$main"

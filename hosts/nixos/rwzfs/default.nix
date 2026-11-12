@@ -67,6 +67,7 @@
               # Apps
               airplay
               browser
+              design
               editor
               everyday
               library
