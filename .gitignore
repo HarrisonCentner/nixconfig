@@ -6,3 +6,4 @@ scripts
 docs
 .direnv
 .envrc
+machine-specs.md
