@@ -1,6 +1,7 @@
 {
   blockOutFromScreencast,
   appleColorEmoji,
+  electronVimium,
   repackElectronApp,
   ...
 }:
@@ -58,6 +59,26 @@
           "*.node"
         ];
       };
+      # Ships an unpacked resources/app, so there is no asar to repack.
+      altus-contents = pkgs.appimageTools.extract {
+        inherit (pkgs.altus) pname version src;
+        postExtract = ''
+          printf '\nrequire("%s");\n' ${(electronVimium pkgs).inject} >> $out/resources/app/.vite/build/main.js
+        '';
+      };
+      altus = pkgs.appimageTools.wrapAppImage {
+        inherit (pkgs.altus) pname version meta;
+        src = altus-contents;
+        nativeBuildInputs = [ pkgs.makeWrapper ];
+        extraInstallCommands = ''
+          install -Dm444 ${altus-contents}/Altus.desktop -t $out/share/applications
+          install -Dm444 ${altus-contents}/Altus.png -t $out/share/icons/hicolor/256x256/apps
+          substituteInPlace $out/share/applications/Altus.desktop \
+            --replace-fail "Exec=AppRun" "Exec=altus"
+          wrapProgram $out/bin/altus \
+            --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime=true}}"
+        '';
+      };
       protonmail-desktop = repackElectronApp pkgs {
         package = pkgs.protonmail-desktop;
         asar = "share/proton-mail/app.asar";
@@ -77,6 +98,7 @@
           hicolor-icon-theme
         ])
         ++ [
+          altus
           protonmail-desktop
           slack
           signal-desktop
@@ -98,11 +120,13 @@
       };
 
       wayland.windowManager.niri.settings._children = blockOutFromScreencast [
+        "(?i)^altus$"
         "(?i)^signal$"
         "(?i)^vesktop$"
       ];
 
       ephemeralRoot.persist.directories = [
+        ".config/Altus"
         ".config/Proton Mail"
         ".config/Signal"
         ".config/Slack"
