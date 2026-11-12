@@ -23,7 +23,24 @@
         # Otherwise NetworkManager adopts the daemon-owned tunnel as an external
         # connection, and any UI offering "disconnect" tears it down while the
         # kill switch keeps blocking — no tunnel, no traffic.
-        networking.networkmanager.unmanaged = [ "interface-name:wg*-mullvad" ];
+        networking.networkmanager = {
+          unmanaged = [ "interface-name:wg*-mullvad" ];
+          # Mullvad's table catches multicast (no specific route in main), so
+          # mDNS/SSDP discovery goes into the tunnel instead of the LAN.
+          dispatcherScripts = [
+            {
+              source = pkgs.writeShellScript "lan-multicast-route" ''
+                case "$2" in
+                  up) ;;
+                  *) exit 0 ;;
+                esac
+                case "$1" in
+                  en* | eth* | wl*) ${lib.getExe' pkgs.iproute2 "ip"} route replace 224.0.0.0/4 dev "$1" ;;
+                esac
+              '';
+            }
+          ];
+        };
 
         ephemeralRoot.persist.directories = [ "/etc/mullvad-vpn" ];
       }
