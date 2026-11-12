@@ -1,7 +1,18 @@
 {
   flake.modules.nixos.base =
-    { lib, ... }:
+    { lib, config, ... }:
+    let
+      timeZones = {
+        "New York" = "America/New_York";
+        "Stockholm" = "Europe/Stockholm";
+      };
+    in
     {
-      time.timeZone = lib.mkDefault "America/New_York";
+      options.location.address = lib.mkOption {
+        type = lib.types.enum (lib.attrNames timeZones);
+        default = "New York";
+      };
+
+      config.time.timeZone = timeZones.${config.location.address};
     };
 }

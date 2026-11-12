@@ -9,6 +9,7 @@
       pkgs,
       lib,
       config,
+      osConfig,
       ...
     }:
     let
@@ -231,7 +232,7 @@
             temperature_night = 4000;
           };
 
-          location.address = "New York";
+          location.address = osConfig.location.address;
 
           weather = {
             enabled = true;

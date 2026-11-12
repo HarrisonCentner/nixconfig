@@ -41,7 +41,7 @@
       ]
       ++ [
         {
-          time.timeZone = "Europe/Stockholm";
+          location.address = "Stockholm";
 
           home-manager.users.hcentner = {
             imports = with config.flake.modules.homeManager; [
