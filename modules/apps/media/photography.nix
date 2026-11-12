@@ -1,3 +1,4 @@
+{ renameDesktopEntry, ... }:
 {
   flake.modules.homeManager.photography =
     { pkgs, ... }:
@@ -6,6 +7,7 @@
         darktable
         gimp
         snapshot
+        (renameDesktopEntry pkgs gimp "GIMP")
       ];
 
       ephemeralRoot.persist.directories = [

@@ -1,4 +1,9 @@
-{ inputs, withPipewireJack, ... }:
+{
+  inputs,
+  withPipewireJack,
+  renameDesktopEntry,
+  ...
+}:
 {
   flake.modules.homeManager.tidal =
     { pkgs, ... }:
@@ -39,8 +44,10 @@
     {
       home.packages = [
         pkgs.godot-mono
+        (renameDesktopEntry pkgs pkgs.godot-mono "Godot")
         pkgs.dotnet-sdk_8
         supercollider
+        (renameDesktopEntry pkgs supercollider "SuperCollider")
         superdirt
         tidal
       ];

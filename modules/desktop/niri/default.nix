@@ -1,5 +1,6 @@
 {
   blockOutFromScreencast,
+  renameDesktopEntryNamed,
   ...
 }:
 {
@@ -26,6 +27,7 @@
         swaybg
         swappy
         brightnessctl
+        (renameDesktopEntryNamed pkgs thunar "thunar" "Thunar")
       ];
 
       # Battery status and power management

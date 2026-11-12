@@ -3,6 +3,7 @@
   appleColorEmoji,
   electronVimium,
   repackElectronApp,
+  renameDesktopEntry,
   ...
 }:
 {
@@ -105,19 +106,25 @@
           pkgs.teams-for-linux
           vesktop
           zoom-us
+          (renameDesktopEntry pkgs altus "WhatsApp")
+          (renameDesktopEntry pkgs pkgs.teams-for-linux "Teams")
+          (renameDesktopEntry pkgs vesktop "Discord")
+          (renameDesktopEntry pkgs zoom-us "Zoom")
         ];
 
       # Shadows the package's entry, whose icon carries a Linux badge.
-      xdg.desktopEntries.proton-mail = {
-        name = "Proton Mail";
-        genericName = "Email Client";
-        exec = "proton-mail %U";
-        icon = protonmail-icon;
-        categories = [
-          "Network"
-          "Email"
-        ];
-        mimeType = [ "x-scheme-handler/mailto" ];
+      xdg.desktopEntries = {
+        proton-mail = {
+          name = "Proton Mail";
+          genericName = "Email Client";
+          exec = "proton-mail %U";
+          icon = protonmail-icon;
+          categories = [
+            "Network"
+            "Email"
+          ];
+          mimeType = [ "x-scheme-handler/mailto" ];
+        };
       };
 
       wayland.windowManager.niri.settings._children = blockOutFromScreencast [
