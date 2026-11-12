@@ -1,9 +1,9 @@
-{ inputs, ... }:
+{ inputs, withPipewireJack, ... }:
 {
   flake.modules.homeManager.tidal =
     { pkgs, ... }:
     let
-      supercollider = pkgs.supercollider-with-sc3-plugins;
+      supercollider = withPipewireJack pkgs pkgs.supercollider-with-sc3-plugins;
       sclangConf = pkgs.writeText "sclang_conf.yaml" ''
         includePaths:
           - ${inputs.superdirt}

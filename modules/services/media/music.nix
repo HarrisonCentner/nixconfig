@@ -1,3 +1,4 @@
+{ withPipewireJack, ... }:
 {
   flake.modules.nixos.music = {
     # Pipewire for audio
@@ -6,7 +7,6 @@
       enable = true;
       pulse.enable = true;
       alsa.enable = true;
-      jack.enable = true;
       extraConfig.pipewire."10-combine-sink" = {
         "context.modules" = [
           {
@@ -65,9 +65,9 @@
   flake.modules.homeManager.music =
     { pkgs, ... }:
     {
-      home.packages = with pkgs; [
-        supercollider-with-sc3-plugins
-        wine # for ableton
+      home.packages = [
+        (withPipewireJack pkgs pkgs.supercollider-with-sc3-plugins)
+        pkgs.wine # for ableton
       ];
     };
 }
