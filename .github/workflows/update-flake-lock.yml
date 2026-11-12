@@ -1,0 +1,21 @@
+name: update-flake-lock
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: cachix/install-nix-action@v30
+
+      - uses: DeterminateSystems/update-flake-lock@v29
+        with:
+          commit-msg: bump flakes
+          pr-title: bump flakes
