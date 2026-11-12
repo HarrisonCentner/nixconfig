@@ -102,6 +102,7 @@
           protonmail-desktop
           slack
           signal-desktop
+          pkgs.teams-for-linux
           vesktop
           zoom-us
         ];
@@ -130,6 +131,7 @@
         ".config/Proton Mail"
         ".config/Signal"
         ".config/Slack"
+        ".config/teams-for-linux"
       ];
       backup.directories = [
         ".config/Signal"
